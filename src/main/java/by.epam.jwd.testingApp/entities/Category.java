@@ -2,13 +2,13 @@ package by.epam.jwd.testingApp.entities;
 
 import java.io.Serializable;
 
-public class Role implements Serializable {
+public class Category implements Serializable {
     private int id;
     private String name;
 
-    public Role() {}
+    public Category() {}
 
-    public Role(int id, String name) {
+    public Category(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -34,10 +34,10 @@ public class Role implements Serializable {
         if (this == o) return true;
         if (this.getClass() != o.getClass()) return false;
 
-        Role role = (Role) o;
+        Category category = (Category) o;
 
-        if (id != role.id) return false;
-        return name != null ? name.equals(role.name) : role.name == null;
+        if (id != category.id) return false;
+        return name != null ? name.equals(category.name) : category.name == null;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return this.getClass() + "{" +
+        return this.getClass() +"{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

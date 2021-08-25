@@ -1,8 +1,5 @@
-import by.epam.jwd.testingApp.entities.testComponents.Test;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
-import java.util.Date;
 
 public class test {
 

@@ -1,9 +1,11 @@
 package by.epam.jwd.testingApp.entities;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int id;
     private Role role;
-    private String nickName;
+    private String name;
     private String email;
     private String password;
 
@@ -12,7 +14,7 @@ public class User {
     public User(int id, Role role, String nickName, String email, String password) {
         this.id = id;
         this.role = role;
-        this.nickName = nickName;
+        this.name = nickName;
         this.email = email;
         this.password = password;
     }
@@ -33,12 +35,12 @@ public class User {
         this.role = role;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -66,7 +68,7 @@ public class User {
 
         if (id != user.id) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
-        if (nickName != null ? !nickName.equals(user.nickName) : user.nickName != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
     }
@@ -75,9 +77,20 @@ public class User {
     public int hashCode() {
         int result = id;
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass() + "{" +
+                "id=" + id +
+                ", role=" + role +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

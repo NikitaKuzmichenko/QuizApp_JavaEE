@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.exceptions;
 
-public class ConnectionPoolException extends Exception {
+public class ConnectionPoolException extends RuntimeException {
 
     public ConnectionPoolException() {}
 

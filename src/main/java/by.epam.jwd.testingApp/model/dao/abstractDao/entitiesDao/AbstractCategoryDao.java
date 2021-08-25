@@ -1,12 +1,12 @@
 package by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao;
 
-import by.epam.jwd.testingApp.entities.Role;
+import by.epam.jwd.testingApp.entities.Category;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.dao.abstractDao.genericDao.AbstractGenericDao;
 
 import java.util.List;
 
-public interface AbstractRoleDao extends AbstractGenericDao<Role,Integer> {
+public interface AbstractCategoryDao extends AbstractGenericDao<Category,Integer> {
 
-    public List<Role> selectAll()throws DaoException;
+    public List<Category> selectAll()throws DaoException;
 }

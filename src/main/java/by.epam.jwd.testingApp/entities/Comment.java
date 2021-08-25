@@ -1,20 +1,21 @@
 package by.epam.jwd.testingApp.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comment {
+public class Comment implements Serializable {
     private int id;
     private int testId;
-    private User creator;
+    private int creatorId;
     private String comment;
     private Date creationDate;
 
     public Comment() {}
 
-    public Comment(int id, int testId, User creator, String comment, Date creationDate) {
+    public Comment(int id, int testId, int creatorId, String comment, Date creationDate) {
         this.id = id;
         this.testId = testId;
-        this.creator = creator;
+        this.creatorId = creatorId;
         this.comment = comment;
         this.creationDate = creationDate;
     }
@@ -35,12 +36,12 @@ public class Comment {
         this.testId = testId;
     }
 
-    public User getCreator() {
-        return creator;
+    public int getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getComment() {
@@ -64,22 +65,33 @@ public class Comment {
         if (this == o) return true;
         if (this.getClass() != o.getClass()) return false;
 
-        Comment comment1 = (Comment) o;
+        Comment comment = (Comment) o;
 
-        if (id != comment1.id) return false;
-        if (testId != comment1.testId) return false;
-        if (creator != null ? !creator.equals(comment1.creator) : comment1.creator != null) return false;
-        if (comment != null ? !comment.equals(comment1.comment) : comment1.comment != null) return false;
-        return creationDate != null ? creationDate.equals(comment1.creationDate) : comment1.creationDate == null;
+        if (id != comment.id) return false;
+        if (testId != comment.testId) return false;
+        if (creatorId != comment.creatorId) return false;
+        if (this.comment != null ? !this.comment.equals(comment.comment) : comment.comment != null) return false;
+        return creationDate != null ? creationDate.equals(comment.creationDate) : comment.creationDate == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + testId;
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+        result = 31 * result + creatorId;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass() + "{" +
+                "id=" + id +
+                ", testId=" + testId +
+                ", creatorId=" + creatorId +
+                ", comment='" + comment + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
     }
 }

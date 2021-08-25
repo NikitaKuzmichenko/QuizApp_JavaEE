@@ -15,7 +15,7 @@ public class ConnectionPool {
     private String url;
     private String user;
 
-    public static final int DEFAULT_POOL_SIZE = 50;// default max connection number for mysql 151
+    public static final int DEFAULT_POOL_SIZE = 12;// default max connection number for mysql 151
 
     private BlockingQueue<Connection> freePool;
     private BlockingQueue<Connection> occupiedPool;
@@ -26,6 +26,19 @@ public class ConnectionPool {
         password = resourceManager.getValueByName(DataBaseParams.DB_PASSWORD);
         url = resourceManager.getValueByName(DataBaseParams.DB_URL);
         user = resourceManager.getValueByName(DataBaseParams.DB_USER);
+    }
+
+    public static ConnectionPool getInstance(){
+        ConnectionPool localInstance = instance;
+        if (localInstance == null) {
+            synchronized (ConnectionPool.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new ConnectionPool();
+                }
+            }
+        }
+        return localInstance;
     }
 
     public void InitPool() throws ConnectionPoolException {
@@ -47,34 +60,9 @@ public class ConnectionPool {
         }
     }
 
-    public void removeAllConnections() throws ConnectionPoolException{
-        try {
-            for(Connection  connection : freePool) {
-                connection.close();
-            }
-            for(Connection  connection : occupiedPool) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            throw new ConnectionPoolException("Connection pool clearing. " +
-                    "Can't close connection",e);
-        }
+    public void removeAllConnections(){
         freePool.clear();
         occupiedPool.clear();
-    }
-
-    public static ConnectionPool getInstance() throws ConnectionPoolException {
-        ConnectionPool localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ConnectionPool.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ConnectionPool();
-                    instance.InitPool();
-                }
-            }
-        }
-        return localInstance;
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
@@ -84,7 +72,7 @@ public class ConnectionPool {
             occupiedPool.offer(connection);
         } catch (InterruptedException e) {
             throw new ConnectionPoolException("Connection pool. " +
-                    "Can't take connection form pool",e);
+                    "Can't connect to a pool",e);
         }
         return connection;
     }
@@ -93,9 +81,5 @@ public class ConnectionPool {
         occupiedPool.remove(connection);
         freePool.offer(connection);
     }
-
-
-
-    public boolean isFreePoolEmpty(){ return freePool.size() == 0;}
 
 }

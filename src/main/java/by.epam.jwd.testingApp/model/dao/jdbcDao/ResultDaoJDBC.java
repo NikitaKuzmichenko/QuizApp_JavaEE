@@ -1,17 +1,13 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
 
 import by.epam.jwd.testingApp.entities.Result;
-import by.epam.jwd.testingApp.entities.testComponents.Question;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractResultDao;
-import by.epam.jwd.testingApp.model.dao.abstractDao.genericDao.AbstractGenericDao;
-import by.epam.jwd.testingApp.model.dao.jdbcDao.connctionPoolClient.ConnectionPoolClient;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
-public class ResultDaoJDBC extends ConnectionPoolClient implements AbstractResultDao {
+public class ResultDaoJDBC implements AbstractResultDao {
 
     public ResultDaoJDBC() throws DaoException {}
 
@@ -20,46 +16,42 @@ public class ResultDaoJDBC extends ConnectionPoolClient implements AbstractResul
     }
 
     @Override
-    public Result getEntityById(Integer id) throws DaoException {
-        Connection connection = getConnection();
+    public Result selectEntityById(Integer id) throws DaoException {
         return null;
     }
 
     @Override
     public Result update(Result entity) throws DaoException {
-        Connection connection = getConnection();
         return null;
     }
 
     @Override
     public boolean delete(Integer id) throws DaoException {
-        Connection connection = getConnection();
         return false;
     }
 
     @Override
     public boolean create(Result entity) throws DaoException {
-        Connection connection = getConnection();
         return false;
     }
 
     @Override
-    public List<Result> getByUserId(Integer userId, int limit, int offset) throws DaoException {
+    public List<Result> selectByUserId(Integer userId, int limit, int offset) throws DaoException {
         return null;
     }
 
     @Override
-    public List<Result> getByTestId(Integer testId) throws DaoException {
+    public List<Result> selectByTestId(Integer testId) throws DaoException {
         return null;
     }
 
     @Override
-    public Integer getAvgResultByUserId(Integer userId) throws DaoException {
+    public Integer calculateAvgResultByUserId(Integer userId) throws DaoException {
         return null;
     }
 
     @Override
-    public Integer getAvgResultByTestId(Integer testId) throws DaoException {
+    public Integer calculateAvgResultByTestId(Integer testId) throws DaoException {
         return null;
     }
 }

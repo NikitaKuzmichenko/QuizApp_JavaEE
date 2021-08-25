@@ -1,6 +1,8 @@
-package by.epam.jwd.testingApp.entities.testComponents;
+package by.epam.jwd.testingApp.entities;
 
-public class Statement {
+import java.io.Serializable;
+
+public class Statement implements Serializable {
     private int id;
     private int questionId;
     private String text;
@@ -67,5 +69,15 @@ public class Statement {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         result = 31 * result + (isCorrect ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass() + "{" +
+                "id=" + id +
+                ", questionId=" + questionId +
+                ", text='" + text + '\'' +
+                ", isCorrect=" + isCorrect +
+                '}';
     }
 }

@@ -1,8 +1,9 @@
 package by.epam.jwd.testingApp.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Result {
+public class Result implements Serializable {
     private int userId;
     private int testId;
     private int result;
@@ -69,5 +70,15 @@ public class Result {
         result1 = 31 * result1 + result;
         result1 = 31 * result1 + (passingDate != null ? passingDate.hashCode() : 0);
         return result1;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass() + "{" +
+                "userId=" + userId +
+                ", testId=" + testId +
+                ", result=" + result +
+                ", passingDate=" + passingDate +
+                '}';
     }
 }
