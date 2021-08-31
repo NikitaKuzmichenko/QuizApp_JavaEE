@@ -10,18 +10,16 @@ public class Test implements Serializable {
     private int categoryId;
     private String name;
     private Date creationDate;
-    private int passedNumber;
     private boolean removed = false;
 
     public Test(){}
 
-    public Test(int id, int creatorId, int categoryId, String name, Date creationDate, int passedNumber) {
+    public Test(int id, int creatorId, int categoryId, String name, Date creationDate) {
         this.id = id;
         this.creatorId = creatorId;
         this.categoryId = categoryId;
         this.name = name;
         this.creationDate = creationDate;
-        this.passedNumber = passedNumber;
     }
 
     public int getId() {
@@ -64,14 +62,6 @@ public class Test implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getPassedNumber() {
-        return passedNumber;
-    }
-
-    public void setPassedNumber(int passedNumber) {
-        this.passedNumber = passedNumber;
-    }
-
     public boolean isRemoved() {
         return removed;
     }
@@ -88,7 +78,6 @@ public class Test implements Serializable {
                 ", categoryId=" + categoryId +
                 ", name='" + name + '\'' +
                 ", creationDate=" + creationDate +
-                ", passedNumber=" + passedNumber +
                 ", removed=" + removed +
                 '}';
     }

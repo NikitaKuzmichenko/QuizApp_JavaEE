@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private int id;
-    private Role role;
+    private int roleId;
     private String name;
     private String email;
     private String password;
 
     public User() {}
 
-    public User(int id, Role role, String nickName, String email, String password) {
+    public User(int id, int roleId, String name, String email, String password) {
         this.id = id;
-        this.role = role;
-        this.name = nickName;
+        this.roleId = roleId;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -27,12 +27,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public Role getRole() {
-        return role;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public String getName() {
@@ -67,7 +67,7 @@ public class User implements Serializable {
         User user = (User) o;
 
         if (id != user.id) return false;
-        if (role != null ? !role.equals(user.role) : user.role != null) return false;
+        if (roleId != user.roleId) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
@@ -76,7 +76,7 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + roleId;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
@@ -87,7 +87,7 @@ public class User implements Serializable {
     public String toString() {
         return this.getClass() + "{" +
                 "id=" + id +
-                ", role=" + role +
+                ", role=" + roleId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

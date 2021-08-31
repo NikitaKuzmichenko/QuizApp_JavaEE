@@ -82,4 +82,15 @@ public class ConnectionPool {
         freePool.offer(connection);
     }
 
+    public void returnConnection(Connection connection,Statement statement) throws SQLException{
+
+        returnConnection(connection);
+    }
+
+    public void returnConnection(Connection connection,Statement statement,ResultSet set)throws SQLException{
+
+        returnConnection(connection,statement);
+    }
+
+
 }

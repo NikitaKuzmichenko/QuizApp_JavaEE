@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface AbstractStatementDao extends AbstractGenericDao<Statement, Integer> {
 
-    public List<Statement> selectByQuestionId(Integer questionId)  throws DaoException;
+    public List<Statement> selectByQuestionId(int questionId)  throws DaoException;
 
 }

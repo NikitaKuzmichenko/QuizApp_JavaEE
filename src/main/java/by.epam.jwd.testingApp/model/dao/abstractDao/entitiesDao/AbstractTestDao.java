@@ -8,10 +8,18 @@ import java.util.List;
 
 public interface AbstractTestDao extends AbstractGenericDao<Test, Integer> {
 
-    public List<Test> selectPreviewByCreatorId(Integer creatorId, int limit, int offset) throws DaoException;
+    public List<Test> selectTestsByCreatorId(int creatorId, int limit, int offset) throws DaoException;
 
-    public List<Test> selectPreviewByCategory(String category, int limit, int offset) throws DaoException;
+    public List<Test> selectTestsByCategory(int categoryId, int limit, int offset) throws DaoException;
 
-    public List<Test> selectPreviewByName(String name, int limit, int offset) throws DaoException;
+    public List<Test> selectTestsByName(String name, int limit, int offset) throws DaoException;
+
+    public List<Test> sortTestsByName(int limit, int offset, boolean desc) throws DaoException;
+
+    public List<Test> sortTestsByDate(int limit, int offset, boolean desc) throws DaoException;
+
+    public List<Test> sortTestsByPassedNumber(int limit, int offset,boolean desc) throws DaoException;
+
+    public boolean removeTest(int testId)throws DaoException;
 
 }
