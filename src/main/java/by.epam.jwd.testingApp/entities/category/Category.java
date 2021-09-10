@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.entities;
+package by.epam.jwd.testingApp.entities.category;
 
 import java.io.Serializable;
 
@@ -7,6 +7,10 @@ public class Category implements Serializable {
     private String name;
 
     public Category() {}
+
+    public Category(String name) {
+        this.name = name;
+    }
 
     public Category(int id, String name) {
         this.id = id;

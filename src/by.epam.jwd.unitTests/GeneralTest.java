@@ -1,18 +1,10 @@
 
-import by.epam.jwd.testingApp.entities.Category;
-import by.epam.jwd.testingApp.entities.Pair;
-import by.epam.jwd.testingApp.entities.Result;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
-import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractResultDao;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractTestDao;
-import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;
-import by.epam.jwd.testingApp.model.dao.jdbcDao.ResultDaoJDBC;
 import by.epam.jwd.testingApp.model.dao.jdbcDao.TestDaoJDBC;
-import by.epam.jwd.testingApp.model.dao.jdbcDao.UserDaoJDBC;
 
 import java.sql.*;
-import java.util.Date;
 
 public class GeneralTest {
 

@@ -7,7 +7,7 @@
 
   <servlet>
     <servlet-name>mainServlet</servlet-name>
-    <servlet-class>MainServlet</servlet-class>
+    <servlet-class>by.epam.jwd.testingApp.controller.MainServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

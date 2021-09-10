@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.entities;
+package by.epam.jwd.testingApp.entities.role;
 
 import java.io.Serializable;
 
@@ -7,6 +7,10 @@ public class Role implements Serializable {
     private String name;
 
     public Role() {}
+
+    public Role(String name) {
+        this.name = name;
+    }
 
     public Role(int id, String name) {
         this.id = id;
