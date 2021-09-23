@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 public class DBResourceManager {
 
-    private static final String source = "dataBase"; // указывать полный путь
+    private static final String source = "D:\\IDEA\\webApp\\src\\main\\resources\\dataBase.properties";
 
     private static DBResourceManager instance;
     private static ResourceBundle bundle;

@@ -17,6 +17,6 @@ public interface AbstractResultDao extends AbstractGenericDao<Result, Pair<Integ
 
     public Integer calculateAvgResultByTestId(int testId) throws DaoException;
 
-    public Integer calculateRowsByTestId(int testId) throws DaoException;
+    public Integer calculateRowsNumberByTestId(int testId) throws DaoException;
 
 }

@@ -27,8 +27,9 @@ public class TestDaoJDBC implements AbstractTestDao {
         return result;
     }
 
+
     @Override
-    public List<Test> selectTestsByCreatorId(int creatorId, int limit, int offset) throws DaoException {
+    public List<Test> selectTestsByIntRow(int limit, int offset,String rowName,int rowValue) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -38,74 +39,12 @@ public class TestDaoJDBC implements AbstractTestDao {
 
         try {
             String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.CREATOR_ID + " = ?"
-                    + " AND " + TestMapping.IS_REMOVED + " = 0 "
-                    + " LIMIT " + limit
-                    + " OFFSET " + offset + ";";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1,creatorId);
-            resultSet = statement.executeQuery();
-            result = parsFromResultSet(resultSet);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public List<Test> selectTestsByCategory(int categoryId, int limit, int offset) throws DaoException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Test> result;
-
-        try {
-            String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.CATEGORY_ID + " = ?"
+                    + " WHERE " + rowName + " = ?"
                     + " AND " + TestMapping.IS_REMOVED + " = 0 "
                     +" LIMIT " + limit
                     + " OFFSET " + offset + ";";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1,categoryId);
-            resultSet = statement.executeQuery();
-            result = parsFromResultSet(resultSet);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public List<Test> selectTestsByName(String name, int limit, int offset) throws DaoException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Test> result;
-
-        try {
-            String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.NAME + " = ?"
-                    + " AND " + TestMapping.IS_REMOVED + " = 0 "
-                    +" LIMIT " + limit
-                    + " OFFSET " + offset + ";";
-            statement = connection.prepareStatement(sql);
-            statement.setString(1,name);
+            statement.setInt(1,rowValue);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -146,7 +85,7 @@ public class TestDaoJDBC implements AbstractTestDao {
     }
 
     @Override
-    public List<Test> sortTestsByName(int limit, int offset, boolean desc) throws DaoException {
+    public List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -161,78 +100,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         try {
             String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
                     + " WHERE " + TestMapping.IS_REMOVED + " = 0 "
-                    + " ORDER BY " + TestMapping.NAME + sortType
-                    + " LIMIT " + limit
-                    + " OFFSET " + offset + ";";
-            statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery();
-            result = parsFromResultSet(resultSet);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public List<Test> sortTestsByDate(int limit, int offset, boolean desc) throws DaoException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Test> result;
-
-        String sortType;
-        if(desc) sortType = " DESC";
-        else sortType = " ASC";
-
-        try {
-            String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.IS_REMOVED + " = 0 "
-                    + " ORDER BY " + TestMapping.CREATION_DATE + sortType
-                    + " LIMIT " + limit
-                    + " OFFSET " + offset + ";";
-            statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery();
-            result = parsFromResultSet(resultSet);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public List<Test> sortTestsByPassedNumber(int limit, int offset, boolean desc) throws DaoException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Test> result;
-
-        String sortType;
-        if(desc) sortType = " DESC";
-        else sortType = " ASC";
-
-        try {
-            String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.IS_REMOVED + " = 0 "
-                    + " ORDER BY ( SELECT COUNT(" + ResultMapping.TEST_ID + ")"
-                    + " FROM " + ResultMapping.TABLE_NAME
-                    + " WHERE " + ResultMapping.TEST_ID + " = " + TestMapping.ID + ")"
-                    + sortType
+                    + " ORDER BY " + sortedRow + sortType
                     + " LIMIT " + limit
                     + " OFFSET " + offset + ";";
             statement = connection.prepareStatement(sql);

@@ -20,8 +20,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         return result;
     }
 
-    private boolean isRowExist(Category entity,Connection connection)
-            throws SQLException {
+    private boolean isRowExist(Category entity,Connection connection) throws SQLException {
 
         String selectSql = "SELECT * FROM " + CategoryMapping.TABLE_NAME
                 + " WHERE " + CategoryMapping.NAME + " = ?;";
@@ -97,7 +96,6 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         int result = 0;
         try {
             if(isRowExist(entity,connection))return false;

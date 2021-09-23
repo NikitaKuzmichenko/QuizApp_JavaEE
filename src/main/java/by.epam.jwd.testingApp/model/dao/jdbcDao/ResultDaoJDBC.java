@@ -264,7 +264,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
     }
 
     @Override
-    public Integer calculateRowsByTestId(int testId) throws DaoException {
+    public Integer calculateRowsNumberByTestId(int testId) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 

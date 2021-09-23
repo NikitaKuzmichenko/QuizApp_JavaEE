@@ -29,8 +29,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         return result;
     }
 
-    private boolean isRowExist(User entity, Connection connection)
-            throws SQLException {
+    private boolean isRowExist(User entity, Connection connection) throws SQLException {
 
         String selectSql = "SELECT * FROM " + UserMapping.TABLE_NAME
                 + " WHERE " + UserMapping.NAME + " = ?"

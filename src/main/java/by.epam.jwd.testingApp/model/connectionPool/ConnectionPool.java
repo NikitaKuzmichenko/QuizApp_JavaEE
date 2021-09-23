@@ -15,7 +15,7 @@ public class ConnectionPool {
     private String url;
     private String user;
 
-    public static final int DEFAULT_POOL_SIZE = 12;// default max connection number for mysql 151
+    public static final int DEFAULT_POOL_SIZE = 12;
 
     private BlockingQueue<Connection> freePool;
     private BlockingQueue<Connection> occupiedPool;

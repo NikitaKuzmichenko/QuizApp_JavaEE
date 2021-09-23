@@ -18,7 +18,7 @@ import by.epam.jwd.testingApp.model.dao.jdbcDao.TestDaoJDBC;
 import by.epam.jwd.testingApp.model.dao.jdbcDao.UserDaoJDBC;
 
 public class DaoFactory {
-    DaoFactory instance = new DaoFactory();
+    private static DaoFactory instance = null;
 
     private final AbstractCategoryDao categoryDao = new CategoryDaoJDBC();
     private final AbstractCommentDao commentDao = new CommentDaoJDBC();
@@ -31,7 +31,10 @@ public class DaoFactory {
 
     private DaoFactory(){}
 
-    public DaoFactory getInstance() {
+    public static DaoFactory getInstance() {
+        if(instance==null){
+            instance = new DaoFactory();
+        }
         return instance;
     }
 
