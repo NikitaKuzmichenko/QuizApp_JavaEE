@@ -1,15 +1,17 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.category.Category;
-import by.epam.jwd.testingApp.entities.role.Role;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractCategoryService;
 
 import java.util.List;
 
-public class CategoryService {
-    public static boolean createRole(Category entity) throws ServiceException {
+public class CategoryService implements AbstractCategoryService {
+
+    @Override
+    public  boolean create(Category entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCategoryDao().
                     create(entity);
@@ -18,7 +20,8 @@ public class CategoryService {
         }
     }
 
-    public static boolean updateRole(Category entity) throws ServiceException {
+    @Override
+    public  boolean update(Category entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCategoryDao().
                     update(entity);
@@ -27,7 +30,8 @@ public class CategoryService {
         }
     }
 
-    public static boolean deleteRole(int categoryId) throws ServiceException {
+    @Override
+    public boolean delete(Integer categoryId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCategoryDao().
                     delete(categoryId);
@@ -36,7 +40,8 @@ public class CategoryService {
         }
     }
 
-    public static Category selectStatementById(int categoryId) throws ServiceException {
+    @Override
+    public  Category selectEntityById(Integer categoryId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCategoryDao().
                     selectEntityById(categoryId);
@@ -45,7 +50,8 @@ public class CategoryService {
         }
     }
 
-    public static List<Category> selectAllRoles() throws ServiceException {
+    @Override
+    public  List<Category> selectAll() throws ServiceException {
         try {
             return DaoFactory.getInstance().getCategoryDao()
                     .selectAll();

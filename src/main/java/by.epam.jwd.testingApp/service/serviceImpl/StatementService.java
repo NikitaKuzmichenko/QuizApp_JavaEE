@@ -1,15 +1,17 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.Statement;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractStatementService;
 
 import java.util.List;
 
-public class StatementService {
+public class StatementService implements AbstractStatementService {
 
-    public static boolean createStatement(Statement entity) throws ServiceException {
+    @Override
+    public boolean create(Statement entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().
                     create(entity);
@@ -18,7 +20,8 @@ public class StatementService {
         }
     }
 
-    public static boolean updateStatement(Statement entity) throws ServiceException {
+    @Override
+    public boolean update(Statement entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().
                     update(entity);
@@ -27,7 +30,8 @@ public class StatementService {
         }
     }
 
-    public static boolean deleteStatement(int entityId) throws ServiceException {
+    @Override
+    public boolean delete(Integer entityId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().
                     delete(entityId);
@@ -36,7 +40,8 @@ public class StatementService {
         }
     }
 
-    public static Statement selectStatementById(int statementId) throws ServiceException {
+    @Override
+    public Statement selectEntityById(Integer statementId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().
                     selectEntityById(statementId);
@@ -45,7 +50,8 @@ public class StatementService {
         }
     }
 
-    public static List<Statement> selectStatementByQuestionId(int questionId) throws ServiceException {
+    @Override
+    public  List<Statement> selectByQuestionId(Integer questionId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().
                     selectByQuestionId(questionId);

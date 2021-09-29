@@ -3,7 +3,10 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee"
+         version="2.5">
 
   <servlet>
     <servlet-name>mainServlet</servlet-name>
@@ -12,7 +15,7 @@
 
   <servlet-mapping>
     <servlet-name>mainServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/main/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

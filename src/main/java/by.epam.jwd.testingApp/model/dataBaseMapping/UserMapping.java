@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.model.dataBaseMapping;
 
-public class UserMapping {
+public final class UserMapping {
     public final static String TABLE_NAME = "users";
     public final static String ID = "id";
     public final static String ROLE_ID = "roleId";

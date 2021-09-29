@@ -1,18 +1,20 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.Pair;
 import by.epam.jwd.testingApp.entities.Result;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractResultService;
 
 import java.util.List;
 
-public class ResultService {
+public class ResultService implements AbstractResultService {
 
     public static final int LimitOnPage = 10;
 
-    public static boolean createResult(Result entity) throws ServiceException {
+    @Override
+    public boolean create(Result entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getResultDao().
                     create(entity);
@@ -21,7 +23,8 @@ public class ResultService {
         }
     }
 
-    public static boolean updateResult(Result entity) throws ServiceException {
+    @Override
+    public boolean update(Result entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getResultDao().
                     update(entity);
@@ -30,7 +33,8 @@ public class ResultService {
         }
     }
 
-    public static boolean deleteResult(Pair<Integer,Integer> id) throws ServiceException {
+    @Override
+    public boolean delete(Pair<Integer,Integer> id) throws ServiceException {
         try {
             return DaoFactory.getInstance().getResultDao().
                     delete(id);
@@ -39,7 +43,8 @@ public class ResultService {
         }
     }
 
-    public static Result selectResultById(Pair<Integer,Integer> id) throws ServiceException {
+    @Override
+    public Result selectEntityById(Pair<Integer,Integer> id) throws ServiceException {
         try {
             return DaoFactory.getInstance().getResultDao().
                     selectEntityById(id);
@@ -48,7 +53,8 @@ public class ResultService {
         }
     }
 
-    public static Integer calculateRowsNumberByTestId(int testId) throws ServiceException{
+    @Override
+    public Integer calculateRowsNumberByTestId(int testId) throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
                     calculateRowsNumberByTestId(testId);
@@ -56,7 +62,9 @@ public class ResultService {
             throw new ServiceException("msg",e);
         }
     }
-    public static Integer calculateAvgResultByTestId(int testId) throws ServiceException{
+
+    @Override
+    public Integer calculateAvgResultByTestId(int testId) throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
                     calculateAvgResultByTestId(testId);
@@ -64,7 +72,9 @@ public class ResultService {
             throw new ServiceException("msg",e);
         }
     }
-    public static Integer calculateAvgResultByUserId(int userId)throws ServiceException{
+
+    @Override
+    public Integer calculateAvgResultByUserId(int userId)throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
                     calculateAvgResultByUserId(userId);
@@ -72,7 +82,9 @@ public class ResultService {
             throw new ServiceException("msg",e);
         }
     }
-    public static List<Result> selectByTestId(int testId) throws ServiceException{
+
+    @Override
+    public List<Result> selectByTestId(int testId) throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
                     selectByTestId(testId);
@@ -80,7 +92,9 @@ public class ResultService {
             throw new ServiceException("msg",e);
         }
     }
-    public static List<Result> selectByUserId(int userId, int offset) throws ServiceException{
+
+    @Override
+    public List<Result> selectByUserId(int userId, int offset) throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
                     selectByUserId(userId,LimitOnPage,offset);
@@ -88,5 +102,4 @@ public class ResultService {
             throw new ServiceException("msg",e);
         }
     }
-
 }

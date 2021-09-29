@@ -1,13 +1,15 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.User;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractUserService;
 
-public class UserService {
+public class UserService implements AbstractUserService {
 
-    public static boolean createUser(User entity) throws ServiceException {
+    @Override
+    public boolean create(User entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
                     create(entity);
@@ -16,7 +18,8 @@ public class UserService {
         }
     }
 
-    public static boolean updateUser(User entity) throws ServiceException {
+    @Override
+    public boolean update(User entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
                     update(entity);
@@ -25,7 +28,8 @@ public class UserService {
         }
     }
 
-    public static boolean deleteUser(int entityId) throws ServiceException {
+    @Override
+    public boolean delete(Integer entityId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
                     delete(entityId);
@@ -34,7 +38,8 @@ public class UserService {
         }
     }
 
-    public static User selectUserById(int userId) throws ServiceException {
+    @Override
+    public User selectEntityById(Integer userId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
                     selectEntityById(userId);
@@ -43,7 +48,8 @@ public class UserService {
         }
     }
 
-    public static User selectUserByLoginPassword(String email,String password) throws ServiceException {
+    @Override
+    public User selectByLoginPassword(String email,String password) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
                     selectEntityByLoginPassword(email,password);
@@ -51,5 +57,4 @@ public class UserService {
             throw new ServiceException("msg",e);
         }
     }
-
 }

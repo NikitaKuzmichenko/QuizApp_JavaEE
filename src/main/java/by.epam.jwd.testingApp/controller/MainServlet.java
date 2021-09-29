@@ -1,7 +1,9 @@
 package by.epam.jwd.testingApp.controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import by.epam.jwd.testingApp.controller.commands.CommandName;
+import by.epam.jwd.testingApp.controller.commands.CommandProvider;
+import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -12,12 +14,22 @@ import java.io.*;
 @MultipartConfig
 public class MainServlet extends HttpServlet  {
 
+    @Override
+    public void init() throws ServletException {
+        ConnectionPool.getInstance().InitPool();
+        super.init();
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool.getInstance().removeAllConnections();
+        super.destroy();
+    }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("some.jsp");
-        requestDispatcher.forward(request, response);
-
+        CommandProvider provider = new CommandProvider();
+        provider.selectCommand(CommandName.TO_WELCOME_PAGE.name()).execute(request,response);
     }
 
 

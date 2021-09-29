@@ -34,7 +34,8 @@ public class ConnectionPool {
             synchronized (ConnectionPool.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new ConnectionPool();
+                    localInstance = new ConnectionPool();
+                    instance = localInstance;
                 }
             }
         }
@@ -83,12 +84,10 @@ public class ConnectionPool {
     }
 
     public void returnConnection(Connection connection,Statement statement) throws SQLException{
-
         returnConnection(connection);
     }
 
     public void returnConnection(Connection connection,Statement statement,ResultSet set)throws SQLException{
-
         returnConnection(connection,statement);
     }
 

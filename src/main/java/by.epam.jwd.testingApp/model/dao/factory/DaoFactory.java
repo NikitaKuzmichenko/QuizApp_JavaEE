@@ -32,10 +32,16 @@ public class DaoFactory {
     private DaoFactory(){}
 
     public static DaoFactory getInstance() {
-        if(instance==null){
-            instance = new DaoFactory();
+        DaoFactory localInstance = instance;
+        if (localInstance == null) {
+            synchronized (DaoFactory.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new DaoFactory();
+                }
+            }
         }
-        return instance;
+        return localInstance;
     }
 
     public AbstractCategoryDao getCategoryDao() {

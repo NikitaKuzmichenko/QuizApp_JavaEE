@@ -1,18 +1,17 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.Comment;
 import by.epam.jwd.testingApp.entities.Question;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractCommentService;
 
 import java.util.List;
 
-public class CommentService {
-
-    public static final int LimitOnPage = 10;
-
-    public static boolean createComment(Comment entity) throws ServiceException {
+public class CommentService implements AbstractCommentService{
+    @Override
+    public boolean create(Comment entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCommentDao().
                     create(entity);
@@ -21,7 +20,8 @@ public class CommentService {
         }
     }
 
-    public static boolean updateComment(Comment entity) throws ServiceException {
+    @Override
+    public boolean update(Comment entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCommentDao().
                     update(entity);
@@ -30,7 +30,8 @@ public class CommentService {
         }
     }
 
-    public static boolean deleteComment(int entityId) throws ServiceException {
+    @Override
+    public boolean delete(Integer entityId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCommentDao().
                     delete(entityId);
@@ -39,7 +40,8 @@ public class CommentService {
         }
     }
 
-    public static Comment selectCommentById(int statementId) throws ServiceException {
+    @Override
+    public Comment selectEntityById(Integer statementId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getCommentDao().
                     selectEntityById(statementId);
@@ -48,7 +50,8 @@ public class CommentService {
         }
     }
 
-    public static List<Comment> selectCommentsByTestId(int testId)throws ServiceException {
+    @Override
+    public List<Comment> selectEntityByTestId(Integer testId)throws ServiceException {
         try {
             return DaoFactory.getInstance().getCommentDao().
                     selectByTestId(testId);

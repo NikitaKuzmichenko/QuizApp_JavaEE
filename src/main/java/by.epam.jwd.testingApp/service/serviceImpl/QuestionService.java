@@ -1,18 +1,20 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.Question;
 import by.epam.jwd.testingApp.entities.Statement;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractQuestionService;
 
 import java.util.List;
 
-public class QuestionService {
+public class QuestionService implements AbstractQuestionService {
 
     public static final int LimitOnPage = 10;
 
-    public static boolean createQuestion(Question entity) throws ServiceException {
+    @Override
+    public boolean create(Question entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     create(entity);
@@ -21,7 +23,8 @@ public class QuestionService {
         }
     }
 
-    public static boolean updateQuestion(Question entity) throws ServiceException {
+    @Override
+    public boolean update(Question entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     update(entity);
@@ -30,7 +33,8 @@ public class QuestionService {
         }
     }
 
-    public static boolean deleteQuestion(int entityId) throws ServiceException {
+    @Override
+    public boolean delete(Integer entityId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     delete(entityId);
@@ -39,7 +43,8 @@ public class QuestionService {
         }
     }
 
-    public static Question selectQuestionById(int statementId) throws ServiceException {
+    @Override
+    public Question selectEntityById(Integer statementId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     selectEntityById(statementId);
@@ -48,7 +53,8 @@ public class QuestionService {
         }
     }
 
-    public static List<Question> selectQuestionByTestId(int testId, int offset)throws ServiceException {
+    @Override
+    public List<Question> selectEntityByTestId(int testId, int offset)throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     selectByTestId(testId,LimitOnPage,offset);

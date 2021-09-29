@@ -8,5 +8,6 @@ import java.sql.*;
 
 public class GeneralTest {
 
-    public static void main(String[] args) throws DaoException {}
+    public static void main(String[] args) throws DaoException {
+    }
 }

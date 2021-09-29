@@ -1,14 +1,17 @@
-package by.epam.jwd.testingApp.service;
+package by.epam.jwd.testingApp.service.serviceImpl;
 
 import by.epam.jwd.testingApp.entities.role.Role;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.service.abstractService.AbstractRoleService;
 
 import java.util.List;
 
-public class RoleService {
-    public static boolean createRole(Role entity) throws ServiceException {
+public class RoleService implements AbstractRoleService {
+
+    @Override
+    public boolean create(Role entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getRoleDao().
                     create(entity);
@@ -17,7 +20,8 @@ public class RoleService {
         }
     }
 
-    public static boolean updateRole(Role entity) throws ServiceException {
+    @Override
+    public boolean update(Role entity) throws ServiceException {
         try {
             return DaoFactory.getInstance().getRoleDao().
                     update(entity);
@@ -26,7 +30,8 @@ public class RoleService {
         }
     }
 
-    public static boolean deleteRole(int roleId) throws ServiceException {
+    @Override
+    public boolean delete(Integer roleId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getRoleDao().
                     delete(roleId);
@@ -35,7 +40,8 @@ public class RoleService {
         }
     }
 
-    public static Role selectStatementById(int roleId) throws ServiceException {
+    @Override
+    public Role selectEntityById(Integer roleId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getRoleDao().
                     selectEntityById(roleId);
@@ -44,7 +50,8 @@ public class RoleService {
         }
     }
 
-    public static List<Role> selectAllRoles() throws ServiceException {
+    @Override
+    public List<Role> selectAll() throws ServiceException {
         try {
             return DaoFactory.getInstance().getRoleDao()
                     .selectAll();
