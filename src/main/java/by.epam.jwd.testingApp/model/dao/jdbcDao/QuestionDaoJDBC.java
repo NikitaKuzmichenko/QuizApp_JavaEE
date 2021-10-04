@@ -88,7 +88,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "UPDATE " + QuestionMapping.TABLE_NAME
                     + " SET " + QuestionMapping.TEST_ID + " = ?, "
@@ -115,7 +115,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "DELETE FROM " + QuestionMapping.TABLE_NAME
                     + " WHERE " + QuestionMapping.ID +" = ?;";
@@ -139,7 +139,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "INSERT INTO " + QuestionMapping.TABLE_NAME
                     + " (" + QuestionMapping.TEST_ID + ", "

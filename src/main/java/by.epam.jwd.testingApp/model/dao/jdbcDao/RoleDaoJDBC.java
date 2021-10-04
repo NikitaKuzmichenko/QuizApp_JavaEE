@@ -1,5 +1,5 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
-import by.epam.jwd.testingApp.entities.role.Role;
+import by.epam.jwd.testingApp.entities.Role;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractRoleDao;
@@ -71,11 +71,13 @@ public class RoleDaoJDBC implements AbstractRoleDao {
     @Override
     public boolean update(Role entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        int result = 0;
+        int result;
+
         try {
             if(isRowExist(entity,connection))return false;
 
@@ -99,10 +101,13 @@ public class RoleDaoJDBC implements AbstractRoleDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result ;
+
         try {
             String sql = "DELETE FROM " + RoleMapping.TABLE_NAME
                     + " WHERE " + RoleMapping.ID +" = ?;";
@@ -123,10 +128,13 @@ public class RoleDaoJDBC implements AbstractRoleDao {
     @Override
     public boolean create(Role entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result ;
+
         try {
             if(isRowExist(entity,connection))return false;
 

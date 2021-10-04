@@ -71,6 +71,32 @@ public class Test implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
+
+        Test test = (Test) o;
+
+        if (id != test.id) return false;
+        if (creatorId != test.creatorId) return false;
+        if (categoryId != test.categoryId) return false;
+        if (removed != test.removed) return false;
+        if (name != null ? !name.equals(test.name) : test.name != null) return false;
+        return creationDate != null ? creationDate.equals(test.creationDate) : test.creationDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + creatorId;
+        result = 31 * result + categoryId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (removed ? 1 : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return this.getClass() + "{" +
                 "id=" + id +

@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface AbstractResultDao extends AbstractGenericDao<Result, Pair<Integer,Integer>> {
 
-    public List<Result> selectByUserId(int userId, int limit, int offset) throws DaoException;
+    List<Result> selectByUserId(int userId, int limit, int offset) throws DaoException;
 
-    public List<Result> selectByTestId(int testId) throws DaoException;
+    List<Result> selectByTestId(int testId) throws DaoException;
 
-    public Integer calculateAvgResultByUserId(int userId) throws DaoException;
+    Integer calculateAvgResultByUserId(int userId) throws DaoException;
 
-    public Integer calculateAvgResultByTestId(int testId) throws DaoException;
+    Integer calculateAvgResultByTestId(int testId) throws DaoException;
 
-    public Integer calculateRowsNumberByTestId(int testId) throws DaoException;
+    Integer calculateResultsNumberByTestId(int testId) throws DaoException;
 
 }

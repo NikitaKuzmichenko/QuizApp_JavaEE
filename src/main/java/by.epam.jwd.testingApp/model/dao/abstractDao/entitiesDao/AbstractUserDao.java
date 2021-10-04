@@ -6,5 +6,5 @@ import by.epam.jwd.testingApp.model.dao.abstractDao.genericDao.AbstractGenericDa
 
 public interface AbstractUserDao extends AbstractGenericDao<User, Integer> {
 
-    public User selectEntityByLoginPassword(String email, String password) throws DaoException;
+    User selectEntityByLoginPassword(String email, String password) throws DaoException;
 }

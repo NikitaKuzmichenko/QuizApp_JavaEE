@@ -119,7 +119,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "DELETE FROM " + CommentMapping.TABLE_NAME
                     + " WHERE " + CommentMapping.ID +" = ?;";
@@ -143,7 +143,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "INSERT INTO " + CommentMapping.TABLE_NAME
                     + " (" + CommentMapping.COMMENT + ", "

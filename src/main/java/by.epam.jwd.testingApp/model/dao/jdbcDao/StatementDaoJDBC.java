@@ -90,7 +90,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "UPDATE " + StatementMapping.TABLE_NAME
                     + " SET " + StatementMapping.QUESTION_ID + " = ?, "
@@ -119,7 +119,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "DELETE FROM " + StatementMapping.TABLE_NAME
                     + " WHERE " + StatementMapping.ID +" = ?;";
@@ -143,7 +143,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             String sql = "INSERT INTO " + StatementMapping.TABLE_NAME
                     + " (" + StatementMapping.QUESTION_ID + ", "

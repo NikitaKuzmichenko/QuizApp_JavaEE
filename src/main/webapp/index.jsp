@@ -3,6 +3,6 @@
 <head>
 </head>
     <body>
-     <c:redirect url="/main"/>
+     <c:redirect url="controller/page?num=1"/>
     </body>
 </html>

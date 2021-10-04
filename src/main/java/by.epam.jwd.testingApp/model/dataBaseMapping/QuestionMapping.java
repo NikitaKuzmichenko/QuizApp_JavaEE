@@ -5,4 +5,5 @@ public final class QuestionMapping {
     public final static String ID = "id";
     public final static String TEST_ID = "testId";
     public final static String TITLE = "title";
+    private QuestionMapping(){}
 }

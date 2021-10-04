@@ -8,4 +8,5 @@ public final class TestMapping {
     public final static String NAME = "name";
     public final static String CREATION_DATE = "creationDate";
     public final static String IS_REMOVED = "removed";
+    private TestMapping(){}
 }

@@ -5,4 +5,6 @@ public final class DataBaseParams {
     public static final String DB_PASSWORD = "dataBase.password";
     public static final String DB_URL = "dataBase.url";
     public static final String DB_USER = "dataBase.user";
+
+    private DataBaseParams(){}
 }

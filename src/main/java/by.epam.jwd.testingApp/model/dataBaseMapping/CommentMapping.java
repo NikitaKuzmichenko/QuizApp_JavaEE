@@ -7,4 +7,5 @@ public final class CommentMapping {
     public final static String CREATOR_ID = "creatorId";
     public final static String COMMENT = "comment";
     public final static String CREATION_DATE = "creationDate";
+    private CommentMapping(){}
 }

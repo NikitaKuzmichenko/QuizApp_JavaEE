@@ -49,6 +49,8 @@ public class UserDaoJDBC implements AbstractUserDao {
 
     @Override
     public User selectEntityByLoginPassword(String email, String password) throws DaoException {
+        if(email == null || password == null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -79,6 +81,8 @@ public class UserDaoJDBC implements AbstractUserDao {
 
     @Override
     public User selectEntityById(Integer id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -108,11 +112,12 @@ public class UserDaoJDBC implements AbstractUserDao {
     @Override
     public boolean update(User entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        int result = 0;
+        int result;
         try {
             if(isRowExist(entity,connection))return false;
 
@@ -141,10 +146,14 @@ public class UserDaoJDBC implements AbstractUserDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+
+        int result;
         try {
             String sql = "DELETE FROM " + UserMapping.TABLE_NAME
                     + " WHERE " + UserMapping.ID +" = ?;";
@@ -165,17 +174,19 @@ public class UserDaoJDBC implements AbstractUserDao {
     @Override
     public boolean create(User entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
             if(isRowExist(entity,connection))return false;
 
             String insectSql = "INSERT INTO " + UserMapping.TABLE_NAME
-                    + " (" + UserMapping.NAME
-                    + UserMapping.EMAIL
-                    + UserMapping.PASSWORD
+                    + " (" + UserMapping.NAME + ", "
+                    + UserMapping.EMAIL + ", "
+                    + UserMapping.PASSWORD + ", "
                     + UserMapping.ROLE_ID + ")"
                     +  "VALUES(?,?,?,?);";
 

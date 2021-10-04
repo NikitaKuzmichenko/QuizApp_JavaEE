@@ -1,5 +1,5 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
-import by.epam.jwd.testingApp.entities.category.Category;
+import by.epam.jwd.testingApp.entities.Category;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractCategoryDao;
@@ -93,10 +93,13 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
     @Override
     public boolean update(Category entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
+
         try {
             if(isRowExist(entity,connection))return false;
 
@@ -122,8 +125,10 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
     public boolean delete(Integer id) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
+
         try {
             String sql = "DELETE FROM " + CategoryMapping.TABLE_NAME
                     + " WHERE " + CategoryMapping.ID +" = ?;";
@@ -144,10 +149,13 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
     @Override
     public boolean create(Category entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
+
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
+
         try {
             if(isRowExist(entity,connection))return false;
 

@@ -6,4 +6,5 @@ public final class ResultMapping {
     public final static String TEST_ID = "testId";
     public final static String RESULT = "result";
     public final static String PASSING_DATE = "passingDate";
+    private ResultMapping(){}
 }

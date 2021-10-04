@@ -12,9 +12,12 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
-    <style><%@include file="css/some.css"%></style>
+    <style><%@include file="css/styles.css"%></style>
+    <script type="text/javascript"><%@include file="javaScript/validation.js"%></script>
     <title>Document</title>
      <link rel="shortcut icon" type="image/png" href="<c:url value="/img/logo.png"/>"/>
+
+     <base href="${pageContext.request.contextPath}/controller/">
 </head>
 <body>
 
@@ -31,14 +34,15 @@
                                     <table class="table table-hover table-light table-bordered">
                                         <thead>
                                             <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">new test</th>
+                                              <th class="text-center" scope="col" style="width: 900px;">новые тесты</th>
                                             </tr>
                                         </thead>
                                     <tbody>
                                         <c:forEach var="test" items="${newTests}">
                                             <tr>
-                                                <td scope="row" ><a href="#" class="nav-link link-dark enable-action">
-                                                    <c:out value="${test.getName()}"/><p>
+                                                <td scope="row" ><a href="test?testId=${test.getId()}"
+                                                                    class="nav-link link-dark enable-action">
+                                                    <c:out value="${test.getName()}"/>
                                                 </td>
                                            </tr>
                                         </c:forEach>
@@ -47,21 +51,22 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <br><br>
+                                <br>
                             </li>
                             <li class="nav-item">
                                 <div class="bd-example">
                                     <table class="table table-hover table-light table-bordered">
                                         <thead>
                                             <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">popular test</th>
+                                              <th class="text-center" scope="col" style="width: 900px;">популярные тесты</th>
                                             </tr>
                                         </thead>
                                     <tbody>
                                         <c:forEach var="test" items="${popularTests}">
                                             <tr>
-                                                <td scope="row" ><a href="#" class="nav-link link-dark enable-action">
-                                                    <c:out value="${test.getName()}"/><p>
+                                                <td scope="row" ><a href="test?testId=${test.getId()}"
+                                                                    class="nav-link link-dark enable-action">
+                                                    <c:out value="${test.getName()}"/>
                                                 </td>
                                            </tr>
                                         </c:forEach>
@@ -74,7 +79,7 @@
                 </div>
             </div>
             <div class="col py-3">
-               <jsp:include page="${content}.jsp" />
+               <jsp:include page="${content}.jsp"/>
             </div>
         </div>
     </div>

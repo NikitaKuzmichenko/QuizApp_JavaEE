@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
+<%@ page pageEncoding="UTF-8" %>
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button"
                     data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -11,17 +12,14 @@
                          <img src="<c:url value="/img/logo.png"/>" width="40" height="40"/>
                      </li>
                     <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="http://localhost:8080/webApp/main/">siteName</a>
+                        <a class="nav-link active " aria-current="page" href="page?num=1">Название сайта</a>
                     </li>
                 </ul>
+
                 <form class="d-flex">
-                    <input class="form-control input-bg mx-2" type="search" placeholder="Search" aria-label="Search">
+                    <a class="btn btn-outline-success mx-2" href="authorization" type="submit">Войти</a>
 
-                    <button class="btn btn-outline-success mx-2" type="submit">Search</button>
-
-                    <a class="btn btn-outline-success mx-2" href="#" type="submit">Log&nbspin</a>
-
-                    <select class="form-select mx-2" style="width:auto;" id="language" name="language" onchange="submit()">
+                    <select class="form-select mx-2" style="width:auto;" name="language" onchange="submit()">
                         <option value="en" disabled selected hidden>LANG</option>
                         <option value="en">En</option>
                         <option value="ru">Ru</option>

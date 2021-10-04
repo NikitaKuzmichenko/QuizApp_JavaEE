@@ -63,7 +63,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
-        int result = 0;
+        int result ;
 
         try {
             String sql = "UPDATE " + ResultMapping.TABLE_NAME
@@ -94,7 +94,8 @@ public class ResultDaoJDBC implements AbstractResultDao {
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
-        int result =0;
+        int result;
+
         try {
             String sql = "DELETE FROM " + ResultMapping.TABLE_NAME
                     +" WHERE " + ResultMapping.TEST_ID + " = ?"
@@ -121,7 +122,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
 
         try {
             String sql = "INSERT INTO " + ResultMapping.TABLE_NAME
@@ -212,7 +213,8 @@ public class ResultDaoJDBC implements AbstractResultDao {
 
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        int result = 0;
+        int result;
+
         try {
             String sql = "SELECT AVG(" + ResultMapping.RESULT + ")"+
                     " FROM " + ResultMapping.TABLE_NAME
@@ -241,7 +243,8 @@ public class ResultDaoJDBC implements AbstractResultDao {
 
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        int result = 0;
+        int result;
+
         try {
             String sql = "SELECT AVG(" + ResultMapping.RESULT + ")"+
                     " FROM " + ResultMapping.TABLE_NAME
@@ -264,13 +267,14 @@ public class ResultDaoJDBC implements AbstractResultDao {
     }
 
     @Override
-    public Integer calculateRowsNumberByTestId(int testId) throws DaoException {
+    public Integer calculateResultsNumberByTestId(int testId) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        int result = 0;
+        int result;
+
         try {
             String sql = "SELECT COUNT(" + ResultMapping.RESULT + ")"+
                     " FROM " + ResultMapping.TABLE_NAME
