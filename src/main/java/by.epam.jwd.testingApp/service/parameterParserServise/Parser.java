@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.controller.parametersParsers;
+package by.epam.jwd.testingApp.service.parameterParserServise;
 
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 

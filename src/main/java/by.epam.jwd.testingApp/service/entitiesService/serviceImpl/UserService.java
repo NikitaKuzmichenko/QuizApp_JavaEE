@@ -54,10 +54,10 @@ public class UserService implements AbstractUserService {
     }
 
     @Override
-    public User selectByLoginPassword(String email,String password) throws ServiceException {
+    public User selectByLogin(String email) throws ServiceException {
         try {
             return DaoFactory.getInstance().getUserDao().
-                    selectEntityByLoginPassword(email,password);
+                    selectEntityByLogin(email);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }

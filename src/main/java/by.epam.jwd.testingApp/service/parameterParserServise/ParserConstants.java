@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.controller.parametersParsers;
+package by.epam.jwd.testingApp.service.parameterParserServise;
 
 public final class ParserConstants {
 

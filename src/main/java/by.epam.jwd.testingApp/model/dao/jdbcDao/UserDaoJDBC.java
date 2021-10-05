@@ -48,8 +48,8 @@ public class UserDaoJDBC implements AbstractUserDao {
     }
 
     @Override
-    public User selectEntityByLoginPassword(String email, String password) throws DaoException {
-        if(email == null || password == null) return null;
+    public User selectEntityByLogin(String email) throws DaoException {
+        if(email == null) return null;
 
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
@@ -60,11 +60,9 @@ public class UserDaoJDBC implements AbstractUserDao {
 
         try {
             String sql = "SELECT * FROM " + UserMapping.TABLE_NAME
-                    + " WHERE " + UserMapping.EMAIL + " = ?"
-                    + " AND " + UserMapping.PASSWORD + " = ?;";
+                    + " WHERE " + UserMapping.EMAIL + " = ?;";
             statement = connection.prepareStatement(sql);
             statement.setString(1,email);
-            statement.setString(2,password);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
         } catch (SQLException e) {

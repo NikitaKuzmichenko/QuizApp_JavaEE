@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.service.TestSortingService;
+package by.epam.jwd.testingApp.service.testSortingService;
 
 import java.util.HashMap;
 import java.util.Map;

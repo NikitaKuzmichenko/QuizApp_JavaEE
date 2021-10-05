@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.service.TestSortingService;
+package by.epam.jwd.testingApp.service.testSortingService;
 
 import by.epam.jwd.testingApp.entities.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;

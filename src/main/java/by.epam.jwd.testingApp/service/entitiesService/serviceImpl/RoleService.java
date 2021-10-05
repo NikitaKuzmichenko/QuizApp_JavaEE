@@ -60,7 +60,4 @@ public class RoleService implements AbstractRoleService {
         }
     }
 
-    public enum ROLES {
-        USER, TUTOR, UNKNOWN
-    }
 }

@@ -4,11 +4,11 @@ import by.epam.jwd.testingApp.entities.Pair;
 import by.epam.jwd.testingApp.entities.Result;
 import by.epam.jwd.testingApp.entities.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.GenericAbstractService;
+import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.AbstractEntitiesService;
 
 import java.util.List;
 
-public interface AbstractResultService extends GenericAbstractService<Result, Pair<Integer,Integer>> {
+public interface AbstractResultService extends AbstractEntitiesService<Result, Pair<Integer,Integer>> {
     Integer calculateRowsNumberByTestId(int testId) throws ServiceException;
     Integer calculateAvgResultByTestId(int testId) throws ServiceException;
     Integer calculateAvgResultByUserId(int userId)throws ServiceException;

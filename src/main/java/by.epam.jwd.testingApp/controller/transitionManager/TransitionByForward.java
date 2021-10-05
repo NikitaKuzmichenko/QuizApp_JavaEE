@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class TransitionByForward  {
 
-    public static final String WRAPPER_JSP_NAME = "/welcomePage.jsp";
+    public static final String WRAPPER_JSP_NAME = "/wrapperPage.jsp";
     public static final String CONTENT_ATTRIBUTE_NAME = "content";
 
     public void doTransition(HttpServletRequest request, HttpServletResponse response,String contentJsp)

@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.service.TestSortingService;
+package by.epam.jwd.testingApp.service.testSortingService;
 
 public final class TestsSortingConstants {
     public final static String DATE_SORT = "date";

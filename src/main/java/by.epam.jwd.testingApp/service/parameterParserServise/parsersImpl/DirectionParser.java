@@ -1,7 +1,7 @@
-package by.epam.jwd.testingApp.controller.parametersParsers.parsersImpl;
+package by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.controller.parametersParsers.Parser;
+import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 
 import javax.servlet.ServletException;

@@ -3,11 +3,11 @@ package by.epam.jwd.testingApp.service.entitiesService.abstractService;
 import by.epam.jwd.testingApp.entities.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.GenericAbstractService;
+import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.AbstractEntitiesService;
 
 import java.util.List;
 
-public interface AbstractTestService extends GenericAbstractService<Test,Integer> {
+public interface AbstractTestService extends AbstractEntitiesService<Test,Integer> {
     List<Test> selectByCreatorId(int creatorId, int offset, boolean desc,int limit)throws ServiceException;
     List<Test> selectByCategory(int categoryId, int offset, boolean desc,int limit)throws ServiceException;
 

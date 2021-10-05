@@ -1,4 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button"
@@ -15,9 +18,21 @@
                         <a class="nav-link active " aria-current="page" href="page?num=1">Название сайта</a>
                     </li>
                 </ul>
+                <c:if test="${not empty userRole}">
+                    <nav class="navbar ">
+                      <span class="navbar-brand mb-0 h1"><c:out value="${nickName}"/></span>
+                    </nav>
+                </c:if>
 
                 <form class="d-flex">
-                    <a class="btn btn-outline-success mx-2" href="authorization" type="submit">Войти</a>
+
+                    <c:if test="${not empty userRole}">
+                        <a class="btn btn-outline-success " href="log_out" type="submit">Выйти</a>
+                    </c:if>
+
+                    <c:if test="${empty userRole}">
+                        <a class="btn btn-outline-success " href="authorization" type="submit">Войти</a>
+                    </c:if>
 
                     <select class="form-select mx-2" style="width:auto;" name="language" onchange="submit()">
                         <option value="en" disabled selected hidden>LANG</option>

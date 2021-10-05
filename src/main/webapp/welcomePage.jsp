@@ -2,93 +2,95 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!doctype html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
-    <style><%@include file="css/styles.css"%></style>
-    <script type="text/javascript"><%@include file="javaScript/validation.js"%></script>
-    <title>Document</title>
-     <link rel="shortcut icon" type="image/png" href="<c:url value="/img/logo.png"/>"/>
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent_2"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent_2">
+                <c:choose>
+                    <c:when test="${empty userRole}">
+                    </c:when>
 
-     <base href="${pageContext.request.contextPath}/controller/">
-</head>
-<body>
+                    <c:when test="${userRole == 2}">
+                        <form class="d-flex">
+                             <a class="btn btn-outline-success" href="createTest" type="submit">Создать</a>
+                        </form>
+                        <form class="d-flex">
+                        </form>
+                        <form class="d-flex mx-auto">
+                             <a class="btn btn-outline-success" href="createdBy?id=self" type="submit">Созданные мной</a>
+                        </form>
+                        <form class="d-flex">
+                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit">Посмотреть пройденые</a>
+                        </form>
+                    </c:when>
 
-   <%@include file="header.jsp"%>
+                    <c:when test="${userRole == 1}">
+                        <form class="d-flex">
+                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit">Посмотреть пройденые</a>
+                        </form>
+                    </c:when>
+                </c:choose>
 
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="background-color: #ffff;">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                        <ul class="nav nav-pills flex-column mb-auto list-group list-group-flush">
-                            <li class="nav-item">
-                                <div class="bd-example">
-                                    <table class="table table-hover table-light table-bordered">
-                                        <thead>
-                                            <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">новые тесты</th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                        <c:forEach var="test" items="${newTests}">
-                                            <tr>
-                                                <td scope="row" ><a href="test?testId=${test.getId()}"
-                                                                    class="nav-link link-dark enable-action">
-                                                    <c:out value="${test.getName()}"/>
-                                                </td>
-                                           </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                  </table>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <br>
-                            </li>
-                            <li class="nav-item">
-                                <div class="bd-example">
-                                    <table class="table table-hover table-light table-bordered">
-                                        <thead>
-                                            <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">популярные тесты</th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                        <c:forEach var="test" items="${popularTests}">
-                                            <tr>
-                                                <td scope="row" ><a href="test?testId=${test.getId()}"
-                                                                    class="nav-link link-dark enable-action">
-                                                    <c:out value="${test.getName()}"/>
-                                                </td>
-                                           </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                  </table>
-                                </div>
-                            </li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-            <div class="col py-3">
-               <jsp:include page="${content}.jsp"/>
+                <form class="d-flex mx-auto">
+                    <select class="form-select mx-auto" style="width:auto;" name="sortType" onchange="submit()">
+                        <option value="date" disabled selected hidden>Сортировать по</option>
+                        <option value="date">Дате</option>
+                        <option value="name">Названию</option>
+                        <option value="popularity">Популярности</option>
+                    </select>
+                </form>
+                <form class="d-flex mx-auto">
+                    <select class="form-select mx-auto" style="width:auto;" name="direction" onchange="submit()">
+                        <option disabled selected hidden>↕</option>
+                        <option value="true">&#8593</option>
+                        <option value="false">&#8595</option>
+                    </select>
+                </form>
+                <form class="d-flex mx-auto">
+                    <select class="form-select mx-auto" style="width:auto;" name="category" onchange="submit()">
+                        <option disabled selected hidden>Категории</option>
+                        <c:forEach var="category" items="${categories}" varStatus="status">
+                            <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
+                        </c:forEach>
+                        <option value="all">Все категории</option>
+                    </select>
+                </form>
             </div>
         </div>
-    </div>
+    </nav>
+    <br>
+    <c:forEach var="test" items="${tests}" varStatus="status">
+        <div class="p-2 bg-light border mx-auto" style="width: 900px;">
+            <c:out value="${test.getName()}"/>
+            <br>
+            <c:out value="Создатель : "/>
+            <c:out value="${users[status.index].getName()}"/>
+            <br>    
+            <c:out value="Средний результат : "/>
+            <c:if test="${results[status.index] < 0}">
+                <c:out value="нет данных"/>
+            </c:if>
+            <c:if test="${results[status.index] > 0}">
+                <c:out value="${results[status.index]}"/>
+            </c:if>
+            <br>
+        </div>
+    </c:forEach>
+    <br>
 
-    <%@include  file="footer.jsp"%>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous">
-    </script>
-</body>
-</html>
+    <ul class="pagination justify-content-center ">
+        <c:forEach var="pagination" items="${paginationList}">
+            <li class="page-item">
+                <c:if test="${pagination < 0 }">
+                <a class="page-link"><c:out value="..."/></a>
+                </c:if>
+                <c:if test="${pagination > 0 }">
+                    <a href="page?num=${pagination}" class="page-link"><c:out value="${pagination}"/></a>
+                </c:if>
+            </li>
+        </c:forEach>
+     </ul>
