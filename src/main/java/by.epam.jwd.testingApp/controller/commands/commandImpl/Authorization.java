@@ -1,7 +1,7 @@
 package by.epam.jwd.testingApp.controller.commands.commandImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.controller.cookieManager.CookieManager;
+import by.epam.jwd.testingApp.service.cookieService.CookieManager;
 import by.epam.jwd.testingApp.controller.commands.Command;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.service.parameterParserServise.Parser;

@@ -23,6 +23,21 @@
   </filter-mapping>
 
   <filter>
+    <filter-name>LocalizationFilter</filter-name>
+    <filter-class>by.epam.jwd.testingApp.service.filters.LocalizationFilter</filter-class>
+    <init-param>
+      <param-name>active</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>LocalizationFilter</filter-name>
+    <servlet-name>mainServlet</servlet-name>
+  </filter-mapping>
+
+
+  <filter>
     <filter-name>SideBarCreator</filter-name>
     <filter-class>by.epam.jwd.testingApp.service.filters.SideBarCreator</filter-class>
     <init-param>
@@ -36,7 +51,6 @@
     <servlet-name>mainServlet</servlet-name>
   </filter-mapping>
 
-
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
     <filter-class>by.epam.jwd.testingApp.service.filters.AuthenticationFilter</filter-class>
@@ -48,6 +62,20 @@
 
   <filter-mapping>
     <filter-name>AuthenticationFilter</filter-name>
+    <servlet-name>mainServlet</servlet-name>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>AccessLvlCheckFilter</filter-name>
+    <filter-class>by.epam.jwd.testingApp.service.filters.AccessLvlCheckFilter</filter-class>
+    <init-param>
+      <param-name>active</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AccessLvlCheckFilter</filter-name>
     <servlet-name>mainServlet</servlet-name>
   </filter-mapping>
 

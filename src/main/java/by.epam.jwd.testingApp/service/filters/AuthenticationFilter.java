@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.filters;
 
-import by.epam.jwd.testingApp.controller.cookieManager.CookieManager;
+import by.epam.jwd.testingApp.service.cookieService.CookieManager;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.entities.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
@@ -18,15 +18,15 @@ public class AuthenticationFilter implements Filter {
     private FilterConfig config = null;
     private boolean isActive = false;
 
-    public static final String isActiveParam = "active";
-    public static final String ValueForActive = "TRUE";
+    public static final String IS_ACTIVE_PARAM = "active";
+    public static final String VALUE_FOR_ACTIVE = "TRUE";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         config = filterConfig;
-        String act = config.getInitParameter(isActiveParam);
+        String act = config.getInitParameter(IS_ACTIVE_PARAM);
         if (act != null){
-            isActive = (act.toUpperCase().equals(ValueForActive));
+            isActive = (act.toUpperCase().equals(VALUE_FOR_ACTIVE));
         }
     }
 
@@ -53,12 +53,9 @@ public class AuthenticationFilter implements Filter {
                 AbstractUserService userService = new UserService();
                 User user = userService.selectEntityById(userId);
                 if(user == null){
-                    System.out.println("roleId = null");
                     servletRequest.setAttribute(AttributeNames.USER_ROLE, null);
                 }
                 else{
-                    System.out.println("roleId = " +  user.getRoleId());
-                    System.out.println("name = " +  user.getName());
                     servletRequest.setAttribute(AttributeNames.USER_ROLE, user.getRoleId());
                     servletRequest.setAttribute(AttributeNames.NICK_NAME, user.getName());
                 }

@@ -1,16 +1,22 @@
 package by.epam.jwd.testingApp.service.filters;
 
+import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
+import by.epam.jwd.testingApp.exceptions.ServiceException;
+import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
+import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
+
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class EncodingFilter implements Filter {
+public class LocalizationFilter implements Filter{
 
     private FilterConfig config = null;
     private boolean isActive = false;
 
     public static final String IS_ACTIVE_PARAM = "active";
     public static final String VALUE_FOR_ACTIVE = "TRUE";
-    public static final String CHAR_SET = "UTF-8";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,8 +31,14 @@ public class EncodingFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         if(isActive){
-            servletRequest.setCharacterEncoding(CHAR_SET);
-            servletResponse.setCharacterEncoding(CHAR_SET);
+            try {
+                HttpServletRequest request = (HttpServletRequest)servletRequest;
+                Parser<String> languageParser = new LanguageParser();
+                String language = languageParser.parsing(request);
+                request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
+            } catch (ServiceException e) {
+                // redirect to error page
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

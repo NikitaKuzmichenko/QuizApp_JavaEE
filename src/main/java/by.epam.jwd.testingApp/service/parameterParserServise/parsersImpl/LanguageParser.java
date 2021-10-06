@@ -12,8 +12,6 @@ import java.io.IOException;
 public class LanguageParser implements Parser<String> {
 
     public static final String DEFAULT_LANGUAGE = "ru";
-    public static final String ENGLISH_LANGUAGE = "en";
-    public static final String RUSSIAN_LANGUAGE = "ru";
     @Override
     public String parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
         HttpSession session = request.getSession();

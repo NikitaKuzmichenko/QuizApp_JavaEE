@@ -4,7 +4,7 @@ public enum CommandName {
     REGISTRATION,
     AUTHORIZATION,
     LOG_OUT,
-    WRONG_ROLE,
+    ADD_COMMENT,
     TEST,
     CHANGE_TEST,
     CREATE_TEST,

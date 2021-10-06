@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.controller.cookieManager;
+package by.epam.jwd.testingApp.service.cookieService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

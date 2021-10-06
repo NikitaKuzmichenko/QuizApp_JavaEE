@@ -9,15 +9,16 @@ import by.epam.jwd.testingApp.controller.commands.commandImpl.RemoveTest;
 import by.epam.jwd.testingApp.controller.commands.commandImpl.TakeTest;
 import by.epam.jwd.testingApp.controller.commands.commandImpl.ToPage;
 import by.epam.jwd.testingApp.controller.commands.commandImpl.ViewResults;
-import by.epam.jwd.testingApp.controller.commands.commandImpl.WrongRole;
+import by.epam.jwd.testingApp.controller.commands.commandImpl.AddComment;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandProvider {
-    private Map<CommandName,Command> commands;
+    private static Map<CommandName,Command> commands;
+    private static CommandProvider instance;
 
-    public CommandProvider(){
+    private CommandProvider(){
         commands = new HashMap<>();
         commands.put(CommandName.PAGE,new ToPage());
         commands.put(CommandName.AUTHORIZATION,new Authorization());
@@ -28,7 +29,20 @@ public class CommandProvider {
         commands.put(CommandName.CREATE_TEST,new CreateTest());
         commands.put(CommandName.REMOVE_TEST,new RemoveTest());
         commands.put(CommandName.VIEW_RESULTS,new ViewResults());
-        commands.put(CommandName.WRONG_ROLE,new WrongRole());
+        commands.put(CommandName.ADD_COMMENT,new AddComment());
+    }
+
+    public static CommandProvider getInstance() {
+        CommandProvider localInstance = instance;
+        if (localInstance == null) {
+            synchronized (CommandProvider.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new CommandProvider();
+                }
+            }
+        }
+        return localInstance;
     }
 
     public Command selectCommand(String commandName){

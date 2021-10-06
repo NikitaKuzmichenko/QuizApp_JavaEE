@@ -9,6 +9,8 @@ public class ErrorMsgProvider {
 
     private Map<String, ErrorMsgSupplier> managerMap;
 
+    public static final  String DEFAULT_LANGUAGE = "RU";
+
     private ErrorMsgProvider(){
         managerMap = new HashMap<>();
         managerMap.put("RU",new RuErrorMsgSupplier());
@@ -29,6 +31,7 @@ public class ErrorMsgProvider {
     }
 
     public ErrorMsgSupplier getManagerByLocale(String locale){
+        if(locale == null) return managerMap.get(DEFAULT_LANGUAGE);
         return managerMap.get(locale.toUpperCase());
     }
 

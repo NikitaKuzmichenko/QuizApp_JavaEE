@@ -26,16 +26,13 @@ public class MainServlet extends HttpServlet  {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CommandProvider provider = new CommandProvider();
         String uri = request.getRequestURI();
-        provider.selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
+        CommandProvider.getInstance().selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        CommandProvider provider = new CommandProvider();
         String uri = request.getRequestURI();
-        provider.selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
+        CommandProvider.getInstance().selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
     }
 
 

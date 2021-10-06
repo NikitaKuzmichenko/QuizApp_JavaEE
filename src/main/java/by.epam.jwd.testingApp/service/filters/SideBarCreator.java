@@ -4,7 +4,6 @@ import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractTestService;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
-import by.epam.jwd.testingApp.service.entitiesService.serviceImpl.TestService;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -16,8 +15,8 @@ public class SideBarCreator implements Filter {
     private FilterConfig config = null;
     private boolean isActive = false;
 
-    public static final String isActiveParam = "active";
-    public static final String ValueForActive = "TRUE";
+    public static final String IS_ACTIVE_PARAM = "active";
+    public static final String VALUE_FOR_ACTIVE = "TRUE";
 
     public static final int LIMIT_ON_SIDE_BAR = 3;
     public static final int DEFAULT_OFFSET = 0;
@@ -27,9 +26,9 @@ public class SideBarCreator implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         testService =  EntitiesServiceFactory.getInstance().getTestService();
         config = filterConfig;
-        String act = config.getInitParameter(isActiveParam);
+        String act = config.getInitParameter(IS_ACTIVE_PARAM);
         if (act != null){
-            isActive = (act.toUpperCase().equals(ValueForActive));
+            isActive = (act.toUpperCase().equals(VALUE_FOR_ACTIVE));
         }
     }
 
