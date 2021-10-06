@@ -15,20 +15,17 @@ public class SortTypeParser implements Parser<String> {
     @Override
     public String parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
 
-        HttpSession session = request.getSession();
         String parameter = request.getParameter(AttributeNames.SORT_TYPE);
 
         if(parameter!=null){
-            session.setAttribute(AttributeNames.SORT_TYPE, parameter);
             return parameter;
         }
-
-        String attribute = (String) session.getAttribute(AttributeNames.SORT_TYPE);
+        HttpSession session = request.getSession();
+        Object attribute = session.getAttribute(AttributeNames.SORT_TYPE);
         if(attribute != null) {
-            return attribute;
+            return attribute.toString();
         }
 
-        session.setAttribute(AttributeNames.SORT_TYPE, TestsSortingConstants.DATE_SORT);
         return TestsSortingConstants.DATE_SORT;
     }
 }

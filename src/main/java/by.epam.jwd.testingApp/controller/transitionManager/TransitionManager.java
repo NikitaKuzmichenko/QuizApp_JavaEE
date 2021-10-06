@@ -4,8 +4,8 @@ public class TransitionManager {
 
     private static TransitionManager instance;
 
-    private final TransitionByForward transitionByForward;
-    private final TransitionByRedirect transitionByRedirect;
+    private final Transition transitionByForward;
+    private final Transition transitionByRedirect;
 
     private TransitionManager(){
         transitionByForward = new TransitionByForward();
@@ -24,11 +24,11 @@ public class TransitionManager {
         return localInstance;
     }
 
-    public TransitionByForward getTransitionByForward() {
+    public Transition getTransitionByForward() {
         return transitionByForward;
     }
 
-    public TransitionByRedirect getTransitionByRedirect() {
+    public Transition getTransitionByRedirect() {
         return transitionByRedirect;
     }
 }

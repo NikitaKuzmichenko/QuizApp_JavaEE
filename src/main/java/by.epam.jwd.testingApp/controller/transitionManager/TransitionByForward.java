@@ -5,11 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TransitionByForward  {
+public class TransitionByForward  implements Transition{
 
     public static final String WRAPPER_JSP_NAME = "/wrapperPage.jsp";
     public static final String CONTENT_ATTRIBUTE_NAME = "content";
 
+    @Override
     public void doTransition(HttpServletRequest request, HttpServletResponse response,String contentJsp)
             throws ServletException, IOException {
 

@@ -14,6 +14,7 @@ import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.passwordEncodingService.BCryptPasswordEncoder;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
+import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoderProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -45,7 +46,7 @@ public class Authorization implements Command {
                 String password = request.getParameter(AttributeNames.PASSWORD);
                 if(password !=null) {
 
-                    PasswordEncoder encoder = new BCryptPasswordEncoder();
+                    PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
                     if (encoder.isMatching(password,user.getPassword())) {
 
                         HttpSession session = request.getSession();

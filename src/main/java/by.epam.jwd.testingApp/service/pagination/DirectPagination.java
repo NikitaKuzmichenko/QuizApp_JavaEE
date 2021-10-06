@@ -1,11 +1,28 @@
 package by.epam.jwd.testingApp.service.pagination;
 
+import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class DirectPagination implements AbstractPagination{
+public class DirectPagination{
+
+    private static DirectPagination instance;
 
     public static final int ELLIPSIS_CODE = -1;
+
+    public static DirectPagination newInstance() {
+        DirectPagination localInstance = instance;
+        if (localInstance == null) {
+            synchronized (DirectPagination.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new DirectPagination();
+                }
+            }
+        }
+        return localInstance;
+    }
 
     public List<Integer> calculatePagination(int currentPage, int unitNumber,int limitOnPage,int paginationMaxSize) {
 

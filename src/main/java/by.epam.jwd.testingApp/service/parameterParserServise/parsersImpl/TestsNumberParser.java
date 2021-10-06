@@ -1,7 +1,6 @@
 package by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserConstants;
 import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
@@ -12,16 +11,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class TestsNumberParser implements Parser<Integer> {
-
+    public final static String ALL_CATEGORIES = "all";
     @Override
     public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
         HttpSession session = request.getSession();
         String parameter = request.getParameter(AttributeNames.CATEGORY);
 
         if(parameter!=null){
-            session.setAttribute(AttributeNames.CATEGORY, parameter);
-            session.setAttribute(AttributeNames.PAGE_NUMBER, ParserConstants.STARTING_PAGE);
-            if(parameter.equals(ParserConstants.ALL_CATEGORIES)){
+            if(parameter.equals(ALL_CATEGORIES)){
                 return EntitiesServiceFactory.getInstance().getTestService().
                         calculateTotalTestsNumber(null);
             }else {
@@ -30,18 +27,17 @@ public class TestsNumberParser implements Parser<Integer> {
             }
         }
 
-        String attribute = (String) session.getAttribute(AttributeNames.CATEGORY);
+        Object attribute =  session.getAttribute(AttributeNames.CATEGORY);
         if(attribute!=null) {
-            if(attribute.equals(ParserConstants.ALL_CATEGORIES)){
+            if(attribute.equals(ALL_CATEGORIES)){
                 return EntitiesServiceFactory.getInstance().getTestService().
                         calculateTotalTestsNumber(null);
             }else {
                 return EntitiesServiceFactory.getInstance().getTestService().
-                        calculateTotalTestsNumber(Integer.parseInt(attribute));
+                        calculateTotalTestsNumber(Integer.parseInt(attribute.toString()));
             }
         }
 
-        session.setAttribute(AttributeNames.PAGE_NUMBER, ParserConstants.STARTING_PAGE);
         return EntitiesServiceFactory.getInstance().getTestService(). // all Tests
                 calculateTotalTestsNumber(null);
     }

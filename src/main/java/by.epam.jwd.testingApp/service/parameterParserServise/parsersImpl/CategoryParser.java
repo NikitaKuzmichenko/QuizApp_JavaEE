@@ -1,7 +1,6 @@
 package by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserConstants;
 import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
 
 import javax.servlet.ServletException;
@@ -10,19 +9,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CategoryParser implements Parser<Integer> {
-
+    public final static String ALL_CATEGORIES = "all";
     @Override
     public Integer parsing(HttpServletRequest request) throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         String parameter = request.getParameter(AttributeNames.CATEGORY);
-        String attribute = (String) session.getAttribute(AttributeNames.CATEGORY);
+        Object attribute = session.getAttribute(AttributeNames.CATEGORY);
 
         if(parameter!=null){
-            if(attribute!= null && attribute.equals(parameter)){
-                session.setAttribute(AttributeNames.PAGE_NUMBER, ParserConstants.STARTING_PAGE);
-            }
-            session.setAttribute(AttributeNames.CATEGORY,parameter);
-            if(parameter.equals(ParserConstants.ALL_CATEGORIES)) {
+            if(parameter.equals(ALL_CATEGORIES)) {
                 return null;
             }
             else {
@@ -31,16 +27,14 @@ public class CategoryParser implements Parser<Integer> {
         }
 
         if(attribute!=null) {
-            if(attribute.equals(ParserConstants.ALL_CATEGORIES)) {
+            if(attribute.equals(ALL_CATEGORIES)) {
                 return null;
             }
             else {
-                return Integer.parseInt(attribute);
+                return Integer.parseInt(attribute.toString());
             }
         }
 
-        session.setAttribute(AttributeNames.CATEGORY, ParserConstants.ALL_CATEGORIES);
-        // if no category information show all
-        return null; // PK cant be null
+        return null;
     }
 }

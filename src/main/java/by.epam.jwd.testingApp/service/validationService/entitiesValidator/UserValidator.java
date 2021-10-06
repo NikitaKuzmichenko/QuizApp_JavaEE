@@ -3,10 +3,7 @@ package by.epam.jwd.testingApp.service.validationService.entitiesValidator;
 import by.epam.jwd.testingApp.entities.User;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.AbstractStringValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.EmailValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.NameValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.PasswordValidator;
+import by.epam.jwd.testingApp.service.validationService.componentValidator.ComponentValidatorsProvider;
 
 public class UserValidator implements AbstractEntitiesValidator<User> {
 
@@ -21,30 +18,29 @@ public class UserValidator implements AbstractEntitiesValidator<User> {
         boolean error = false;
         ErrorMsgSupplier manager = ErrorMsgProvider.newInstance().getManagerByLocale(locale);
 
-        AbstractStringValidator stringValidator = new EmailValidator();
+        ComponentValidatorsProvider componentValidator = ComponentValidatorsProvider.newInstance();
+
         String email = entity.getEmail();
         if(email == null){
             error = true;
             errorMsgAccumulator.append(manager.getValueByName(EMPTY_EMAIL)).append('\n');
-        } else if(stringValidator.validate(email,locale,errorMsgAccumulator)){
+        } else if(componentValidator.getEmailValidator().validate(email,locale,errorMsgAccumulator)){
             error = true;
         }
 
-        stringValidator = new PasswordValidator();
         String password = entity.getEmail();
         if(password == null){
             error = true;
             errorMsgAccumulator.append(manager.getValueByName(EMPTY_PASSWORD)).append('\n');
-        } else if(stringValidator.validate(password,locale,errorMsgAccumulator)){
+        } else if(componentValidator.getPasswordValidator().validate(password,locale,errorMsgAccumulator)){
             error = true;
         }
 
-        stringValidator = new NameValidator();
         String name = entity.getEmail();
         if(name == null){
             error = true;
             errorMsgAccumulator.append(manager.getValueByName(EMPTY_NAME)).append('\n');
-        } else if(stringValidator.validate(name,locale,errorMsgAccumulator)){
+        } else if(componentValidator.getNameValidator().validate(name,locale,errorMsgAccumulator)){
             error = true;
         }
 

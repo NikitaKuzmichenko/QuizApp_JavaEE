@@ -12,8 +12,7 @@ import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFac
 import by.epam.jwd.testingApp.service.passwordEncodingService.BCryptPasswordEncoder;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.validationService.entitiesValidator.AbstractEntitiesValidator;
-import by.epam.jwd.testingApp.service.validationService.entitiesValidator.UserValidator;
+import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ import java.io.IOException;
 public class Registration implements Command {
 
     public static final String USER_EXIST = "user.alreadyExist";
-
+    public static final int DEFAULT_ROLE = 1;
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -40,13 +39,13 @@ public class Registration implements Command {
             StringBuilder errorBuilder = new StringBuilder();
 
             User user = new User();
-            user.setRoleId(1); // user roleId by default
+            user.setRoleId(DEFAULT_ROLE);
             user.setEmail(request.getParameter(AttributeNames.EMAIL));
             user.setName(request.getParameter(AttributeNames.NICK_NAME));
             user.setPassword(request.getParameter(AttributeNames.PASSWORD));
 
-            AbstractEntitiesValidator<User> entityValidator = new UserValidator();
-            if(!entityValidator.validateEntity(user, language,errorBuilder)){
+            EntitiesValidatorsProvider entityValidatorProvider = EntitiesValidatorsProvider.newInstance();
+            if(!entityValidatorProvider.getUserValidator().validateEntity(user, language,errorBuilder)){
                 request.setAttribute(AttributeNames.ERROR_MSG, errorBuilder.toString());
                 TransitionManager.newInstance().getTransitionByForward().
                         doTransition(request, response,PageMapping.REGISTRATION_PAGE);

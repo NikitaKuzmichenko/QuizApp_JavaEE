@@ -14,20 +14,19 @@ public class LanguageParser implements Parser<String> {
     public static final String DEFAULT_LANGUAGE = "ru";
     @Override
     public String parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
-        HttpSession session = request.getSession();
+
         String parameter = request.getParameter(AttributeNames.LANGUAGE);
 
         if(parameter!=null){
-            session.setAttribute(AttributeNames.LANGUAGE, parameter);
             return parameter;
         }
 
+        HttpSession session = request.getSession();
         Object attribute = session.getAttribute(AttributeNames.LANGUAGE);
         if(attribute != null) {
             return attribute.toString();
         }
 
-        session.setAttribute(AttributeNames.LANGUAGE, DEFAULT_LANGUAGE);
         return DEFAULT_LANGUAGE;
     }
 }

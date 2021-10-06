@@ -11,26 +11,24 @@ import java.io.IOException;
 
 public class DirectionParser implements Parser<Boolean> {
 
-    public static final String UP ="true";
-    public static final String DOWN ="false";
+    public static final boolean UP = true;
+    public static final boolean DOWN = false;
 
     @Override
     public Boolean parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
 
-        HttpSession session = request.getSession();
         String parameter = request.getParameter(AttributeNames.SORT_DIRECTION);
 
         if(parameter!=null){
-            session.setAttribute(AttributeNames.SORT_DIRECTION,parameter);
             return Boolean.parseBoolean(parameter);
         }
 
-        String attribute = (String) session.getAttribute(AttributeNames.SORT_DIRECTION);
+        HttpSession session = request.getSession();
+        Object attribute = session.getAttribute(AttributeNames.SORT_DIRECTION);
         if(attribute!=null) {
-            return Boolean.parseBoolean(attribute);
+            return Boolean.parseBoolean(attribute.toString());
         }
 
-        session.setAttribute(AttributeNames.SORT_DIRECTION, UP);
-        return true;
+        return UP;
     }
 }
