@@ -34,7 +34,11 @@ public class LocalizationFilter implements Filter{
                 HttpServletRequest request = (HttpServletRequest)servletRequest;
                 Parser<String> languageParser = new LanguageParser();
                 String language = languageParser.parsing(request);
-                request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
+                if(request.getParameter(AttributeNames.LANGUAGE)==null){
+                    request.setAttribute(AttributeNames.LANGUAGE,language);
+                }else {
+                    request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
+                }
             } catch (ServiceException e) {
                 // redirect to error page
             }

@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="content" />
+
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button"
@@ -16,31 +19,31 @@
 
                     <c:when test="${userRole == 2}">
                         <form class="d-flex">
-                             <a class="btn btn-outline-success" href="createTest" type="submit">Создать</a>
+                             <a class="btn btn-outline-success" href="createTest" type="submit"><fmt:message key="button.create"/></a>
                         </form>
                         <form class="d-flex">
                         </form>
                         <form class="d-flex mx-auto">
-                             <a class="btn btn-outline-success" href="createdBy?id=self" type="submit">Созданные мной</a>
+                             <a class="btn btn-outline-success" href="createdBy?id=self" type="submit"><fmt:message key="button.createdByMe"/></a>
                         </form>
                         <form class="d-flex">
-                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit">Посмотреть пройденые</a>
+                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
 
                     <c:when test="${userRole == 1}">
                         <form class="d-flex">
-                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit">Посмотреть пройденые</a>
+                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
                 </c:choose>
 
                 <form class="d-flex mx-auto">
                     <select class="form-select mx-auto" style="width:auto;" name="sortType" onchange="submit()">
-                        <option value="date" disabled selected hidden>Сортировать по</option>
-                        <option value="date">Дате</option>
-                        <option value="name">Названию</option>
-                        <option value="popularity">Популярности</option>
+                        <option value="date" disabled selected hidden><fmt:message key="dropDown.sortBy"/></option>
+                        <option value="date"><fmt:message key="dropDown.sortType.byDate"/></option>
+                        <option value="name"><fmt:message key="dropDown.sortType.byName"/></option>
+                        <option value="popularity"><fmt:message key="dropDown.sortType.byPopularity"/></option>
                     </select>
                 </form>
                 <form class="d-flex mx-auto">
@@ -52,7 +55,7 @@
                 </form>
                 <form class="d-flex mx-auto">
                     <select class="form-select mx-auto" style="width:auto;" name="category" onchange="submit()">
-                        <option disabled selected hidden>Категории</option>
+                        <option disabled selected hidden><fmt:message key="dropDown.categories"/></option>
                         <c:forEach var="category" items="${categories}" varStatus="status">
                             <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
                         </c:forEach>
@@ -67,12 +70,12 @@
         <div class="p-2 bg-light border mx-auto" style="width: 900px;">
             <c:out value="${test.getName()}"/>
             <br>
-            <c:out value="Создатель : "/>
+              <fmt:message key="test.creator"/>
             <c:out value="${users[status.index].getName()}"/>
             <br>    
-            <c:out value="Средний результат : "/>
+            <fmt:message key="test.averageResult"/>
             <c:if test="${results[status.index] < 0}">
-                <c:out value="нет данных"/>
+                <fmt:message key="text.noData"/>
             </c:if>
             <c:if test="${results[status.index] > 0}">
                 <c:out value="${results[status.index]}"/>

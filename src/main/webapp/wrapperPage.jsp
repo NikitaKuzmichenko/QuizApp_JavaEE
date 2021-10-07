@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="content" />
+
 <!doctype html>
 <head>
     <meta charset="UTF-8">
@@ -34,7 +37,7 @@
                                     <table class="table table-hover table-light table-bordered">
                                         <thead>
                                             <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">новые тесты</th>
+                                              <th class="text-center" scope="col" style="width: 900px;"><fmt:message key="text.newTests"/></th>
                                             </tr>
                                         </thead>
                                     <tbody>
@@ -58,7 +61,7 @@
                                     <table class="table table-hover table-light table-bordered">
                                         <thead>
                                             <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;">популярные тесты</th>
+                                              <th class="text-center" scope="col" style="width: 900px;"><fmt:message key="text.popularTests"/></th>
                                             </tr>
                                         </thead>
                                     <tbody>

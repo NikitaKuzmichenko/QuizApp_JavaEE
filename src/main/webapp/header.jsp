@@ -15,7 +15,7 @@
                          <img src="<c:url value="/img/logo.png"/>" width="40" height="40"/>
                      </li>
                     <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="page?num=1">Название сайта</a>
+                        <a class="nav-link active " aria-current="page" href="page?num=1"><fmt:message key="text.siteName"/></a>
                     </li>
                 </ul>
                 <c:if test="${not empty userRole}">
@@ -27,15 +27,15 @@
                 <form class="d-flex">
 
                     <c:if test="${not empty userRole}">
-                        <a class="btn btn-outline-success " href="log_out" type="submit">Выйти</a>
+                        <a class="btn btn-outline-success " href="log_out" type="submit"><fmt:message key="button.logOut"/></a>
                     </c:if>
 
                     <c:if test="${empty userRole}">
-                        <a class="btn btn-outline-success " href="authorization" type="submit">Войти</a>
+                        <a class="btn btn-outline-success " href="authorization" type="submit"><fmt:message key="button.logIn"/></a>
                     </c:if>
 
                     <select class="form-select mx-2" style="width:auto;" name="language" onchange="submit()">
-                        <option value="en" disabled selected hidden>LANG</option>
+                        <option value="en" disabled selected hidden><fmt:message key="dropDown.language"/></option>
                         <option value="en">En</option>
                         <option value="ru">Ru</option>
                     </select>

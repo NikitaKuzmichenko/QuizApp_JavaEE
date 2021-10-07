@@ -29,7 +29,7 @@ public class MainServlet extends HttpServlet  {
         String uri = request.getRequestURI();
         CommandProvider.getInstance().selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
     }
-
+    //как сделать тест на сайте html
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uri = request.getRequestURI();
         CommandProvider.getInstance().selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);

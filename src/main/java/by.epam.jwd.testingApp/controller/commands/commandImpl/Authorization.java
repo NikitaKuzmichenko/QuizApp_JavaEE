@@ -4,15 +4,13 @@ import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.service.cookieService.CookieManager;
 import by.epam.jwd.testingApp.controller.commands.Command;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
+import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entities.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.passwordEncodingService.BCryptPasswordEncoder;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoderProvider;
 
@@ -73,8 +71,7 @@ public class Authorization implements Command {
             }
 
             if(!userValid){
-                Parser<String> languageParser = new LanguageParser();
-                String language = languageParser.parsing(request);
+                String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
                 ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
                 request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(INVALID_USER));
 

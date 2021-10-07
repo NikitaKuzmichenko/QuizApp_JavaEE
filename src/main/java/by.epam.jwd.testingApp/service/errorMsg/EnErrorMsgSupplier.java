@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 public class EnErrorMsgSupplier implements ErrorMsgSupplier {
 
     private static ResourceBundle bundle;
-    public static Locale locale = new Locale("en","US");
+    public static Locale locale = new Locale("en");
 
     public EnErrorMsgSupplier(){
          bundle = ResourceBundle.getBundle(source,locale);
