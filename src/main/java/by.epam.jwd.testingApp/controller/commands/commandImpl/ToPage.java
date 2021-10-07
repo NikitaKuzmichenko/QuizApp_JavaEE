@@ -40,6 +40,7 @@ public class ToPage implements Command {
             session.setAttribute(AttributeNames.SORT_TYPE, sortType);
 
             int pageNumber = parserProvider.getPageNumberParser().parsing(request);
+            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
 
             int testsNumber = parserProvider.getTestNumberParser().parsing(request);
             if(request.getParameter(AttributeNames.CATEGORY)!=null){
@@ -72,7 +73,7 @@ public class ToPage implements Command {
                     doTransition(request, response, PageMapping.WELCOME_PAGE);
 
         } catch (ServiceException e) {
-            // redirect to error page
+            throw new ServletException(e);
         }
 
     }

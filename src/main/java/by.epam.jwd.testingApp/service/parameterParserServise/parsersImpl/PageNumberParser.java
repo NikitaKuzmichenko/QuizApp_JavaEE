@@ -6,6 +6,7 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class PageNumberParser implements Parser<Integer> {
@@ -18,6 +19,12 @@ public class PageNumberParser implements Parser<Integer> {
 
         if(parameter!=null){
             return Integer.parseInt(parameter)-1;
+        }
+
+        HttpSession session = request.getSession();
+        Object attribute = session.getAttribute(AttributeNames.PAGE_NUMBER);
+        if(attribute != null) {
+            return Integer.parseInt(attribute.toString()) - 1;
         }
         return STARTING_PAGE - 1;
     }

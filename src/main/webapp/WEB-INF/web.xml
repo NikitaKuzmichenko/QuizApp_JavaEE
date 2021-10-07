@@ -6,7 +6,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns:javaee="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee"
-         version="2.5">
+         version="3.0">
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
@@ -89,6 +89,11 @@
     <servlet-name>mainServlet</servlet-name>
     <url-pattern>/controller/*</url-pattern>
   </servlet-mapping>
+
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/errorPage.jsp</location>
+  </error-page>
 
 </web-app>
 

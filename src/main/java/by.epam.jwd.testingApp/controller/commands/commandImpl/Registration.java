@@ -66,7 +66,7 @@ public class Registration implements Command {
             response.sendRedirect(PageMapping.TO_AUTHORIZATION_PAGE_PATH);
 
         } catch (ServiceException e) {
-            // redirect to error page
+            throw new ServletException(e);
         }
     }
 }

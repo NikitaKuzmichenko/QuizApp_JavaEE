@@ -79,7 +79,7 @@ public class Authorization implements Command {
                         doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
             }
         } catch (ServiceException e) {
-            // redirect to error page
+            throw new ServletException(e);
         }
     }
 }

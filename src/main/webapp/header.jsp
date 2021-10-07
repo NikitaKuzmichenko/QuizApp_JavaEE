@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="content" />
+
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button"
@@ -15,7 +18,7 @@
                          <img src="<c:url value="/img/logo.png"/>" width="40" height="40"/>
                      </li>
                     <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="page?num=1"><fmt:message key="text.siteName"/></a>
+                        <a class="nav-link active " aria-current="page" href="page"><fmt:message key="text.siteName"/></a>
                     </li>
                 </ul>
                 <c:if test="${not empty userRole}">
