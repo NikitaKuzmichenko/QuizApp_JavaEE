@@ -18,51 +18,48 @@
                     </c:when>
 
                     <c:when test="${userRole == 2}">
-                        <form class="d-flex">
-                             <a class="btn btn-outline-success" href="createTest" type="submit"><fmt:message key="button.create"/></a>
+                        <form class="d-flex mx-3">
+                             <a class="btn btn-outline-success" href="create_test" type="submit"><fmt:message key="button.create"/></a>
                         </form>
-                        <form class="d-flex">
+                        <form class="d-flex mx-3">
+                             <a class="btn btn-outline-success" href="view_my_tests" type="submit"><fmt:message key="button.createdByMe"/></a>
                         </form>
-                        <form class="d-flex mx-auto">
-                             <a class="btn btn-outline-success" href="createdBy?id=self" type="submit"><fmt:message key="button.createdByMe"/></a>
-                        </form>
-                        <form class="d-flex">
-                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit"><fmt:message key="button.viewPasses"/></a>
+                        <form class="d-flex mx-3">
+                             <a class="btn btn-outline-success" href="view_results" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
 
                     <c:when test="${userRole == 1}">
-                        <form class="d-flex">
+                        <form class="d-flex mx-3">
                              <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
                 </c:choose>
-
-                <form class="d-flex mx-auto">
-                    <select class="form-select mx-auto" style="width:auto;" name="sortType" onchange="submit()">
-                        <option value="date" disabled selected hidden><fmt:message key="dropDown.sortBy"/></option>
-                        <option value="date"><fmt:message key="dropDown.sortType.byDate"/></option>
-                        <option value="name"><fmt:message key="dropDown.sortType.byName"/></option>
-                        <option value="popularity"><fmt:message key="dropDown.sortType.byPopularity"/></option>
-                    </select>
-                </form>
-                <form class="d-flex mx-auto">
-                    <select class="form-select mx-auto" style="width:auto;" name="direction" onchange="submit()">
-                        <option disabled selected hidden>↕</option>
-                        <option value="true">&#8593</option>
-                        <option value="false">&#8595</option>
-                    </select>
-                </form>
-                <form class="d-flex mx-auto">
-                    <select class="form-select mx-auto" style="width:auto;" name="category" onchange="submit()">
-                        <option disabled selected hidden><fmt:message key="dropDown.categories"/></option>
-                        <c:forEach var="category" items="${categories}" varStatus="status">
-                            <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
-                        </c:forEach>
-                        <option value="all">Все категории</option>
-                    </select>
-                </form>
             </div>
+            <form class="d-flex mx-3">
+                <select class="form-select mx-auto" style="width:auto;" name="sortType" onchange="submit()">
+                    <option value="date" disabled selected hidden><fmt:message key="dropDown.sortBy"/></option>
+                    <option value="date"><fmt:message key="dropDown.sortType.byDate"/></option>
+                    <option value="name"><fmt:message key="dropDown.sortType.byName"/></option>
+                    <option value="popularity"><fmt:message key="dropDown.sortType.byPopularity"/></option>
+                </select>
+            </form>
+            <form class="d-flex mx-3">
+                <select class="form-select mx-auto" style="width:auto;" name="direction" onchange="submit()">
+                    <option disabled selected hidden>↕</option>
+                    <option value="true">&#8593</option>
+                    <option value="false">&#8595</option>
+                </select>
+            </form>
+            <form class="d-flex mx-3">
+                <select class="form-select mx-auto" style="width:auto;" name="category" onchange="submit()">
+                    <option disabled selected hidden><fmt:message key="dropDown.categories"/></option>
+                    <c:forEach var="category" items="${categories}" varStatus="status">
+                        <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
+                    </c:forEach>
+                    <option value="all">Все категории</option>
+                </select>
+            </form>
         </div>
     </nav>
     <br>
@@ -70,10 +67,10 @@
         <div class="p-2 bg-light border mx-auto" style="width: 900px;">
             <c:out value="${test.getName()}"/>
             <br>
-              <fmt:message key="test.creator"/>
+              <fmt:message key="text.creator"/>
             <c:out value="${users[status.index].getName()}"/>
             <br>    
-            <fmt:message key="test.averageResult"/>
+            <fmt:message key="text.averageResult"/>
             <c:if test="${results[status.index] < 0}">
                 <fmt:message key="text.noData"/>
             </c:if>

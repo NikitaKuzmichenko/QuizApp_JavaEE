@@ -10,4 +10,5 @@ public interface AbstractStatementDao extends AbstractGenericDao<Statement, Inte
 
     List<Statement> selectByQuestionId(int questionId)  throws DaoException;
 
+    boolean deleteAllByQuestionId(int questionId)  throws DaoException;
 }

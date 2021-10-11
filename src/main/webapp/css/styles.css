@@ -1,0 +1,43 @@
+.add
+{
+  width: 75px;
+  height: 75px;
+  line-height: 75px;
+  text-align: center;
+  border: 1px dashed grey;
+  margin: 10px 0;
+}
+
+.add:hover
+{
+  cursor: pointer;
+  background-color: #360581;
+}
+
+
+.clickable:hover
+{
+  cursor: pointer;
+}
+
+input.largerCheckbox
+{
+    width: 15px;
+    height: 15px;
+}
+
+.line_block
+{
+    height: 40px;
+    float:left;
+    margin: 0 15px 15px 0;
+    text-align:center;
+    padding: 10px;
+}
+
+.cuted_text
+{
+    display:block;
+    width:500px;
+    word-wrap:break-word;
+}

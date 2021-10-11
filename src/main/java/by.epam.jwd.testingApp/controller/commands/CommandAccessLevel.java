@@ -17,13 +17,18 @@ public class CommandAccessLevel {
         commands.put(CommandName.PAGE,NO_ROLE_REQUIRED);
         commands.put(CommandName.AUTHORIZATION,NO_ROLE_REQUIRED);
         commands.put(CommandName.REGISTRATION,NO_ROLE_REQUIRED);
-        commands.put(CommandName.LOG_OUT,NO_ROLE_REQUIRED);
-        commands.put(CommandName.TEST,USER_ROLE_REQUIRED);
-        commands.put(CommandName.CHANGE_TEST,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.LOG_OUT,USER_ROLE_REQUIRED);
+        commands.put(CommandName.TAKE_TEST,USER_ROLE_REQUIRED);
+        commands.put(CommandName.EDIT_TEST,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.CREATE_TEST,TUTOR_ROLE_REQUIRED);
-        commands.put(CommandName.REMOVE_TEST,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.DELETE_TEST,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.VIEW_RESULTS,USER_ROLE_REQUIRED);
-        commands.put(CommandName.ADD_COMMENT,NO_ROLE_REQUIRED);
+        commands.put(CommandName.ADD_COMMENT,USER_ROLE_REQUIRED);
+        commands.put(CommandName.ADD_QUESTION,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.EDIT_QUESTION,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.DELETE_QUESTION,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.VIEW_MY_TESTS,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.DELETE_STATEMENT,TUTOR_ROLE_REQUIRED);
     }
 
     public static CommandAccessLevel getInstance() {

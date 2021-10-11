@@ -95,8 +95,8 @@ public class StatementDaoJDBC implements AbstractStatementDao {
             String sql = "UPDATE " + StatementMapping.TABLE_NAME
                     + " SET " + StatementMapping.QUESTION_ID + " = ?, "
                     +  StatementMapping.TEXT + " = ?, "
-                    +  StatementMapping.IS_CORRECT + " = ?, "
-                    + "WHERE " + StatementMapping.ID +" = ?;";
+                    +  StatementMapping.IS_CORRECT + " = ? "
+                    + " WHERE " + StatementMapping.ID +" = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1,entity.getQuestionId());
             statement.setString(2,entity.getText());
@@ -137,6 +137,28 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         return result==1;
     }
 
+    public boolean deleteAllByQuestionId(int questionId)  throws DaoException{
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.takeConnection();
+        PreparedStatement statement = null;
+        int result;
+        try {
+            String sql = "DELETE FROM " + StatementMapping.TABLE_NAME
+                    + " WHERE " + StatementMapping.QUESTION_ID +" = ?;";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1,questionId);
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {/* write in logs*/}
+            pool.returnConnection(connection);
+        }
+        return result==1;
+    }
+
     @Override
     public boolean create(Statement entity) throws DaoException {
         if(entity == null) return false;
@@ -149,7 +171,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
                     + " (" + StatementMapping.QUESTION_ID + ", "
                     +  StatementMapping.TEXT + ", "
                     +  StatementMapping.IS_CORRECT + " )"
-                    + "VALUES(?,?,?)";
+                    + " VALUES(?,?,?)";
             statement = connection.prepareStatement(sql);
             statement.setInt(1,entity.getQuestionId());
             statement.setString(2,entity.getText());

@@ -5,7 +5,6 @@ import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.service.cookieService.CookieManager;
-import com.mysql.cj.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

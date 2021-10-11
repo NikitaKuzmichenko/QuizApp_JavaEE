@@ -59,4 +59,23 @@ public class QuestionService implements AbstractQuestionService {
             throw new ServiceException("msg",e);
         }
     }
+    @Override
+    public List<Question> selectEntityByTestId(int testId)throws ServiceException {
+        try {
+            return DaoFactory.getInstance().getQuestionDao().
+                    selectByTestId(testId,Integer.MAX_VALUE,0);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
+
+    @Override
+    public Integer createAndGetId(Question entity) throws ServiceException{
+        try {
+            return DaoFactory.getInstance().getQuestionDao().
+                    createAndGetId(entity);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
 }

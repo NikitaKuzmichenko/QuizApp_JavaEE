@@ -10,4 +10,6 @@ public interface AbstractQuestionDao extends AbstractGenericDao<Question, Intege
 
     List<Question> selectByTestId(int testId, int limit, int offset) throws DaoException;
 
+    Integer createAndGetId(Question entity) throws DaoException;
+
 }

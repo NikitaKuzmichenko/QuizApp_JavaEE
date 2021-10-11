@@ -40,7 +40,7 @@ public class LocalizationFilter implements Filter{
                     request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
                 }
             } catch (ServiceException e) {
-                // redirect to error page
+                throw new ServletException(e);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

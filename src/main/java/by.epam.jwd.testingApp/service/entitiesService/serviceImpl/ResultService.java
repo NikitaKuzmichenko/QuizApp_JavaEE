@@ -10,6 +10,7 @@ import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractResultService;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ResultService implements AbstractResultService {
@@ -62,6 +63,20 @@ public class ResultService implements AbstractResultService {
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
+    }
+
+    @Override
+    public List<Integer> calculateRowsNumberByTestId(List<Test> testIds) throws ServiceException{
+        List<Integer> result = new LinkedList<>();
+        try {
+            for(Test test:testIds) {
+                result.add(DaoFactory.getInstance().getResultDao().
+                        calculateResultsNumberByTestId(test.getId()));
+            }
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+        return result;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class SideBarCreator implements Filter {
                 servletRequest.setAttribute(AttributeNames.POPULAR_TESTS,
                         testService.sortByUsersPassedNumber(DEFAULT_OFFSET, DEFAULT_DIRECTION, LIMIT_ON_SIDE_BAR));
             } catch (ServiceException e) {
-                // redirect to error page
+                throw new ServletException(e);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

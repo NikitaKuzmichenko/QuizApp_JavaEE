@@ -154,4 +154,25 @@ public class TestService implements AbstractTestService {
             throw new ServiceException("msg",e);
         }
     }
+
+    @Override
+    public int calculateUsersTotalTestsNumber(Integer userId) throws ServiceException{
+        try {
+            if(userId==null) return DaoFactory.getInstance().getTestDao().calculateTotalTestsNumber();
+            return DaoFactory.getInstance().getTestDao().calculateUsersTestsNumber(userId);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
+
+    @Override
+    public Integer createAndGetId(Test entity)throws ServiceException{
+        if(entity==null)return null;
+        try {
+            return DaoFactory.getInstance().getTestDao().
+                    createAndGetId(entity);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
 }

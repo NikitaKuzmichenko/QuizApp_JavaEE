@@ -108,10 +108,10 @@ public class TestDaoJDBC implements AbstractTestDao {
         try {
             String updateSql = "UPDATE " + TestMapping.TABLE_NAME
                     + " SET " + TestMapping.IS_REMOVED + " = ?"
-                    + "WHERE " + TestMapping.ID +" = ?;";
+                    + " WHERE " + TestMapping.ID + " = ? ;";
             statement = connection.prepareStatement(updateSql);
-            statement.setInt(1,testId);
-            statement.setBoolean(2,false);
+            statement.setInt(2,testId);
+            statement.setBoolean(1,true);
             result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -188,6 +188,39 @@ public class TestDaoJDBC implements AbstractTestDao {
     }
 
     @Override
+    public int calculateUsersTestsNumber(int userId)throws DaoException{
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.takeConnection();
+
+        PreparedStatement statement = null;
+        String resultColumnName = "result";
+        ResultSet resultSet;
+        int result;
+
+        try {
+            String updateSql = "SELECT COUNT(*) as " + resultColumnName
+                    + " FROM " + TestMapping.TABLE_NAME
+                    + " WHERE " + TestMapping.IS_REMOVED + " = 0"
+                    + " AND " + TestMapping.CREATOR_ID + " = ?;";
+
+            statement = connection.prepareStatement(updateSql);
+            statement.setInt(1,userId);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            result = resultSet.getInt(resultColumnName);
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {/* write in logs*/}
+            pool.returnConnection(connection);
+        }
+        return result;
+    }
+
+    @Override
     public Test selectEntityById(Integer id) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
@@ -230,13 +263,14 @@ public class TestDaoJDBC implements AbstractTestDao {
                     + ", " + TestMapping.CATEGORY_ID + " = ?"
                     + ", " + TestMapping.CREATION_DATE + " = ?"
                     + ", " + TestMapping.IS_REMOVED + " = ?"
-                    + "WHERE " + TestMapping.ID +" = ?;";
+                    + " WHERE " + TestMapping.ID +" = ?;";
             statement = connection.prepareStatement(updateSql);
             statement.setString(1,entity.getName());
             statement.setInt(2,entity.getCreatorId());
             statement.setInt(3,entity.getCategoryId());
-            statement.setDate(4,new Date(entity.getCreationDate().getTime()));
+            statement.setDate(4, (Date) entity.getCreationDate());
             statement.setBoolean(5,entity.isRemoved());
+            statement.setInt(6,entity.getId());
             result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -292,7 +326,7 @@ public class TestDaoJDBC implements AbstractTestDao {
             statement.setInt(1,entity.getCreatorId());
             statement.setInt(2,entity.getCategoryId());
             statement.setString(3,entity.getName());
-            statement.setDate(4,new Date(entity.getCreationDate().getTime()));
+            statement.setDate(4,new java.sql.Date(entity.getCreationDate().getTime()));
             result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -305,5 +339,45 @@ public class TestDaoJDBC implements AbstractTestDao {
         return result==1;
     }
 
+    @Override
+    public Integer createAndGetId(Test entity) throws DaoException {
+        if(entity == null) return null;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.takeConnection();
+        PreparedStatement statement = null;
+        int result;
+        Integer key = null;
 
+        try {
+
+            String insectSql = "INSERT INTO " + TestMapping.TABLE_NAME
+                    + " (" + TestMapping.CREATOR_ID + ", "
+                    + TestMapping.CATEGORY_ID + ", "
+                    + TestMapping.NAME + ", "
+                    + TestMapping.CREATION_DATE + ")"
+                    +  "VALUES(?,?,?,?);";
+
+            statement = connection.prepareStatement(insectSql);
+            statement.setInt(1,entity.getCreatorId());
+            statement.setInt(2,entity.getCategoryId());
+            statement.setString(3,entity.getName());
+            statement.setDate(4,new java.sql.Date(entity.getCreationDate().getTime()));
+            result = statement.executeUpdate();
+
+            if(result == 1){
+                ResultSet set = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                if(set.next()){
+                    key = set.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {/* write in logs*/}
+            pool.returnConnection(connection);
+        }
+        return key;
+    }
 }

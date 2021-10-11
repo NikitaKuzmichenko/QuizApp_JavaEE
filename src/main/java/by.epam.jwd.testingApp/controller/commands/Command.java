@@ -6,9 +6,5 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface Command {
-
-    int LIMIT_ON_PAGE = 5;
-    int PAGINATION_MAX_SIZE = 7;
-
     void execute(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
 }

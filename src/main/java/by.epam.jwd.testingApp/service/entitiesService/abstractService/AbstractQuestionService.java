@@ -7,5 +7,9 @@ import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbs
 import java.util.List;
 
 public interface AbstractQuestionService extends AbstractEntitiesService<Question,Integer> {
-    List<Question> selectEntityByTestId(int testId, int offset,int limit)throws ServiceException;
+
+    List<Question> selectEntityByTestId(int questionId, int offset,int limit)throws ServiceException;
+    List<Question> selectEntityByTestId(int questionId)throws ServiceException;
+
+    Integer createAndGetId(Question entity) throws ServiceException;
 }

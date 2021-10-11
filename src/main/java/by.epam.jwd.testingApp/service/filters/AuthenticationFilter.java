@@ -11,6 +11,7 @@ import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.UserIdP
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthenticationFilter implements Filter {
@@ -20,7 +21,7 @@ public class AuthenticationFilter implements Filter {
 
     public static final String IS_ACTIVE_PARAM = "active";
     public static final String VALUE_FOR_ACTIVE = "TRUE";
-
+    public static final int SESSION_TIME_INTERVAL = 60 * 60 * 2;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         config = filterConfig;
@@ -37,9 +38,11 @@ public class AuthenticationFilter implements Filter {
             try {
                 HttpServletRequest request = (HttpServletRequest) servletRequest;
 
+                HttpSession session = request.getSession();
+                session.setMaxInactiveInterval(SESSION_TIME_INTERVAL);
+
                 Parser<Integer> userIdParser = new UserIdParser();
                 Integer userId = userIdParser.parsing(request);
-
                 if(userId == null){ // not specified in session -> check cookies
                     CookieManager cookieManager = CookieManager.getInstance();
                     String temp = cookieManager.findValueByName(request,AttributeNames.USER_ID);
@@ -47,6 +50,7 @@ public class AuthenticationFilter implements Filter {
                         userId=null;
                     }else{
                         userId = Integer.parseInt(temp);
+                        session.setAttribute(AttributeNames.USER_ID,userId);
                     }
                 }
 
@@ -60,7 +64,7 @@ public class AuthenticationFilter implements Filter {
                     servletRequest.setAttribute(AttributeNames.NICK_NAME, user.getName());
                 }
             } catch (ServiceException e) {
-                // redirect to error page
+                throw new ServletException(e);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class TestsNumberParser implements Parser<Integer> {
+public class CategorizedTestsNumberParser implements Parser<Integer> {
     public final static String ALL_CATEGORIES = "all";
     @Override
     public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {

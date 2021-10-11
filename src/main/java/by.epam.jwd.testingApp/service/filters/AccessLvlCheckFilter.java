@@ -1,8 +1,11 @@
 package by.epam.jwd.testingApp.service.filters;
 
 import by.epam.jwd.testingApp.controller.commands.CommandAccessLevel;
+import by.epam.jwd.testingApp.controller.commands.CommandName;
 import by.epam.jwd.testingApp.controller.commands.CommandProvider;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
+import by.epam.jwd.testingApp.controller.mapping.PageMapping;
+import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
@@ -61,14 +64,14 @@ public class AccessLvlCheckFilter implements Filter {
                 String language = languageParser.parsing(request);
                 ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
                 request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(USER_ACCESS_LACK));
-                CommandProvider.getInstance().
-                          selectCommand(command).execute(request, response);
+
+                TransitionManager.newInstance().getTransitionByForward().
+                        doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
             } catch (ServiceException e) {
-                // redirect to error page
+                throw new ServletException(e);
             }
 
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

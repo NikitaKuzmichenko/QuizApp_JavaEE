@@ -3,15 +3,14 @@ package by.epam.jwd.testingApp.controller.commands.commandImpl;
 import by.epam.jwd.testingApp.controller.commands.Command;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
+import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entities.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
-import by.epam.jwd.testingApp.service.passwordEncodingService.BCryptPasswordEncoder;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
+import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoderProvider;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
 
 import javax.servlet.ServletException;
@@ -34,8 +33,7 @@ public class Registration implements Command {
                 return;
             }
 
-            Parser<String> languageParser = new LanguageParser();
-            String language = languageParser.parsing(request);
+            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
             StringBuilder errorBuilder = new StringBuilder();
 
             User user = new User();
@@ -52,7 +50,7 @@ public class Registration implements Command {
                 return;
             }
 
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
+            PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
             user.setPassword(encoder.encrypt(user.getPassword()));
 
             if(!EntitiesServiceFactory.getInstance().getUserService().create(user)){
@@ -63,7 +61,8 @@ public class Registration implements Command {
                 return;
             }
 
-            response.sendRedirect(PageMapping.TO_AUTHORIZATION_PAGE_PATH);
+            TransitionManager.newInstance().getTransitionByRedirect().
+                    doTransition(request, response,PageMapping.TO_AUTHORIZATION_PAGE_PATH);
 
         } catch (ServiceException e) {
             throw new ServletException(e);

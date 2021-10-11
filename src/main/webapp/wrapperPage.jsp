@@ -16,7 +16,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <style><%@include file="css/styles.css"%></style>
-    <script type="text/javascript"><%@include file="javaScript/validation.js"%></script>
+    <script type="text/javascript"><%@include file="javaScript/script.js"%></script>
     <title>Document</title>
      <link rel="shortcut icon" type="image/png" href="<c:url value="/img/logo.png"/>"/>
 
@@ -43,7 +43,7 @@
                                     <tbody>
                                         <c:forEach var="test" items="${newTests}">
                                             <tr>
-                                                <td scope="row" ><a href="test?testId=${test.getId()}"
+                                                <td scope="row" ><a href="take_test?testId=${test.getId()}"
                                                                     class="nav-link link-dark enable-action">
                                                     <c:out value="${test.getName()}"/>
                                                 </td>
@@ -67,8 +67,8 @@
                                     <tbody>
                                         <c:forEach var="test" items="${popularTests}">
                                             <tr>
-                                                <td scope="row" ><a href="test?testId=${test.getId()}"
-                                                                    class="nav-link link-dark enable-action">
+                                                <td scope="row" >
+                                                    <a href="take_test?testId=${test.getId()}"class="nav-link link-dark enable-action"/>
                                                     <c:out value="${test.getName()}"/>
                                                 </td>
                                            </tr>

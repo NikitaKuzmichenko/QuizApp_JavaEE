@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface AbstractStatementService extends AbstractEntitiesService<Statement,Integer> {
     List<Statement> selectByQuestionId(Integer questionId) throws ServiceException;
+
+    boolean deleteAllByQuestionId(Integer questionId) throws ServiceException;
 }

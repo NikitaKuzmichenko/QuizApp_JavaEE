@@ -92,8 +92,8 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         try {
             String sql = "UPDATE " + QuestionMapping.TABLE_NAME
                     + " SET " + QuestionMapping.TEST_ID + " = ?, "
-                    +  QuestionMapping.TITLE + " = ?, "
-                    + "WHERE " + QuestionMapping.ID +" = ?;";
+                    +  QuestionMapping.TITLE + " = ? "
+                    + " WHERE " + QuestionMapping.ID +" = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1,entity.getTestId());
             statement.setString(2,entity.getTitle());
@@ -158,5 +158,40 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
             pool.returnConnection(connection);
         }
         return result==1;
+    }
+
+    public Integer createAndGetId(Question entity) throws DaoException{
+        if(entity == null) return null;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.takeConnection();
+        PreparedStatement statement = null;
+        Integer key = null;
+        int result;
+        try {
+            String sql = "INSERT INTO " + QuestionMapping.TABLE_NAME
+                    + " (" + QuestionMapping.TEST_ID + ", "
+                    +  QuestionMapping.TITLE + " )"
+                    + "VALUES(?,?)";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1,entity.getTestId());
+            statement.setString(2,entity.getTitle());
+            result = statement.executeUpdate();
+
+            if(result == 1){
+                ResultSet set = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                if(set.next()){
+                    key = set.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {/* write in logs*/}
+            pool.returnConnection(connection);
+        }
+
+        return key;
     }
 }

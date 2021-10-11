@@ -41,6 +41,16 @@ public class StatementService implements AbstractStatementService {
     }
 
     @Override
+    public boolean deleteAllByQuestionId(Integer questionId) throws ServiceException{
+        try {
+            return DaoFactory.getInstance().getStatementDao().
+                    deleteAllByQuestionId(questionId);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
+
+    @Override
     public Statement selectEntityById(Integer statementId) throws ServiceException {
         try {
             return DaoFactory.getInstance().getStatementDao().

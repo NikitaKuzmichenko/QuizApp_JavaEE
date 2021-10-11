@@ -20,5 +20,7 @@ public interface AbstractTestService extends AbstractEntitiesService<Test,Intege
     List<Test> sortByCreationDate(int categoryId,int offset, boolean desc,int limit)throws ServiceException;
 
     int calculateTotalTestsNumber(Integer categoryId) throws ServiceException;
+    int calculateUsersTotalTestsNumber(Integer userId) throws ServiceException;
     boolean remove(Integer entityId) throws ServiceException;
+    Integer createAndGetId(Test entity) throws ServiceException;
 }

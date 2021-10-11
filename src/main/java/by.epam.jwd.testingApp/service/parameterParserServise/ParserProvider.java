@@ -1,11 +1,13 @@
 package by.epam.jwd.testingApp.service.parameterParserServise;
 
+import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.CategorizedTestsNumberParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.CategoryParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.DirectionParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.PageNumberParser;
+import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.QuestionIdParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.SortTypeParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.TestsNumberParser;
+import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.TestIdParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.UserIdParser;
 
 public class ParserProvider {
@@ -15,19 +17,23 @@ public class ParserProvider {
     private Parser<Integer> userIdParser;
     private Parser<Integer> testNumberParser;
     private Parser<Integer> pageNumberParser;
-    private Parser<Boolean> sortDirectionParser;
     private Parser<Integer> categoryParser;
+    private Parser<Integer> testIdParser;
+    private Parser<Integer> questionIdParser;
+    private Parser<Boolean> sortDirectionParser;
     private Parser<String> languageParser;
     private Parser<String> sortTypeParser;
 
     private ParserProvider(){
         userIdParser = new UserIdParser();
-        testNumberParser = new TestsNumberParser();
+        testNumberParser = new CategorizedTestsNumberParser();
         pageNumberParser = new PageNumberParser();
         sortDirectionParser = new DirectionParser();
         categoryParser = new CategoryParser();
         languageParser = new LanguageParser();
         sortTypeParser = new SortTypeParser();
+        testIdParser = new TestIdParser();
+        questionIdParser = new QuestionIdParser();
     }
 
     public static ParserProvider newInstance() {
@@ -41,6 +47,14 @@ public class ParserProvider {
             }
         }
         return localInstance;
+    }
+
+    public Parser<Integer> getQuestionIdParser() {
+        return questionIdParser;
+    }
+
+    public Parser<Integer> getTestIdParser() {
+        return testIdParser;
     }
 
     public Parser<Integer> getUserIdParser() {

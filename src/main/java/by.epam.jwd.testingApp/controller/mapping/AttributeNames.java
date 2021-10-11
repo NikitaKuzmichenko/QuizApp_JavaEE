@@ -16,12 +16,27 @@ public final class AttributeNames {
     public static final String PASSWORD = "password";
     public static final String NICK_NAME = "nickName";
 
+    public static final String TEST_ID = "testId";
+    public static final String TEST_NAME = "testName";
+    public static final String PASSED_USERS = "passed";
+
+    public static final String STATEMENT = "statement";
+    public static final String CORRECT_STATEMENT_LIST = "correct";
+    public static final String QUESTION_NAME = "questionName";
+    public static final String QUESTION_ID = "questionId";
+    public static final String STATEMENT_ID = "statementId";
+    public static final String STATEMENT_LIST = "statementsList";
+
     // output data mapping to request
     public static final String NEW_TESTS = "newTests";
     public static final String POPULAR_TESTS = "popularTests";
     public static final String TEST_LIST = "tests";
+    public static final String CURRENT_TEST = "test";
+    public static final String TEST_CATEGORY = "testsCategory";
     public static final String TEST_CREATORS = "users";
     public static final String TEST_RESULTS = "results";
+
+    public static final String QUESTION_LIST = "questions";
 
     public static final String PAGINATION = "paginationList";
     public static final String CATEGORIES = "categories";

@@ -7,7 +7,7 @@
 
 <div class="d-flex justify-content-center container d-flex ">
     <div class="row justify-content-center align-self-center">
-        <form action="registration" method="post" class="text-center ">
+        <form action="registration" method="post" class="text-center">
 
           <h1 class="h3 mb-3 font-weight-normal error"><fmt:message key="text.registration"/></h1>
 
@@ -24,5 +24,4 @@
            <p class="text-danger"> <c:out value="${errorMsg}"/></p>
         </form>
     </div>
-
 </div>
