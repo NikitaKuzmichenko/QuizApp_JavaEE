@@ -5,33 +5,31 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="content" />
 
+    <c:if test="${empty tests}">
+        <div class="text-center">
+            <span style="font-size:18.0pt">
+               <fmt:message key="text.nothingHer"/>
+            </span>
+        </div>
+    </c:if>
 
     <c:forEach var="test" items="${tests}" varStatus="status">
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <div class="p-2 bg-light border mx-auto" style="width: 900px;">
-                        <c:out value="${test.getName()}"/>
-                        <br>
-                        <fmt:message key="text.passedNumber"/>
-                        <c:out value="${passed[status.index]}"/>
-                        <br>
-                        <fmt:message key="text.averageResult"/>
-                        <c:if test="${results[status.index] < 0}">
-                            <fmt:message key="text.noData"/>
-                        </c:if>
-                        <c:if test="${results[status.index] > 0}">
-                            <c:out value="${results[status.index]}"/>
-                        </c:if>
-                    </div>
-                 </li>
-                <li class="nav-item me-2">
-                    <a class="nav-link active " aria-current="page" "edit_test?testId=${test.getId()}">
-                        <img src="<c:url value="/img/pencil.png"/>" width="30" height="30"/>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <c:if test="${not test.isRemoved()}">
+            <a class="mx-auto link" href="take_test?testId=${test.getId()}">
+        </c:if>
+            <div class="p-2 bg-light border mx-auto" style="width: 900px;">
+                <c:out value="${test.getName()}"/>
+                <br>
+                  <fmt:message key="text.passingDate"/>
+                  <fmt:formatDate value="${date[status.index]}" type="date" pattern="dd-MMM-yyyy"/>
+                <br>
+                <fmt:message key="text.urResult"/>
+                 <c:out value="${results[status.index]}"/>
+                <br>
+            </div>
+        <c:if test="${not test.isRemoved()}">
+            </a>
+        </c:if>
     </c:forEach>
 
     <ul class="pagination justify-content-center ">

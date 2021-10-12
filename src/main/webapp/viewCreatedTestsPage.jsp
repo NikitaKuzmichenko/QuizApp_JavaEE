@@ -5,6 +5,14 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="content" />
 
+    <c:if test="${empty tests}">
+        <div class="text-center">
+            <span style="font-size:18.0pt">
+               <fmt:message key="text.nothingHer"/>
+            </span>
+        </div>
+    </c:if>
+
     <c:forEach var="test" items="${tests}" varStatus="status">
         <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
             <ul class="navbar-nav  ">

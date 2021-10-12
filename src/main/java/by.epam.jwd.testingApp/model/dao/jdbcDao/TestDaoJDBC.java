@@ -3,7 +3,6 @@ import by.epam.jwd.testingApp.entities.Test;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractTestDao;
-import by.epam.jwd.testingApp.model.dataBaseMapping.ResultMapping;
 import by.epam.jwd.testingApp.model.dataBaseMapping.TestMapping;
 
 import java.sql.*;
@@ -124,8 +123,9 @@ public class TestDaoJDBC implements AbstractTestDao {
         return result==1;
     }
 
+
     @Override
-    public int calculateTotalTestsNumber()throws DaoException{
+    public int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable)throws DaoException{
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -135,76 +135,27 @@ public class TestDaoJDBC implements AbstractTestDao {
         int result;
 
         try {
-            String updateSql = "SELECT COUNT(*) as " + resultColumnName
-                    + " FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.IS_REMOVED + " = 0 ;";
+            StringBuilder updateSql = new StringBuilder();
+            updateSql.append("SELECT COUNT(*) as " + resultColumnName);
+            updateSql.append(" FROM " + TestMapping.TABLE_NAME);
+            updateSql.append(" WHERE ");
+            if(rowName!=null) {
+                updateSql.append(rowName).append(" = ?");
+                if(onlyAvailable) {
+                    updateSql.append(" AND ");
+                }
+            }
 
-            statement = connection.prepareStatement(updateSql);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-            result = resultSet.getInt(resultColumnName);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
+            if(onlyAvailable){
+                updateSql.append(TestMapping.IS_REMOVED);
+                updateSql.append(" = 0");
+            }
+            updateSql.append(";");
 
-    @Override
-    public int calculateCategorizeTestsNumber(int categoryId)throws DaoException{
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        String resultColumnName = "result";
-        ResultSet resultSet;
-        int result;
-
-        try {
-            String updateSql = "SELECT COUNT(*) as " + resultColumnName
-                    + " FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.IS_REMOVED + " = 0"
-                    + " AND " + TestMapping.CATEGORY_ID + " = ?;";
-
-            statement = connection.prepareStatement(updateSql);
-            statement.setInt(1,categoryId);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-            result = resultSet.getInt(resultColumnName);
-
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public int calculateUsersTestsNumber(int userId)throws DaoException{
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        String resultColumnName = "result";
-        ResultSet resultSet;
-        int result;
-
-        try {
-            String updateSql = "SELECT COUNT(*) as " + resultColumnName
-                    + " FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.IS_REMOVED + " = 0"
-                    + " AND " + TestMapping.CREATOR_ID + " = ?;";
-
-            statement = connection.prepareStatement(updateSql);
-            statement.setInt(1,userId);
+            statement = connection.prepareStatement(updateSql.toString());
+            if(rowName!=null) {
+                statement.setInt(1, rowValue);
+            }
             resultSet = statement.executeQuery();
             resultSet.next();
             result = resultSet.getInt(resultColumnName);
@@ -231,8 +182,7 @@ public class TestDaoJDBC implements AbstractTestDao {
 
         try {
             String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.ID + " = ?"
-                    + " AND " + TestMapping.IS_REMOVED + " = 0;";
+                    + " WHERE " + TestMapping.ID + " = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();

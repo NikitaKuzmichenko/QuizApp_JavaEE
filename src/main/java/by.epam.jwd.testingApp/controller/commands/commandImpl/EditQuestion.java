@@ -56,7 +56,6 @@ public class EditQuestion implements Command {
                     questionService.update(question);
                 }
 
-
                 String[] statementsText = request.getParameterValues(AttributeNames.STATEMENT);
                 String[] statementsCorrect = request.getParameterValues(AttributeNames.CORRECT_STATEMENT_LIST);
                 List<String> isStatementsCorrect;

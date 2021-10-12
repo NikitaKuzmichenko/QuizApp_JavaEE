@@ -206,35 +206,6 @@ public class ResultDaoJDBC implements AbstractResultDao {
         return result;
     }
 
-    @Override
-    public Integer calculateAvgResultByUserId(int userId) throws DaoException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.takeConnection();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        int result;
-
-        try {
-            String sql = "SELECT AVG(" + ResultMapping.RESULT + ")"+
-                    " FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.USER_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1,userId);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-            result =  resultSet.getInt("AVG(" + ResultMapping.RESULT + ")");
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
-            pool.returnConnection(connection);
-        }
-        return result;
-    }
 
     @Override
     public Integer calculateAvgResultByTestId(int testId) throws DaoException {
@@ -266,8 +237,9 @@ public class ResultDaoJDBC implements AbstractResultDao {
         return result;
     }
 
+
     @Override
-    public Integer calculateResultsNumberByTestId(int testId) throws DaoException {
+    public Integer calculateResultsNumber(String rowName,int rowValue) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -276,11 +248,18 @@ public class ResultDaoJDBC implements AbstractResultDao {
         int result;
 
         try {
-            String sql = "SELECT COUNT(" + ResultMapping.RESULT + ")"+
-                    " FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1,testId);
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.append("SELECT COUNT(" + ResultMapping.RESULT + ")");
+            sqlBuilder.append(" FROM " + ResultMapping.TABLE_NAME);
+            if(rowName!=null){
+                sqlBuilder.append(" WHERE " + rowName + " = ?");
+            }
+            sqlBuilder.append(";");
+
+            statement = connection.prepareStatement(sqlBuilder.toString());
+            if(rowName!=null){
+                statement.setInt(1,rowValue);
+            }
             resultSet = statement.executeQuery();
             resultSet.next();
             result =  resultSet.getInt("COUNT(" + ResultMapping.RESULT + ")");

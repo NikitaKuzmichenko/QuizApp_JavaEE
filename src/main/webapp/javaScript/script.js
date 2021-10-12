@@ -15,8 +15,7 @@ function removeInput() {
 }
 
 function addInput() {
-
-    var str = '<input required id="statement' + (x) + '" type="text" name="statement" style="width: 500px;" class="link mx-5 my-1"/>' +
+    var str = '<input required maxlength="50" id="statement' + (x) + '" type="text" name="statement" style="width: 500px;" class="link mx-5 my-1"/>' +
      '<input type="checkbox" class="largerCheckbox mx-5" id="correct' + (x) + '" name="correct" value="' + (x) + '"/>' +
      '<img class="clickable mx-5" id="remove' + (x) + '" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>'
 

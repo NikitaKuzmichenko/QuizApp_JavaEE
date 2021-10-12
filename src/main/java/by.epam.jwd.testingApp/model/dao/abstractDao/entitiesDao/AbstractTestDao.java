@@ -14,11 +14,7 @@ public interface AbstractTestDao extends AbstractGenericDao<Test, Integer> {
 
     boolean removeTest(int testId)throws DaoException;
 
-    int calculateTotalTestsNumber()throws DaoException;
-
-    int calculateCategorizeTestsNumber(int categoryId)throws DaoException;
-
-    int calculateUsersTestsNumber(int userId)throws DaoException;
+    int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable)throws DaoException;
 
     Integer createAndGetId(Test entity) throws DaoException;
 }

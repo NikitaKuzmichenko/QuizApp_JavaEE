@@ -41,3 +41,11 @@ input.largerCheckbox
     width:500px;
     word-wrap:break-word;
 }
+
+.link {
+    width: 900px;
+    display:block;
+    text-decoration:
+    none;color: #000000;
+}
+

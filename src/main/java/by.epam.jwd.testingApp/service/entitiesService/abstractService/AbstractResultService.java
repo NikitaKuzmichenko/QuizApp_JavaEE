@@ -11,8 +11,8 @@ import java.util.List;
 public interface AbstractResultService extends AbstractEntitiesService<Result, Pair<Integer,Integer>> {
     Integer calculateRowsNumberByTestId(int testId) throws ServiceException;
     List<Integer> calculateRowsNumberByTestId(List<Test> testId) throws ServiceException;
+    Integer calculateRowsNumberByUserId(int userId) throws ServiceException;
     Integer calculateAvgResultByTestId(int testId) throws ServiceException;
-    Integer calculateAvgResultByUserId(int userId)throws ServiceException;
     List<Result> selectByTestId(int testId) throws ServiceException;
     List<Result> selectByUserId(int userId, int offset,int limit) throws ServiceException;
 

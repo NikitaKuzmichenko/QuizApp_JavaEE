@@ -7,6 +7,7 @@ import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractResultDao;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
+import by.epam.jwd.testingApp.model.dataBaseMapping.ResultMapping;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractResultService;
 
 import java.util.ArrayList;
@@ -59,7 +60,17 @@ public class ResultService implements AbstractResultService {
     public Integer calculateRowsNumberByTestId(int testId) throws ServiceException{
         try {
             return DaoFactory.getInstance().getResultDao().
-                    calculateResultsNumberByTestId(testId);
+                    calculateResultsNumber(ResultMapping.TEST_ID,testId);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
+
+    @Override
+    public Integer calculateRowsNumberByUserId(int userId) throws ServiceException{
+        try {
+            return DaoFactory.getInstance().getResultDao().
+                    calculateResultsNumber(ResultMapping.USER_ID,userId);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -68,13 +79,8 @@ public class ResultService implements AbstractResultService {
     @Override
     public List<Integer> calculateRowsNumberByTestId(List<Test> testIds) throws ServiceException{
         List<Integer> result = new LinkedList<>();
-        try {
-            for(Test test:testIds) {
-                result.add(DaoFactory.getInstance().getResultDao().
-                        calculateResultsNumberByTestId(test.getId()));
-            }
-        } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+        for(Test test:testIds) {
+            result.add(calculateRowsNumberByTestId(test.getId()));
         }
         return result;
     }
@@ -84,16 +90,6 @@ public class ResultService implements AbstractResultService {
         try {
             return DaoFactory.getInstance().getResultDao().
                     calculateAvgResultByTestId(testId);
-        } catch (DaoException e) {
-            throw new ServiceException("msg",e);
-        }
-    }
-
-    @Override
-    public Integer calculateAvgResultByUserId(int userId)throws ServiceException{
-        try {
-            return DaoFactory.getInstance().getResultDao().
-                    calculateAvgResultByUserId(userId);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -125,7 +121,7 @@ public class ResultService implements AbstractResultService {
         try {
             AbstractResultDao dao= DaoFactory.getInstance().getResultDao();
             for(Test test : tests) {
-                if (dao.calculateResultsNumberByTestId(test.getId()) == 0) {
+                if (dao.calculateResultsNumber(ResultMapping.TEST_ID,test.getId()) == 0) {
                     results.add(-1d);
                 } else {
                     results.add((double) dao.calculateAvgResultByTestId(test.getId()) / 100d);

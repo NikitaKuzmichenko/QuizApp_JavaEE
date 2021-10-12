@@ -13,10 +13,8 @@ public interface AbstractResultDao extends AbstractGenericDao<Result, Pair<Integ
 
     List<Result> selectByTestId(int testId) throws DaoException;
 
-    Integer calculateAvgResultByUserId(int userId) throws DaoException;
-
     Integer calculateAvgResultByTestId(int testId) throws DaoException;
 
-    Integer calculateResultsNumberByTestId(int testId) throws DaoException;
+    Integer calculateResultsNumber(String rowName,int rowValue) throws DaoException;
 
 }

@@ -63,22 +63,33 @@
         </div>
     </nav>
     <br>
-    <c:forEach var="test" items="${tests}" varStatus="status">
-        <div class="p-2 bg-light border mx-auto" style="width: 900px;">
-            <c:out value="${test.getName()}"/>
-            <br>
-              <fmt:message key="text.creator"/>
-            <c:out value="${users[status.index].getName()}"/>
-            <br>    
-            <fmt:message key="text.averageResult"/>
-            <c:if test="${results[status.index] < 0}">
-                <fmt:message key="text.noData"/>
-            </c:if>
-            <c:if test="${results[status.index] > 0}">
-                <c:out value="${results[status.index]}"/>
-            </c:if>
-            <br>
+
+    <c:if test="${empty tests}">
+        <div class="text-center">
+            <span style="font-size:18.0pt">
+               <fmt:message key="text.nothingHer"/>
+            </span>
         </div>
+    </c:if>
+
+    <c:forEach var="test" items="${tests}" varStatus="status">
+        <a class="mx-auto link" href="take_test?testId=${test.getId()}">
+            <div class="p-2 bg-light border mx-auto" style="width: 900px;">
+                <c:out value="${test.getName()}"/>
+                <br>
+                  <fmt:message key="text.creator"/>
+                <c:out value="${users[status.index].getName()}"/>
+                <br>
+                <fmt:message key="text.averageResult"/>
+                <c:if test="${results[status.index] < 0}">
+                    <fmt:message key="text.noData"/>
+                </c:if>
+                <c:if test="${results[status.index] > 0}">
+                    <c:out value="${results[status.index]}"/>
+                </c:if>
+                <br>
+            </div>
+        </a>
     </c:forEach>
     <br>
 

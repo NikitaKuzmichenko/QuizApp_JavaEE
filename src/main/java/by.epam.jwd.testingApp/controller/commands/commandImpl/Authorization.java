@@ -25,6 +25,8 @@ public class Authorization implements Command {
 
     public static final String INVALID_USER = "user.notExist";
 
+    public static final int SESSION_TIME_INTERVAL = 60 * 60 * 2;
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         try {
@@ -56,6 +58,8 @@ public class Authorization implements Command {
                             cookieManager.removeCookie(request, AttributeNames.USER_ID);
                             cookieManager.rewriteCookie(request, response);
                         }
+
+                        session.setMaxInactiveInterval(SESSION_TIME_INTERVAL);
 
                         TransitionManager.newInstance().getTransitionByRedirect().
                                 doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);

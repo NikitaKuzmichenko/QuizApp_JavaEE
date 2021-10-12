@@ -21,6 +21,7 @@ public class AuthenticationFilter implements Filter {
 
     public static final String IS_ACTIVE_PARAM = "active";
     public static final String VALUE_FOR_ACTIVE = "TRUE";
+
     public static final int SESSION_TIME_INTERVAL = 60 * 60 * 2;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -38,19 +39,17 @@ public class AuthenticationFilter implements Filter {
             try {
                 HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-                HttpSession session = request.getSession();
-                session.setMaxInactiveInterval(SESSION_TIME_INTERVAL);
-
                 Parser<Integer> userIdParser = new UserIdParser();
                 Integer userId = userIdParser.parsing(request);
-                if(userId == null){ // not specified in session -> check cookies
+                if(userId == null){
                     CookieManager cookieManager = CookieManager.getInstance();
                     String temp = cookieManager.findValueByName(request,AttributeNames.USER_ID);
                     if(temp == null) {
                         userId=null;
                     }else{
                         userId = Integer.parseInt(temp);
-                        session.setAttribute(AttributeNames.USER_ID,userId);
+                        request.getSession().setMaxInactiveInterval(SESSION_TIME_INTERVAL);
+                        request.getSession().setAttribute(AttributeNames.USER_ID,userId);
                     }
                 }
 

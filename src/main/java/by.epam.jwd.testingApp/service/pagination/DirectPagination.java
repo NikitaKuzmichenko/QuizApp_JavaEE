@@ -2,6 +2,7 @@ package by.epam.jwd.testingApp.service.pagination;
 
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,12 +27,15 @@ public class DirectPagination{
 
     public List<Integer> calculatePagination(int currentPage, int unitNumber,int limitOnPage,int paginationMaxSize) {
 
-        List<Integer> result = new LinkedList<>();
+        List<Integer> result = new ArrayList<>();
         int pagesNumber = (int)Math.ceil((double)unitNumber/limitOnPage);
 
         if(pagesNumber < paginationMaxSize){
             for(int i = 0; i < pagesNumber; i++){
                 result.add(i + 1);
+            }
+            if(result.size() == 1){
+                result.clear();
             }
             return  result;
         }

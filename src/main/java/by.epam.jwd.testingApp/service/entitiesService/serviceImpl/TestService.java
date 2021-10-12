@@ -148,8 +148,12 @@ public class TestService implements AbstractTestService {
     @Override
     public int calculateTotalTestsNumber(Integer categoryId) throws ServiceException{
         try {
-            if(categoryId==null) return DaoFactory.getInstance().getTestDao().calculateTotalTestsNumber();
-            return DaoFactory.getInstance().getTestDao().calculateCategorizeTestsNumber(categoryId);
+            if(categoryId==null) {
+                return DaoFactory.getInstance().getTestDao().
+                        calculateTestsNumber(0, null, true);
+            }
+            return DaoFactory.getInstance().getTestDao().
+                    calculateTestsNumber(categoryId,TestMapping.CATEGORY_ID,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -158,8 +162,12 @@ public class TestService implements AbstractTestService {
     @Override
     public int calculateUsersTotalTestsNumber(Integer userId) throws ServiceException{
         try {
-            if(userId==null) return DaoFactory.getInstance().getTestDao().calculateTotalTestsNumber();
-            return DaoFactory.getInstance().getTestDao().calculateUsersTestsNumber(userId);
+            if(userId==null) {
+                return DaoFactory.getInstance().getTestDao().
+                        calculateTestsNumber(0, null, true);
+            }
+            return DaoFactory.getInstance().getTestDao().
+                    calculateTestsNumber(userId,TestMapping.CREATOR_ID,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
