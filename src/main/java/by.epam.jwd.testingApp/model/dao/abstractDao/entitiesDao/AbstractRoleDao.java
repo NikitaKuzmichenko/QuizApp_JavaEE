@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao;
 
-import by.epam.jwd.testingApp.entities.Role;
+import by.epam.jwd.testingApp.entity.Role;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.dao.abstractDao.genericDao.AbstractGenericDao;
 

@@ -36,7 +36,7 @@
                     <input type="checkbox" class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
                 </c:if>
                 <a href="delete_statement?statementId=${statement.getId()}">
-                <img class="mx-5" class ="clickable" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>
+                    <img class="mx-5" class ="clickable" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>
                 </a>
             </nav>
         </c:forEach>

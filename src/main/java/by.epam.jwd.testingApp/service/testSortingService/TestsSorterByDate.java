@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.testSortingService;
 
-import by.epam.jwd.testingApp.entities.Test;
+import by.epam.jwd.testingApp.entity.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 

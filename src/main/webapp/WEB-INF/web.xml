@@ -10,7 +10,7 @@
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
-    <filter-class>by.epam.jwd.testingApp.service.filters.EncodingFilter</filter-class>
+    <filter-class>by.epam.jwd.testingApp.service.filter.EncodingFilter</filter-class>
     <init-param>
       <param-name>active</param-name>
       <param-value>true</param-value>
@@ -24,7 +24,7 @@
 
   <filter>
     <filter-name>LocalizationFilter</filter-name>
-    <filter-class>by.epam.jwd.testingApp.service.filters.LocalizationFilter</filter-class>
+    <filter-class>by.epam.jwd.testingApp.service.filter.LocalizationFilter</filter-class>
     <init-param>
       <param-name>active</param-name>
       <param-value>true</param-value>
@@ -39,7 +39,7 @@
 
   <filter>
     <filter-name>SideBarCreator</filter-name>
-    <filter-class>by.epam.jwd.testingApp.service.filters.SideBarCreator</filter-class>
+    <filter-class>by.epam.jwd.testingApp.service.filter.SideBarCreator</filter-class>
     <init-param>
       <param-name>active</param-name>
       <param-value>true</param-value>
@@ -53,7 +53,7 @@
 
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
-    <filter-class>by.epam.jwd.testingApp.service.filters.AuthenticationFilter</filter-class>
+    <filter-class>by.epam.jwd.testingApp.service.filter.AuthenticationFilter</filter-class>
     <init-param>
       <param-name>active</param-name>
       <param-value>true</param-value>
@@ -67,7 +67,7 @@
 
   <filter>
     <filter-name>AccessLvlCheckFilter</filter-name>
-    <filter-class>by.epam.jwd.testingApp.service.filters.AccessLvlCheckFilter</filter-class>
+    <filter-class>by.epam.jwd.testingApp.service.filter.AccessLvlCheckFilter</filter-class>
     <init-param>
       <param-name>active</param-name>
       <param-value>true</param-value>

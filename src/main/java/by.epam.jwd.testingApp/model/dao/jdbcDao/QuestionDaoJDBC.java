@@ -1,5 +1,5 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
-import by.epam.jwd.testingApp.entities.Question;
+import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractQuestionDao;
@@ -47,6 +47,38 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {/* write in logs*/}
+            pool.returnConnection(connection);
+        }
+        return result;
+    }
+
+    @Override
+    public int calculateQuestionNumber(int testId)throws DaoException{
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.takeConnection();
+
+        PreparedStatement statement = null;
+        String resultColumnName = "result";
+        ResultSet resultSet;
+        int result;
+
+        try {
+            String updateSql = "SELECT COUNT(*) as " + resultColumnName +
+            " FROM " + QuestionMapping.TABLE_NAME +
+            " WHERE " + QuestionMapping.TEST_ID + " = ?;";
+
+            statement = connection.prepareStatement(updateSql);
+            statement.setInt(1, testId);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            result = resultSet.getInt(resultColumnName);
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
                 if (statement != null) statement.close();
             } catch (SQLException e) {/* write in logs*/}
             pool.returnConnection(connection);

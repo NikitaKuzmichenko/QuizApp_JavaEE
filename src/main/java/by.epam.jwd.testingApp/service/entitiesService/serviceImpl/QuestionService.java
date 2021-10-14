@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.entitiesService.serviceImpl;
 
-import by.epam.jwd.testingApp.entities.Question;
+import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;
@@ -59,11 +59,22 @@ public class QuestionService implements AbstractQuestionService {
             throw new ServiceException("msg",e);
         }
     }
+
     @Override
     public List<Question> selectEntityByTestId(int testId)throws ServiceException {
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     selectByTestId(testId,Integer.MAX_VALUE,0);
+        } catch (DaoException e) {
+            throw new ServiceException("msg",e);
+        }
+    }
+
+    @Override
+    public int calculateQuestionNumber(int testId)throws ServiceException{
+        try {
+            return DaoFactory.getInstance().getQuestionDao().
+                    calculateQuestionNumber(testId);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }

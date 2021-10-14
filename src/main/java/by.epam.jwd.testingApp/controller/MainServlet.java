@@ -1,7 +1,6 @@
 package by.epam.jwd.testingApp.controller;
 
-import by.epam.jwd.testingApp.controller.commands.CommandProvider;
-import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
+import by.epam.jwd.testingApp.controller.command.CommandProvider;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 
 import javax.servlet.ServletException;

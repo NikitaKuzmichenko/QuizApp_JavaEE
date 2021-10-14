@@ -1,10 +1,6 @@
 package by.epam.jwd.testingApp.service.validationService.entitiesValidator;
 
-import by.epam.jwd.testingApp.entities.User;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.AbstractStringValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.EmailValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.NameValidator;
-import by.epam.jwd.testingApp.service.validationService.componentValidator.PasswordValidator;
+import by.epam.jwd.testingApp.entity.User;
 
 public class EntitiesValidatorsProvider {
 

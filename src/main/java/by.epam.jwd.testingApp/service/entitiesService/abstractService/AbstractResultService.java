@@ -1,8 +1,8 @@
 package by.epam.jwd.testingApp.service.entitiesService.abstractService;
 
-import by.epam.jwd.testingApp.entities.Pair;
-import by.epam.jwd.testingApp.entities.Result;
-import by.epam.jwd.testingApp.entities.Test;
+import by.epam.jwd.testingApp.entity.Pair;
+import by.epam.jwd.testingApp.entity.Result;
+import by.epam.jwd.testingApp.entity.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.AbstractEntitiesService;
 

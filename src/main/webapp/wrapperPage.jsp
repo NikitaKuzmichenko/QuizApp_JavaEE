@@ -43,7 +43,7 @@
                                     <tbody>
                                         <c:forEach var="test" items="${newTests}">
                                             <tr>
-                                                <td scope="row" ><a href="take_test?testId=${test.getId()}"
+                                                <td scope="row" ><a href="take_test?passingTest=${test.getId()}"
                                                                     class="nav-link link-dark enable-action">
                                                     <c:out value="${test.getName()}"/>
                                                 </td>
@@ -68,7 +68,7 @@
                                         <c:forEach var="test" items="${popularTests}">
                                             <tr>
                                                 <td scope="row" >
-                                                    <a href="take_test?testId=${test.getId()}"class="nav-link link-dark enable-action"/>
+                                                    <a href="take_test?passingTest=${test.getId()}"class="nav-link link-dark enable-action"/>
                                                     <c:out value="${test.getName()}"/>
                                                 </td>
                                            </tr>

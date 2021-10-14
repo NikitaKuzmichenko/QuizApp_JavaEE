@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.entitiesService.serviceImpl;
 
-import by.epam.jwd.testingApp.entities.Statement;
+import by.epam.jwd.testingApp.entity.Statement;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.factory.DaoFactory;

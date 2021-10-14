@@ -73,7 +73,7 @@
     </c:if>
 
     <c:forEach var="test" items="${tests}" varStatus="status">
-        <a class="mx-auto link" href="take_test?testId=${test.getId()}">
+        <a class="mx-auto link" href="take_test?passingTest=${test.getId()}">
             <div class="p-2 bg-light border mx-auto" style="width: 900px;">
                 <c:out value="${test.getName()}"/>
                 <br>

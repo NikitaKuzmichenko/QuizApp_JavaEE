@@ -1,7 +1,7 @@
 package by.epam.jwd.testingApp.service.entitiesService.serviceImpl;
 
-import by.epam.jwd.testingApp.entities.Test;
-import by.epam.jwd.testingApp.entities.User;
+import by.epam.jwd.testingApp.entity.Test;
+import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;

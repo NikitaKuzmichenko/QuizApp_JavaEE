@@ -1,5 +1,5 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
-import by.epam.jwd.testingApp.entities.User;
+import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;

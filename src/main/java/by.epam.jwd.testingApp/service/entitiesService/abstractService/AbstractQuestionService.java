@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.entitiesService.abstractService;
 
-import by.epam.jwd.testingApp.entities.Question;
+import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbstractService.AbstractEntitiesService;
 
@@ -10,6 +10,7 @@ public interface AbstractQuestionService extends AbstractEntitiesService<Questio
 
     List<Question> selectEntityByTestId(int questionId, int offset,int limit)throws ServiceException;
     List<Question> selectEntityByTestId(int questionId)throws ServiceException;
+    int calculateQuestionNumber(int testId)throws ServiceException;
 
     Integer createAndGetId(Question entity) throws ServiceException;
 }

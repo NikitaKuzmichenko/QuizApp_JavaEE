@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.service.validationService.entitiesValidator;
 
-import by.epam.jwd.testingApp.entities.User;
+import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.validationService.componentValidator.ComponentValidatorsProvider;

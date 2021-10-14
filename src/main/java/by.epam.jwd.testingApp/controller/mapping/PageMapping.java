@@ -24,5 +24,17 @@ public final class PageMapping {
     public static final String EDIT_QUESTION_PATH = "controller/edit_question";
     public static final String EDIT_QUESTION = "editQuestionPage";
 
+    public static final String VIEW_RESULTS_PATH = "controller/view_results";
+    public static final String VIEW_RESULTS = "viewResultsPage";
+
+    public static final String START_TEST_PATH = "controller/start_test";
+    public static final String START_TEST = "startTestPage";
+
+    public static final String FINISH_TEST_PATH = "controller/finish_test";
+    public static final String FINISH_TEST = "finishTestPage";
+
+    public static final String GET_QUESTION_PATH = "controller/get_question";
+    public static final String GET_QUESTION = "getQuestionPage";
+
     private PageMapping(){}
 }

@@ -5,6 +5,7 @@ import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.Categor
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.DirectionParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.PageNumberParser;
+import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.PassingTestParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.QuestionIdParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.SortTypeParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.TestIdParser;
@@ -20,6 +21,7 @@ public class ParserProvider {
     private Parser<Integer> categoryParser;
     private Parser<Integer> testIdParser;
     private Parser<Integer> questionIdParser;
+    private Parser<Integer> passingTestParser;
     private Parser<Boolean> sortDirectionParser;
     private Parser<String> languageParser;
     private Parser<String> sortTypeParser;
@@ -34,6 +36,7 @@ public class ParserProvider {
         sortTypeParser = new SortTypeParser();
         testIdParser = new TestIdParser();
         questionIdParser = new QuestionIdParser();
+        passingTestParser = new PassingTestParser();
     }
 
     public static ParserProvider newInstance() {
@@ -47,6 +50,10 @@ public class ParserProvider {
             }
         }
         return localInstance;
+    }
+
+    public Parser<Integer> getPassingTestParser() {
+        return passingTestParser;
     }
 
     public Parser<Integer> getQuestionIdParser() {
