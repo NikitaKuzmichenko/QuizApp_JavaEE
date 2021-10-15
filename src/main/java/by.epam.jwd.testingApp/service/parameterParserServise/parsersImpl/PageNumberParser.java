@@ -18,14 +18,14 @@ public class PageNumberParser implements Parser<Integer> {
         String parameter = request.getParameter(AttributeNames.PAGE_NUMBER);
 
         if(parameter!=null){
-            return Integer.parseInt(parameter)-1;
+            return Integer.parseInt(parameter);
         }
 
         HttpSession session = request.getSession();
         Object attribute = session.getAttribute(AttributeNames.PAGE_NUMBER);
         if(attribute != null) {
-            return Integer.parseInt(attribute.toString()) - 1;
+            return Integer.parseInt(attribute.toString());
         }
-        return STARTING_PAGE - 1;
+        return STARTING_PAGE;
     }
 }

@@ -22,10 +22,10 @@
                              <a class="btn btn-outline-success" href="create_test" type="submit"><fmt:message key="button.create"/></a>
                         </form>
                         <form class="d-flex mx-3">
-                             <a class="btn btn-outline-success" href="view_my_tests" type="submit"><fmt:message key="button.createdByMe"/></a>
+                             <a class="btn btn-outline-success" href="view_my_tests?num=0" type="submit"><fmt:message key="button.createdByMe"/></a>
                         </form>
                         <form class="d-flex mx-3">
-                             <a class="btn btn-outline-success" href="view_results" type="submit"><fmt:message key="button.viewPasses"/></a>
+                             <a class="btn btn-outline-success" href="view_results?num=0" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
 
@@ -100,7 +100,7 @@
                 <a class="page-link"><c:out value="..."/></a>
                 </c:if>
                 <c:if test="${pagination > 0 }">
-                    <a href="page?num=${pagination}" class="page-link"><c:out value="${pagination}"/></a>
+                    <a href="page?num=${pagination - 1}" class="page-link"><c:out value="${pagination}"/></a>
                 </c:if>
             </li>
         </c:forEach>

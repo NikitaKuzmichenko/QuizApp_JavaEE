@@ -18,7 +18,7 @@
                          <img src="<c:url value="/img/logo.png"/>" width="40" height="40"/>
                      </li>
                     <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="page"><fmt:message key="text.siteName"/></a>
+                        <a class="nav-link active " aria-current="page" href="page?num=0"><fmt:message key="text.siteName"/></a>
                     </li>
                 </ul>
                 <c:if test="${not empty userRole}">

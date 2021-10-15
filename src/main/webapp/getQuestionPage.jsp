@@ -21,18 +21,18 @@
             </button>
         </div>
     </div>
-        <span style="font-size:16.0pt;" class="d-flex justify-content-center"><c:out value="${questionName}"/></span>
 
-        <c:forEach var="statement" items="${statementsList}" varStatus="status">
-            <nav class="navbar navbar-expand-lg text-center" style="font-size:14.0pt ">
-                <c:if test="${statement.isCorrect()}">
-                    <input type="checkbox" checked class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
-                </c:if>
-                <c:if test="${not statement.isCorrect()}">
-                    <input type="checkbox" class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
-                </c:if>
-                 <span class="mx-2" > <c:out value="${statement.getText()}"/></span>
-            </nav>
-        </c:forEach>
+    <span style="font-size:16.0pt;" class="d-flex justify-content-center"><c:out value="${questionName}"/></span>
 
+    <c:forEach var="statement" items="${statementsList}" varStatus="status">
+        <nav class="navbar navbar-expand-lg text-center" style="font-size:14.0pt ">
+            <c:if test="${statement.isCorrect()}">
+                <input type="checkbox" checked class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
+            </c:if>
+            <c:if test="${not statement.isCorrect()}">
+                <input type="checkbox" class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
+            </c:if>
+             <span class="mx-2" > <c:out value="${statement.getText()}"/></span>
+        </nav>
+    </c:forEach>
 </form>

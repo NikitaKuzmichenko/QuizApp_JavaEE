@@ -39,7 +39,7 @@
                 <a class="page-link"><c:out value="..."/></a>
                 </c:if>
                 <c:if test="${pagination > 0 }">
-                    <a href="view_my_tests?num=${pagination}" class="page-link"><c:out value="${pagination}"/></a>
+                    <a href="view_my_tests?num=${pagination - 1}" class="page-link"><c:out value="${pagination}"/></a>
                 </c:if>
             </li>
         </c:forEach>

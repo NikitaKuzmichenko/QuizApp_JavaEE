@@ -22,7 +22,7 @@ import java.util.List;
 public class ViewMyTests implements Command {
 
     public static final String UNDEFINED_USER = "test.undefinedUser";
-    public static final int LIMIT_ON_PAGE = 5;
+    public static final int LIMIT_ON_PAGE = 4;
     public static final int PAGINATION_MAX_SIZE = 7;
 
     @Override
@@ -33,9 +33,6 @@ public class ViewMyTests implements Command {
 
             ParserProvider parserProvider = ParserProvider.newInstance();
             EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
-
-            int pageNumber = parserProvider.getPageNumberParser().parsing(request);
-            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
 
             Integer userId = parserProvider.getUserIdParser().parsing(request);
             if(userId==null){
@@ -48,15 +45,17 @@ public class ViewMyTests implements Command {
                 return;
             }
 
-            List<Test> testList = factory.getTestService().
-                    selectByCreatorId(userId,pageNumber*LIMIT_ON_PAGE,true,LIMIT_ON_PAGE );
-
+            int pageNumber = parserProvider.getPageNumberParser().parsing(request);
             int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
-            if(pageNumber > testsNumber/LIMIT_ON_PAGE){
-                pageNumber = testsNumber/LIMIT_ON_PAGE;
+            if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
+                pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;
             }else if(pageNumber < 0){
                 pageNumber = 0;
             }
+            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
+
+            List<Test> testList = factory.getTestService().
+                    selectByCreatorId(userId,pageNumber*LIMIT_ON_PAGE,true,LIMIT_ON_PAGE );
 
             request.setAttribute(AttributeNames.TEST_LIST,
                     testList);

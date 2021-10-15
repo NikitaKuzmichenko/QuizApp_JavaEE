@@ -48,10 +48,15 @@ public class ViewResults  implements Command {
                 return;
             }
 
-            int testsNumber = factory.getResultService().calculateRowsNumberByTestId(userId);
 
             int pageNumber = parserProvider.getPageNumberParser().parsing(request);
-            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
+            int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
+            if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
+                pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;
+            }else if(pageNumber < 0){
+                pageNumber = 0;
+            }
+            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
 
             List<Result> userResults = factory.getResultService().
                     selectByUserId(userId,pageNumber * LIMIT_ON_PAGE ,LIMIT_ON_PAGE);

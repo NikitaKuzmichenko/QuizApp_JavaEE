@@ -1,9 +1,6 @@
 package by.epam.jwd.testingApp.service.pagination;
 
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class DirectPagination{

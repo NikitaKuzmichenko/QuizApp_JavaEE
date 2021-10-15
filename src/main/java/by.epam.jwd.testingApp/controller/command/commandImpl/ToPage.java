@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ToPage implements Command {
 
-    public final static int STARTING_PAGE = 1;
+    public final static int STARTING_PAGE = 0;
     public static final int LIMIT_ON_PAGE = 5;
     public static final int PAGINATION_MAX_SIZE = 7;
 
@@ -73,24 +73,25 @@ public class ToPage implements Command {
         session.setAttribute(AttributeNames.SORT_TYPE, sortType);
 
         int pageNumber = parserProvider.getPageNumberParser().parsing(request);
-        session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
+        session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
 
         try {
-
-            int testsNumber = calculateTestsNumber(request);
 
             if(request.getParameter(AttributeNames.CATEGORY)!=null){
                 session.setAttribute(AttributeNames.PAGE_NUMBER, STARTING_PAGE);
             }
 
-            if(pageNumber > testsNumber/LIMIT_ON_PAGE){
-                pageNumber = testsNumber/LIMIT_ON_PAGE;
+            int testsNumber = calculateTestsNumber(request);
+            if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
+                pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;
             }else if(pageNumber < 0){
                 pageNumber = 0;
             }
+            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
 
             TestsSorter sorter = TestsSorterProvider.newInstance().getBySortType(sortType);
             List<Test> testList = sorter.doSorting(categoryId,pageNumber*LIMIT_ON_PAGE,direction,LIMIT_ON_PAGE);
+
 
             EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
 
