@@ -32,25 +32,30 @@ public class ViewResults  implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
+        HttpSession session = request.getSession();
+        ParserProvider parserProvider = ParserProvider.newInstance();
+
+        Integer userId = parserProvider.getUserIdParser().parsing(request);
+        if(userId==null){
+            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
+            ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+            request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(UNDEFINED_USER));
+
+            TransitionManager.newInstance().getTransitionByForward().
+                    doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
+            return;
+        }
+
+        List<Test> testList = new ArrayList<>();
+        List<Double> rating = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+        int pageNumber;
+        int testsNumber;
         try {
-            EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
-            HttpSession session = request.getSession();
-            ParserProvider parserProvider = ParserProvider.newInstance();
-
-            Integer userId = parserProvider.getUserIdParser().parsing(request);
-            if(userId==null){
-                String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
-                ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
-                request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(UNDEFINED_USER));
-
-                TransitionManager.newInstance().getTransitionByForward().
-                        doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
-                return;
-            }
-
-
-            int pageNumber = parserProvider.getPageNumberParser().parsing(request);
-            int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
+            pageNumber = parserProvider.getPageNumberParser().parsing(request);
+            testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
             if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
                 pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;
             }else if(pageNumber < 0){
@@ -61,12 +66,7 @@ public class ViewResults  implements Command {
             List<Result> userResults = factory.getResultService().
                     selectByUserId(userId,pageNumber * LIMIT_ON_PAGE ,LIMIT_ON_PAGE);
 
-
-            List<Test> testList = new ArrayList<>();
-            List<Double> rating = new ArrayList<>();
-            List<Date> dates = new ArrayList<>();
             Test test;
-
             AbstractTestService testService = factory.getTestService();
             for(Result result: userResults){
                 test = testService.selectEntityById(result.getTestId());
@@ -76,18 +76,18 @@ public class ViewResults  implements Command {
                     testList.add(test);
                 }
             }
-
-            request.setAttribute(AttributeNames.DATES, dates);
-            request.setAttribute(AttributeNames.TEST_RESULTS, rating);
-            request.setAttribute(AttributeNames.TEST_LIST, testList);
-            request.setAttribute(AttributeNames.PAGINATION,
-                    DirectPagination.newInstance().
-                            calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
-
-            TransitionManager.newInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.VIEW_RESULTS);
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
+
+        request.setAttribute(AttributeNames.DATES, dates);
+        request.setAttribute(AttributeNames.TEST_RESULTS, rating);
+        request.setAttribute(AttributeNames.TEST_LIST, testList);
+        request.setAttribute(AttributeNames.PAGINATION,
+                DirectPagination.newInstance().
+                        calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
+
+        TransitionManager.newInstance().getTransitionByForward().
+                doTransition(request, response, PageMapping.VIEW_RESULTS);
     }
 }

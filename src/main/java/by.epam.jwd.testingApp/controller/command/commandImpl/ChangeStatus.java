@@ -2,7 +2,6 @@ package by.epam.jwd.testingApp.controller.command.commandImpl;
 
 import by.epam.jwd.testingApp.controller.command.Command;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
-import by.epam.jwd.testingApp.controller.transitionManager.TransitionByRedirect;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
@@ -24,11 +23,7 @@ public class ChangeStatus implements Command {
             try {
                 AbstractTestService testService = EntitiesServiceFactory.getInstance().getTestService();
                 Test test = testService.selectEntityById(testId);
-                if(test.isAvailable()){
-                    test.setAvailable(false);
-                }else{
-                    test.setAvailable(true);
-                }
+                test.setAvailable(!test.isAvailable());
                 testService.update(test);
             } catch (ServiceException e) {
                 throw new ServletException(e);

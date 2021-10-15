@@ -22,31 +22,32 @@ import java.util.List;
 public class EditQuestion implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
 
-            Integer questionId = ParserProvider.newInstance().getQuestionIdParser().parsing(request);
-            if(questionId==null){
+        Integer questionId = ParserProvider.newInstance().getQuestionIdParser().parsing(request);
+        if(questionId==null){
+            TransitionManager.newInstance().getTransitionByRedirect().
+                    doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
+            return;
+        }
+
+        EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
+
+        if(request.getMethod().equals(POST_METHOD)) {
+
+            Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
+            if (testId == null) {
                 TransitionManager.newInstance().getTransitionByRedirect().
-                        doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
+                        doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
                 return;
             }
 
-            EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
-
-            if(request.getMethod().equals("POST")){
-
-                Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
-                if(testId==null){
-                    TransitionManager.newInstance().getTransitionByRedirect().
-                            doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
-                    return;
-                }
+            try {
 
                 String title = request.getParameter(AttributeNames.QUESTION_NAME);
-                if(title!=null) {
-                    AbstractQuestionService  questionService =  factory.getQuestionService();
+                if (title != null) {
+                    AbstractQuestionService questionService = factory.getQuestionService();
                     Question question = questionService.selectEntityById(questionId);
-                    if(question==null){
+                    if (question == null) {
                         TransitionManager.newInstance().getTransitionByRedirect().
                                 doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
                         return;
@@ -58,24 +59,23 @@ public class EditQuestion implements Command {
 
                 String[] statementsCorrect = request.getParameterValues(AttributeNames.CORRECT_STATEMENT_LIST);
                 List<String> isStatementsCorrect;
-                if(statementsCorrect==null){
+                if (statementsCorrect == null) {
                     isStatementsCorrect = null;
-                }else {
+                } else {
                     isStatementsCorrect = Arrays.asList(statementsCorrect);
                 }
 
                 List<Statement> statements = factory.getStatementService().selectByQuestionId(questionId);
-                if(statements!=null){
+                if (statements != null) {
                     AbstractStatementService statementService = factory.getStatementService();
-                    for(Statement statement:statements){
-                        if(isStatementsCorrect!=null && isStatementsCorrect.contains(String.valueOf(statement.getId()))){
-                            if(!statement.isCorrect()){
+                    for (Statement statement : statements) {
+                        if (isStatementsCorrect != null && isStatementsCorrect.contains(String.valueOf(statement.getId()))) {
+                            if (!statement.isCorrect()) {
                                 statement.setCorrect(true);
                                 statementService.update(statement);
                             }
-                        }
-                        else{
-                            if(statement.isCorrect()){
+                        } else {
+                            if (statement.isCorrect()) {
                                 statement.setCorrect(false);
                                 statementService.update(statement);
                             }
@@ -84,39 +84,44 @@ public class EditQuestion implements Command {
                 }
 
                 String[] statementsText = request.getParameterValues(AttributeNames.STATEMENT);
-                if(statementsText!=null) {
+                if (statementsText != null) {
                     AbstractStatementService statementService = factory.getStatementService();
                     Statement statement = new Statement();
                     statement.setQuestionId(questionId);
-                    for(int i=0;i<statementsText.length;i++){
+                    for (int i = 0; i < statementsText.length; i++) {
                         statement.setText(statementsText[i]);
-                        statement.setCorrect(isStatementsCorrect!=null && isStatementsCorrect.contains(String.valueOf(i)));
+                        statement.setCorrect(isStatementsCorrect != null && isStatementsCorrect.contains(String.valueOf(i)));
                         statementService.create(statement);
                     }
                 }
 
-                TransitionManager.newInstance().getTransitionByRedirect().
-                        doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
-                return;
+            } catch (ServiceException e) {
+                throw new ServletException(e);
             }
+
+            TransitionManager.newInstance().getTransitionByRedirect().
+                    doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
+            return;
+        }
+
+        try {
 
             Question question = factory.getQuestionService().selectEntityById(questionId);
-            if(question == null){
+            if (question == null) {
                 TransitionManager.newInstance().getTransitionByRedirect().
                         doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
             }
 
-            request.getSession().setAttribute(AttributeNames.QUESTION_ID,questionId);
+            request.getSession().setAttribute(AttributeNames.QUESTION_ID, questionId);
 
             request.setAttribute(AttributeNames.QUESTION_NAME, question.getTitle());
-            request.setAttribute(AttributeNames.STATEMENT_LIST,factory.getStatementService().selectByQuestionId(questionId));
-
-            TransitionManager.newInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.EDIT_QUESTION);
+            request.setAttribute(AttributeNames.STATEMENT_LIST, factory.getStatementService().selectByQuestionId(questionId));
 
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
 
+        TransitionManager.newInstance().getTransitionByForward().
+                    doTransition(request, response, PageMapping.EDIT_QUESTION);
     }
 }

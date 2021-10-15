@@ -15,6 +15,7 @@ import java.io.IOException;
 public class DeleteQuestion implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             Integer id = ParserProvider.newInstance().getQuestionIdParser().parsing(request);
             if(id!=null){
@@ -22,10 +23,11 @@ public class DeleteQuestion implements Command {
                 factory.getStatementService().deleteAllByQuestionId(id);
                 factory.getQuestionService().delete(id);
             }
-            TransitionManager.newInstance().getTransitionByRedirect().
-                    doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
+
+        TransitionManager.newInstance().getTransitionByRedirect().
+                doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
     }
 }

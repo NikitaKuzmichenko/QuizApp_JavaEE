@@ -25,65 +25,62 @@ public class Authorization implements Command {
 
     public static final String INVALID_USER = "user.notExist";
 
-    public static final int SESSION_TIME_INTERVAL = 60 * 60 * 2;
-
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+        if(request.getMethod().equals(GET_METHOD)){
+            TransitionManager.newInstance().getTransitionByForward().
+                    doTransition(request, response,PageMapping.AUTHORIZATION_PAGE);
+            return;
+        }
+
+        User user;
         try {
-
-            if(request.getMethod().equals("GET")){
-                TransitionManager.newInstance().getTransitionByForward().
-                        doTransition(request, response,PageMapping.AUTHORIZATION_PAGE);
-                return;
-            }
-            User user =  EntitiesServiceFactory.getInstance().getUserService().selectByLogin(
-                    request.getParameter(AttributeNames.EMAIL)
-                    );
-
-            boolean userValid = true;
-            if(user!=null) {
-
-                String password = request.getParameter(AttributeNames.PASSWORD);
-                if(password !=null) {
-
-                    PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
-                    if (encoder.isMatching(password,user.getPassword())) {
-
-                        HttpSession session = request.getSession();
-                        CookieManager cookieManager = CookieManager.getInstance();
-                        session.setAttribute(AttributeNames.USER_ID, user.getId());
-                        if (request.getParameter(AttributeNames.REMEMBER_USER) != null) {
-                            cookieManager.addCookie(response, new Cookie(AttributeNames.USER_ID, String.valueOf(user.getId())));
-                        } else {
-                            cookieManager.removeCookie(request, AttributeNames.USER_ID);
-                            cookieManager.rewriteCookie(request, response);
-                        }
-
-                        session.setMaxInactiveInterval(SESSION_TIME_INTERVAL);
-
-                        TransitionManager.newInstance().getTransitionByRedirect().
-                                doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
-                    }else {
-                        userValid = false;
-                    }
-                }else{
-                    userValid = false;
-                }
-            }
-            else{
-                userValid = false;
-            }
-
-            if(!userValid){
-                String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
-                ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
-                request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(INVALID_USER));
-
-                TransitionManager.newInstance().getTransitionByForward().
-                        doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
-            }
+            user = EntitiesServiceFactory.getInstance().getUserService().selectByLogin(
+                    request.getParameter(AttributeNames.EMAIL));
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
+
+        boolean userValid = true;
+        if(user!=null) {
+            String password = request.getParameter(AttributeNames.PASSWORD);
+            if(password !=null) {
+                PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
+                if (encoder.isMatching(password,user.getPassword())) {
+                    HttpSession session = request.getSession();
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    session.setAttribute(AttributeNames.USER_ID, user.getId());
+                    if (request.getParameter(AttributeNames.REMEMBER_USER) != null) {
+                        cookieManager.addCookie(response, new Cookie(AttributeNames.USER_ID, String.valueOf(user.getId())));
+                    } else {
+                        cookieManager.removeCookie(request, AttributeNames.USER_ID);
+                        cookieManager.rewriteCookie(request, response);
+                    }
+
+                    TransitionManager.newInstance().getTransitionByRedirect().
+                            doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
+                }else {
+                    userValid = false;
+                }
+            }else{
+                userValid = false;
+            }
+        }
+        else{
+            userValid = false;
+        }
+
+        if(!userValid){
+            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
+            ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+            request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(INVALID_USER));
+
+            TransitionManager.newInstance().getTransitionByForward().
+                    doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
+        }
+
+        TransitionManager.newInstance().getTransitionByRedirect().
+                doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
     }
 }

@@ -15,16 +15,17 @@ import java.io.IOException;
 public class DeleteStatement implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             String id = request.getParameter(AttributeNames.STATEMENT_ID);
             if(id!=null){
                 EntitiesServiceFactory.getInstance().getStatementService().delete(Integer.parseInt(id));
             }
-
-            TransitionManager.newInstance().getTransitionByRedirect().
-                    doTransition(request, response, PageMapping.EDIT_QUESTION_PATH);
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
+
+        TransitionManager.newInstance().getTransitionByRedirect().
+                doTransition(request, response, PageMapping.EDIT_QUESTION_PATH);
     }
 }

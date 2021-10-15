@@ -51,8 +51,7 @@ public class FinishTest implements Command {
         HashMap<Integer, Set<String>> questionPassed = (HashMap<Integer, Set<String>>)questionPassedObject;
 
 
-        if(request.getMethod().equals("POST")) {
-
+        if(request.getMethod().equals(POST_METHOD)) {
             Object QuestionNumberObject = session.getAttribute(AttributeNames.CURRENT_QUESTION_NUMBER);
             int currentQuestionNumber;
             if(QuestionNumberObject== null){
@@ -112,13 +111,13 @@ public class FinishTest implements Command {
                 return;
 
             } catch (ServiceException e) {
-                e.printStackTrace();
+                throw new ServletException(e);
             }
         }
 
-        List<Question> testsQuestions = null;
+        List<Question> testsQuestions;
+        int totalQuestionsSize;
         int correctAnswersNumber = 0;
-        int totalQuestionsSize = 0;
         List<Boolean> isCorrect = new ArrayList<>();
         try {
              testsQuestions = EntitiesServiceFactory.getInstance().getQuestionService().
@@ -137,7 +136,6 @@ public class FinishTest implements Command {
                 Set<String> answers = questionPassed.get(i);
 
                 if(answers!=null) {
-
                     for (Statement statement : statements) {
                         if (!statement.isCorrect() && answers.contains(Integer.toString(statement.getId()))) {
                             isAnswerCorrect = false;
@@ -156,25 +154,23 @@ public class FinishTest implements Command {
 
             }
         } catch (ServiceException e) {
-            e.printStackTrace();
+            throw new ServletException(e);
         }
 
-            Double result = (double) (correctAnswersNumber * 10000/ totalQuestionsSize);
-            result = Math.ceil(result)/100;
-
+        double result = (correctAnswersNumber * 10000/ totalQuestionsSize);
+        result = Math.ceil(result)/100;
 
         request.setAttribute(AttributeNames.QUESTION_LIST, testsQuestions);
         try {
             request.setAttribute(AttributeNames.TEST_NAME,
                     factory.getTestService().selectEntityById(passingTestId).getName());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            throw new ServletException(e);
         }
-        request.setAttribute("correctAnswer",isCorrect);
-        request.setAttribute("result", result);
+        request.setAttribute(AttributeNames.CORRECT_ANSWER,isCorrect);
+        request.setAttribute(AttributeNames.RESULT, result);
 
         TransitionManager.newInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.FINISH_TEST);
-
     }
 }

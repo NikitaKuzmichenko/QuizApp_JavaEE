@@ -28,23 +28,24 @@ public class ViewMyTests implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+        HttpSession session = request.getSession();
+
+        ParserProvider parserProvider = ParserProvider.newInstance();
+        EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
+
+        Integer userId = parserProvider.getUserIdParser().parsing(request);
+        if(userId==null){
+            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
+            ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+            request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(UNDEFINED_USER));
+
+            TransitionManager.newInstance().getTransitionByForward().
+                    doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
+            return;
+        }
+
         try {
-            HttpSession session = request.getSession();
-
-            ParserProvider parserProvider = ParserProvider.newInstance();
-            EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
-
-            Integer userId = parserProvider.getUserIdParser().parsing(request);
-            if(userId==null){
-                String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
-                ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
-                request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(UNDEFINED_USER));
-
-                TransitionManager.newInstance().getTransitionByForward().
-                        doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
-                return;
-            }
-
             int pageNumber = parserProvider.getPageNumberParser().parsing(request);
             int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
             if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
@@ -67,11 +68,11 @@ public class ViewMyTests implements Command {
                     DirectPagination.newInstance().
                             calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
 
-            TransitionManager.newInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.VIEW_MY_TESTS);
-
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
+
+        TransitionManager.newInstance().getTransitionByForward().
+                doTransition(request, response, PageMapping.VIEW_MY_TESTS);
     }
 }

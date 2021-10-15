@@ -75,12 +75,11 @@ public class ToPage implements Command {
         int pageNumber = parserProvider.getPageNumberParser().parsing(request);
         session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
 
+        if(request.getParameter(AttributeNames.CATEGORY)!=null){
+            session.setAttribute(AttributeNames.PAGE_NUMBER, STARTING_PAGE);
+        }
+
         try {
-
-            if(request.getParameter(AttributeNames.CATEGORY)!=null){
-                session.setAttribute(AttributeNames.PAGE_NUMBER, STARTING_PAGE);
-            }
-
             int testsNumber = calculateTestsNumber(request);
             if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
                 pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;

@@ -6,5 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface Command {
+    String POST_METHOD = "POST";
+    String GET_METHOD = "GET";
     void execute(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
 }

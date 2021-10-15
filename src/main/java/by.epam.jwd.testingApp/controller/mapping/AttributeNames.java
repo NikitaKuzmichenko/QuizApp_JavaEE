@@ -52,5 +52,9 @@ public final class AttributeNames {
 
     public static final String ACTION = "action";
 
+    public static final String RESULT = "result";
+
+    public static final String CORRECT_ANSWER = "correctAnswer";
+
     private AttributeNames(){}
 }

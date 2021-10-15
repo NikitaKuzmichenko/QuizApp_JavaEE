@@ -17,19 +17,15 @@ public class DeleteTest implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
             Integer testId  = ParserProvider.newInstance().getTestIdParser().parsing(request);
-
             if(testId!=null) {
-                factory.getTestService().remove(testId);
+                EntitiesServiceFactory.getInstance().getTestService().remove(testId);
             }
-
-            TransitionManager.newInstance().getTransitionByRedirect().
-                    doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
-
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
 
+        TransitionManager.newInstance().getTransitionByRedirect().
+                doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
     }
 }
