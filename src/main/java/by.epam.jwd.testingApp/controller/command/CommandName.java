@@ -17,5 +17,6 @@ public enum CommandName {
     VIEW_RESULTS,
     VIEW_MY_TESTS,
     DELETE_STATEMENT,
+    CHANGE_STATUS,
     PAGE;
 }

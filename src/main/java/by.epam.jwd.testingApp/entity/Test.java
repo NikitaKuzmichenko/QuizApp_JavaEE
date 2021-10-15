@@ -11,6 +11,7 @@ public class Test implements Serializable {
     private String name;
     private Date creationDate;
     private boolean removed = false;
+    private boolean available = false;
 
     public Test(){}
 
@@ -20,6 +21,16 @@ public class Test implements Serializable {
         this.categoryId = categoryId;
         this.name = name;
         this.creationDate = creationDate;
+    }
+
+    public Test(int id, int creatorId, int categoryId, String name, Date creationDate, boolean removed, boolean available) {
+        this.id = id;
+        this.creatorId = creatorId;
+        this.categoryId = categoryId;
+        this.name = name;
+        this.creationDate = creationDate;
+        this.removed = removed;
+        this.available = available;
     }
 
     public int getId() {
@@ -70,6 +81,14 @@ public class Test implements Serializable {
         this.removed = removed;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,6 +100,7 @@ public class Test implements Serializable {
         if (creatorId != test.creatorId) return false;
         if (categoryId != test.categoryId) return false;
         if (removed != test.removed) return false;
+        if (available != test.available) return false;
         if (name != null ? !name.equals(test.name) : test.name != null) return false;
         return creationDate != null ? creationDate.equals(test.creationDate) : test.creationDate == null;
     }
@@ -93,18 +113,20 @@ public class Test implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (removed ? 1 : 0);
+        result = 31 * result + (available ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return this.getClass() + "{" +
+        return this.getClass() +"{" +
                 "id=" + id +
                 ", creatorId=" + creatorId +
                 ", categoryId=" + categoryId +
                 ", name='" + name + '\'' +
                 ", creationDate=" + creationDate +
                 ", removed=" + removed +
+                ", available=" + available +
                 '}';
     }
 }

@@ -84,7 +84,7 @@
                 <c:if test="${results[status.index] < 0}">
                     <fmt:message key="text.noData"/>
                 </c:if>
-                <c:if test="${results[status.index] > 0}">
+                <c:if test="${results[status.index] >= 0}">
                     <c:out value="${results[status.index]}"/>
                 </c:if>
                 <br>

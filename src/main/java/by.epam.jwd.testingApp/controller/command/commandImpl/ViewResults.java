@@ -82,7 +82,7 @@ public class ViewResults  implements Command {
             TransitionManager.newInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.VIEW_RESULTS);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            throw new ServletException(e);
         }
     }
 }

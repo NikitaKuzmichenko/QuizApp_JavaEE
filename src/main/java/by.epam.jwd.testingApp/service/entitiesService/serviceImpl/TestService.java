@@ -60,7 +60,7 @@ public class TestService implements AbstractTestService {
     public List<Test> selectByCreatorId(int creatorId, int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao()
-                    .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CREATOR_ID,TestMapping.CREATOR_ID,creatorId);
+                    .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CREATOR_ID,TestMapping.CREATOR_ID,creatorId,false);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -70,7 +70,7 @@ public class TestService implements AbstractTestService {
     public List<Test> selectByCategory(int categoryId, int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao()
-                    .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CATEGORY_ID,TestMapping.CATEGORY_ID,categoryId);
+                    .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CATEGORY_ID,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -80,7 +80,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByUsersPassedNumber(int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    sortTestsByRow(limit,offset,desc, SORT_BY_USERS_NUMBER);
+                    sortTestsByRow(limit,offset,desc, SORT_BY_USERS_NUMBER,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -90,7 +90,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByUsersPassedNumber(int categoryId,int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    selectSortedTestsByIntRow(limit,offset,desc, SORT_BY_USERS_NUMBER,TestMapping.CATEGORY_ID,categoryId);
+                    selectSortedTestsByIntRow(limit,offset,desc, SORT_BY_USERS_NUMBER,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -100,7 +100,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByName(int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    sortTestsByRow(limit,offset,desc,TestMapping.NAME);
+                    sortTestsByRow(limit,offset,desc,TestMapping.NAME,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -110,7 +110,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByName(int categoryId,int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    selectSortedTestsByIntRow(limit,offset,desc, TestMapping.NAME,TestMapping.CATEGORY_ID,categoryId);
+                    selectSortedTestsByIntRow(limit,offset,desc, TestMapping.NAME,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -120,7 +120,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByCreationDate(int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    sortTestsByRow(limit,offset,desc,TestMapping.CREATION_DATE);
+                    sortTestsByRow(limit,offset,desc,TestMapping.CREATION_DATE,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -130,7 +130,7 @@ public class TestService implements AbstractTestService {
     public List<Test> sortByCreationDate(int categoryId,int offset, boolean desc,int limit)throws ServiceException{
         try {
             return DaoFactory.getInstance().getTestDao().
-                    selectSortedTestsByIntRow(limit,offset,desc, TestMapping.CREATION_DATE,TestMapping.CATEGORY_ID,categoryId);
+                    selectSortedTestsByIntRow(limit,offset,desc, TestMapping.CREATION_DATE,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
@@ -150,24 +150,24 @@ public class TestService implements AbstractTestService {
         try {
             if(categoryId==null) {
                 return DaoFactory.getInstance().getTestDao().
-                        calculateTestsNumber(0, null, true);
+                        calculateTestsNumber(0, null, true,true);
             }
             return DaoFactory.getInstance().getTestDao().
-                    calculateTestsNumber(categoryId,TestMapping.CATEGORY_ID,true);
+                    calculateTestsNumber(categoryId,TestMapping.CATEGORY_ID,true,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }
     }
 
     @Override
-    public int calculateUsersTotalTestsNumber(Integer userId) throws ServiceException{
+    public int calculateUsersTotalTestsNumber(Integer userId,boolean onlyAvailable) throws ServiceException{
         try {
             if(userId==null) {
                 return DaoFactory.getInstance().getTestDao().
-                        calculateTestsNumber(0, null, true);
+                        calculateTestsNumber(0, null,onlyAvailable,true);
             }
             return DaoFactory.getInstance().getTestDao().
-                    calculateTestsNumber(userId,TestMapping.CREATOR_ID,true);
+                    calculateTestsNumber(userId,TestMapping.CREATOR_ID,onlyAvailable,true);
         } catch (DaoException e) {
             throw new ServiceException("msg",e);
         }

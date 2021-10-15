@@ -14,20 +14,24 @@ public class TestDaoJDBC implements AbstractTestDao {
     private List<Test> parsFromResultSet(ResultSet set) throws SQLException {
         List<Test> result = new ArrayList<>();
         if(set==null) return result;
+
         while (set.next()){
             result.add(new Test(
                     set.getInt(TestMapping.ID),
                     set.getInt(TestMapping.CREATOR_ID),
                     set.getInt(TestMapping.CATEGORY_ID),
                     set.getString(TestMapping.NAME),
-                    set.getDate(TestMapping.CREATION_DATE))
+                    set.getDate(TestMapping.CREATION_DATE),
+                    set.getBoolean(TestMapping.IS_REMOVED),
+                    set.getBoolean(TestMapping.IS_AVAILABLE))
             );
         }
         return result;
     }
 
     @Override
-    public List<Test> selectSortedTestsByIntRow(int limit, int offset, boolean desc, String sortByRow, String rowName, int rowValue)
+    public List<Test> selectSortedTestsByIntRow
+            (int limit, int offset, boolean desc, String sortByRow, String rowName, int rowValue,boolean onlyAvailable)
             throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
@@ -37,13 +41,26 @@ public class TestDaoJDBC implements AbstractTestDao {
         List<Test> result;
 
         String sortType;
-        if(desc) sortType = " DESC";
-        else sortType = " ASC";
+        if(desc) {
+            sortType = " DESC";
+        }
+        else {
+            sortType = " ASC";
+        }
+
+        String available;
+        if(onlyAvailable){
+            available = " AND " + TestMapping.IS_AVAILABLE + " = 1 ";
+        }
+        else{
+            available = "";
+        }
 
         try {
             String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
                     + " WHERE " + rowName + " = ?"
                     + " AND " + TestMapping.IS_REMOVED + " = 0 "
+                    + available
                     + " ORDER BY " + sortByRow + sortType
                     + " LIMIT " + limit
                     + " OFFSET " + offset + ";";
@@ -64,7 +81,7 @@ public class TestDaoJDBC implements AbstractTestDao {
     }
 
     @Override
-    public List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow) throws DaoException {
+    public List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow,boolean onlyAvailable) throws DaoException {
 
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
@@ -74,12 +91,25 @@ public class TestDaoJDBC implements AbstractTestDao {
         List<Test> result;
 
         String sortType;
-        if(desc) sortType = " DESC";
-        else sortType = " ASC";
+        if(desc) {
+            sortType = " DESC";
+        }
+        else {
+            sortType = " ASC";
+        }
+
+        String available;
+        if(onlyAvailable){
+            available = " AND " + TestMapping.IS_AVAILABLE + " = 1 ";
+        }
+        else{
+            available = "";
+        }
 
         try {
             String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
                     + " WHERE " + TestMapping.IS_REMOVED + " = 0 "
+                    + available
                     + " ORDER BY " + sortedRow + sortType
                     + " LIMIT " + limit
                     + " OFFSET " + offset + ";";
@@ -125,7 +155,7 @@ public class TestDaoJDBC implements AbstractTestDao {
 
 
     @Override
-    public int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable)throws DaoException{
+    public int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable,boolean onlyExisting)throws DaoException{
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -141,14 +171,22 @@ public class TestDaoJDBC implements AbstractTestDao {
             updateSql.append(" WHERE ");
             if(rowName!=null) {
                 updateSql.append(rowName).append(" = ?");
-                if(onlyAvailable) {
+                if(onlyAvailable || onlyExisting){
+                    updateSql.append(" AND ");
+                }
+            }
+
+            if(onlyExisting){
+                updateSql.append(TestMapping.IS_REMOVED);
+                updateSql.append(" = 0");
+                if(onlyAvailable){
                     updateSql.append(" AND ");
                 }
             }
 
             if(onlyAvailable){
-                updateSql.append(TestMapping.IS_REMOVED);
-                updateSql.append(" = 0");
+                updateSql.append(TestMapping.IS_AVAILABLE);
+                updateSql.append(" = 1");
             }
             updateSql.append(";");
 
@@ -213,6 +251,7 @@ public class TestDaoJDBC implements AbstractTestDao {
                     + ", " + TestMapping.CATEGORY_ID + " = ?"
                     + ", " + TestMapping.CREATION_DATE + " = ?"
                     + ", " + TestMapping.IS_REMOVED + " = ?"
+                    + ", " + TestMapping.IS_AVAILABLE + " = ?"
                     + " WHERE " + TestMapping.ID +" = ?;";
             statement = connection.prepareStatement(updateSql);
             statement.setString(1,entity.getName());
@@ -220,7 +259,8 @@ public class TestDaoJDBC implements AbstractTestDao {
             statement.setInt(3,entity.getCategoryId());
             statement.setDate(4, (Date) entity.getCreationDate());
             statement.setBoolean(5,entity.isRemoved());
-            statement.setInt(6,entity.getId());
+            statement.setBoolean(6,entity.isAvailable());
+            statement.setInt(7,entity.getId());
             result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);

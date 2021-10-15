@@ -22,7 +22,7 @@ import java.util.List;
 public class ViewMyTests implements Command {
 
     public static final String UNDEFINED_USER = "test.undefinedUser";
-    public static final int LIMIT_ON_PAGE = 4;
+    public static final int LIMIT_ON_PAGE = 5;
     public static final int PAGINATION_MAX_SIZE = 7;
 
     @Override
@@ -51,7 +51,7 @@ public class ViewMyTests implements Command {
             List<Test> testList = factory.getTestService().
                     selectByCreatorId(userId,pageNumber*LIMIT_ON_PAGE,true,LIMIT_ON_PAGE );
 
-            int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId);
+            int testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
             if(pageNumber > testsNumber/LIMIT_ON_PAGE){
                 pageNumber = testsNumber/LIMIT_ON_PAGE;
             }else if(pageNumber < 0){

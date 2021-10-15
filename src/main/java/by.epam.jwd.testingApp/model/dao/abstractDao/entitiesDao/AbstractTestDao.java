@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface AbstractTestDao extends AbstractGenericDao<Test, Integer> {
 
-    List<Test> selectSortedTestsByIntRow(int limit, int offset, boolean desc, String sortByRow, String rowName, int rowValue) throws DaoException;
+    List<Test> selectSortedTestsByIntRow(int limit, int offset, boolean desc, String sortByRow, String rowName, int rowValue,boolean onlyAvailable) throws DaoException;
 
-    List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow) throws DaoException;
+    List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow,boolean onlyAvailable) throws DaoException;
 
     boolean removeTest(int testId)throws DaoException;
 
-    int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable)throws DaoException;
+    int calculateTestsNumber(int rowValue,String rowName,boolean onlyAvailable,boolean onlyExisting)throws DaoException;
 
     Integer createAndGetId(Test entity) throws DaoException;
 }
