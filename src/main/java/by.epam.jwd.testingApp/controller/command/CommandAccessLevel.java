@@ -29,6 +29,9 @@ public class CommandAccessLevel {
         commands.put(CommandName.DELETE_QUESTION,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.VIEW_MY_TESTS,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.DELETE_STATEMENT,TUTOR_ROLE_REQUIRED);
+        commands.put(CommandName.FINISH_TEST,USER_ROLE_REQUIRED);
+        commands.put(CommandName.GET_QUESTION,USER_ROLE_REQUIRED);
+        commands.put(CommandName.CHANGE_STATUS,TUTOR_ROLE_REQUIRED);
     }
 
     public static CommandAccessLevel getInstance() {

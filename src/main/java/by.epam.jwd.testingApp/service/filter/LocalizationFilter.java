@@ -11,36 +11,24 @@ import java.io.IOException;
 
 public class LocalizationFilter implements Filter{
 
-    private FilterConfig config = null;
-    private boolean isActive = false;
-
-    public static final String IS_ACTIVE_PARAM = "active";
-    public static final String VALUE_FOR_ACTIVE = "TRUE";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        config = filterConfig;
-        String act = config.getInitParameter(IS_ACTIVE_PARAM);
-        if (act != null){
-            isActive = (act.toUpperCase().equals(VALUE_FOR_ACTIVE));
-        }
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        if(isActive){
 
-                HttpServletRequest request = (HttpServletRequest)servletRequest;
-                Parser<String> languageParser = new LanguageParser();
-                String language = languageParser.parsing(request);
-                if(request.getParameter(AttributeNames.LANGUAGE)==null){
-                    request.setAttribute(AttributeNames.LANGUAGE,language);
-                }else {
-                    request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
-                }
-
+        HttpServletRequest request = (HttpServletRequest)servletRequest;
+        Parser<String> languageParser = new LanguageParser();
+        String language = languageParser.parsing(request);
+        if(request.getParameter(AttributeNames.LANGUAGE)==null){
+            request.setAttribute(AttributeNames.LANGUAGE,language);
+        }else {
+            request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
