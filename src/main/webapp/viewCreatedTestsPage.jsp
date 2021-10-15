@@ -45,12 +45,12 @@
                 <li class="nav-item me-2" style="margin-top: 10px;">
                      <c:if test="${not test.isAvailable()}">
                         <a class="nav-link active " aria-current="page" href="change_status?testId=${test.getId()}">
-                            <font color="red" style="font-size:14.0pt;">not available</font>
+                            <font color="red" style="font-size:14.0pt;"><fmt:message key="text.notAvailable"/></font>
                         </a>
                      </c:if>
                       <c:if test="${test.isAvailable()}">
                          <a class="nav-link active " aria-current="page" href="change_status?testId=${test.getId()}">
-                             <font color="green" style="font-size:14.0pt;">available</font>
+                             <font color="green" style="font-size:14.0pt;"><fmt:message key="text.available"/></font>
                          </a>
                       </c:if>
                 </li>

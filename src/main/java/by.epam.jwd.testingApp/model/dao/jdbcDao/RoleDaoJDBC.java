@@ -14,31 +14,24 @@ import java.util.List;
 
 public class RoleDaoJDBC implements AbstractRoleDao {
 
-    private List<Role> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Role> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Role(set.getInt(RoleMapping.ID),set.getString(RoleMapping.NAME)));
-        }
-        return result;
-    }
+    public static final String IS_ROW_EXIST_SQL = "SELECT * FROM " + RoleMapping.TABLE_NAME
+            + " WHERE " + RoleMapping.NAME + " = ?;";
 
-    private boolean isRowExist(Role entity,Connection connection)
-            throws SQLException {
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + RoleMapping.TABLE_NAME
+            + " WHERE " + RoleMapping.ID + " = ?;";
 
-        String selectSql = "SELECT * FROM " + RoleMapping.TABLE_NAME
-                + " WHERE " + RoleMapping.NAME + " = ?;";
+    public static final String UPDATE_SQL = "UPDATE " + RoleMapping.TABLE_NAME
+            + " SET " + RoleMapping.NAME + " = ? "
+            + "WHERE " + RoleMapping.ID +" = ?;";
 
-        PreparedStatement statement = connection.prepareStatement(selectSql);
-        statement.setString(1,entity.getName());
-        ResultSet resultSet = statement.executeQuery();
+    public static final String DELETE_SQL = "DELETE FROM " + RoleMapping.TABLE_NAME
+            + " WHERE " + RoleMapping.ID +" = ?;";
 
-        boolean result = resultSet.next();
-        resultSet.close();
-        statement.close();
+    public static final String CREATE_SQL = "INSERT INTO " + RoleMapping.TABLE_NAME
+            + " (" + RoleMapping.NAME + ")"
+            +  "VALUES(?)";
 
-        return  result;
-    }
+    public static final String SELECT_ALL_SQL = "SELECT * FROM " + RoleMapping.TABLE_NAME + ";";
 
     @Override
     public Role selectEntityById(Integer id) throws DaoException {
@@ -50,9 +43,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         List<Role> result;
 
         try {
-            String sql = "SELECT * FROM " + RoleMapping.TABLE_NAME
-                    + " WHERE " + RoleMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -81,10 +72,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String updateSql = "UPDATE " + RoleMapping.TABLE_NAME
-                    + " SET " + RoleMapping.NAME + " = ? "
-                    + "WHERE " + RoleMapping.ID +" = ?;";
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setString(1,entity.getName());
             statement.setInt(2,entity.getId());
             result = statement.executeUpdate();
@@ -109,9 +97,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         int result ;
 
         try {
-            String sql = "DELETE FROM " + RoleMapping.TABLE_NAME
-                    + " WHERE " + RoleMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -138,11 +124,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String insectSql = "INSERT INTO " + RoleMapping.TABLE_NAME
-                    + " (" + RoleMapping.NAME + ")"
-                    +  "VALUES(?)";
-
-            statement = connection.prepareStatement(insectSql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setString(1,entity.getName());
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -166,8 +148,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         List<Role> result;
 
         try {
-            String sql = "SELECT * FROM " + RoleMapping.TABLE_NAME + ";";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_ALL_SQL);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -180,5 +161,28 @@ public class RoleDaoJDBC implements AbstractRoleDao {
             pool.returnConnection(connection);
         }
         return result;
+    }
+
+    private List<Role> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Role> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Role(set.getInt(RoleMapping.ID),set.getString(RoleMapping.NAME)));
+        }
+        return result;
+    }
+
+    private boolean isRowExist(Role entity,Connection connection)
+            throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement(IS_ROW_EXIST_SQL);
+        statement.setString(1,entity.getName());
+        ResultSet resultSet = statement.executeQuery();
+
+        boolean result = resultSet.next();
+        resultSet.close();
+        statement.close();
+
+        return  result;
     }
 }

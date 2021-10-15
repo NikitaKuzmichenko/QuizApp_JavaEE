@@ -12,20 +12,37 @@ import java.util.List;
 
 public class ResultDaoJDBC implements AbstractResultDao {
 
-    private List<Result> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Result> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Result(
-                    set.getInt(ResultMapping.USER_ID),
-                    set.getInt(ResultMapping.TEST_ID),
-                    set.getInt(ResultMapping.RESULT),
-                    set.getDate(ResultMapping.PASSING_DATE))
-            );
-        }
-        return result;
-    }
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + ResultMapping.TABLE_NAME
+            +" WHERE " + ResultMapping.TEST_ID + " = ?"
+            + " AND " + ResultMapping.USER_ID + " = ?;";
 
+    public static final String UPDATE_SQL = "UPDATE " + ResultMapping.TABLE_NAME
+            +" SET " + ResultMapping.RESULT + " = ?, "
+            + ResultMapping.PASSING_DATE + " = ? "
+            +" WHERE " + ResultMapping.TEST_ID + " = ?"
+            + " AND " + ResultMapping.USER_ID + " = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + ResultMapping.TABLE_NAME
+            +" WHERE " + ResultMapping.TEST_ID + " = ?"
+            + " AND " + ResultMapping.USER_ID + " = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + ResultMapping.TABLE_NAME
+            +"( " + ResultMapping.RESULT + ", "
+            + ResultMapping.PASSING_DATE + ", "
+            + ResultMapping.TEST_ID + ", "
+            + ResultMapping.USER_ID + " )"
+            + " VALUES(?,?,?,?);";
+
+    public static final String SELECT_BY_TEST_ID_SQL = "SELECT * FROM " + ResultMapping.TABLE_NAME
+            +" WHERE " + ResultMapping.TEST_ID + " = ?;";
+
+    public static final String CALCULATE_AVG = "AVG(" + ResultMapping.RESULT + ")";
+
+    public static final String CALCULATE_AVG_RESULT_SQL = "SELECT "+ CALCULATE_AVG +
+            " FROM " + ResultMapping.TABLE_NAME
+            +" WHERE " + ResultMapping.TEST_ID + " = ?;";
+
+    public static final String COUNT_RESULTS = "COUNT(" + ResultMapping.RESULT + ")";
     @Override
     public Result selectEntityById(Pair<Integer, Integer> id) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -36,10 +53,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         List<Result> result;
 
         try {
-            String sql = "SELECT * FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?"
-                    + " AND " + ResultMapping.USER_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id.getT());
             statement.setInt(2,id.getU());
             resultSet = statement.executeQuery();
@@ -66,12 +80,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         int result ;
 
         try {
-            String sql = "UPDATE " + ResultMapping.TABLE_NAME
-                    +" SET " + ResultMapping.RESULT + " = ?, "
-                    + ResultMapping.PASSING_DATE + " = ? "
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?"
-                    + " AND " + ResultMapping.USER_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setInt(1,entity.getResult());
             statement.setDate(2,new Date(entity.getPassingDate().getTime()));
             statement.setInt(3,entity.getTestId());
@@ -97,10 +106,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         int result;
 
         try {
-            String sql = "DELETE FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?"
-                    + " AND " + ResultMapping.USER_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id.getT());
             statement.setInt(2,id.getU());
             result = statement.executeUpdate();
@@ -125,13 +131,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         int result;
 
         try {
-            String sql = "INSERT INTO " + ResultMapping.TABLE_NAME
-                    +"( " + ResultMapping.RESULT + ", "
-                    + ResultMapping.PASSING_DATE + ", "
-                    + ResultMapping.TEST_ID + ", "
-                    + ResultMapping.USER_ID + " )"
-                    + " VALUES(?,?,?,?);";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getResult());
             statement.setDate(2,new Date(entity.getPassingDate().getTime()));
             statement.setInt(3,entity.getTestId());
@@ -188,9 +188,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         List<Result> result;
 
         try {
-            String sql = "SELECT * FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_TEST_ID_SQL);
             statement.setInt(1,testId);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -217,14 +215,11 @@ public class ResultDaoJDBC implements AbstractResultDao {
         int result;
 
         try {
-            String sql = "SELECT AVG(" + ResultMapping.RESULT + ")"+
-                    " FROM " + ResultMapping.TABLE_NAME
-                    +" WHERE " + ResultMapping.TEST_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CALCULATE_AVG_RESULT_SQL);
             statement.setInt(1,testId);
             resultSet = statement.executeQuery();
             resultSet.next();
-            result =  resultSet.getInt("AVG(" + ResultMapping.RESULT + ")");
+            result =  resultSet.getInt(CALCULATE_AVG);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -237,7 +232,6 @@ public class ResultDaoJDBC implements AbstractResultDao {
         return result;
     }
 
-
     @Override
     public Integer calculateResultsNumber(String rowName,int rowValue) throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -249,7 +243,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
 
         try {
             StringBuilder sqlBuilder = new StringBuilder();
-            sqlBuilder.append("SELECT COUNT(" + ResultMapping.RESULT + ")");
+            sqlBuilder.append("SELECT " + COUNT_RESULTS);
             sqlBuilder.append(" FROM " + ResultMapping.TABLE_NAME);
             if(rowName!=null){
                 sqlBuilder.append(" WHERE " + rowName + " = ?");
@@ -262,7 +256,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             }
             resultSet = statement.executeQuery();
             resultSet.next();
-            result =  resultSet.getInt("COUNT(" + ResultMapping.RESULT + ")");
+            result =  resultSet.getInt(COUNT_RESULTS);
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -271,6 +265,20 @@ public class ResultDaoJDBC implements AbstractResultDao {
                 if (statement != null) statement.close();
             } catch (SQLException e) {/* write in logs*/}
             pool.returnConnection(connection);
+        }
+        return result;
+    }
+
+    private List<Result> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Result> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Result(
+                    set.getInt(ResultMapping.USER_ID),
+                    set.getInt(ResultMapping.TEST_ID),
+                    set.getInt(ResultMapping.RESULT),
+                    set.getDate(ResultMapping.PASSING_DATE))
+            );
         }
         return result;
     }

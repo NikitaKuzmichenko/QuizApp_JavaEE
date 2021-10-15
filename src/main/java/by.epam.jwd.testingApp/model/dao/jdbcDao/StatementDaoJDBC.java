@@ -14,19 +14,29 @@ import java.util.List;
 
 public class StatementDaoJDBC implements AbstractStatementDao {
 
-    private List<Statement> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Statement> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Statement(
-                    set.getInt(StatementMapping.ID),
-                    set.getInt(StatementMapping.QUESTION_ID),
-                    set.getString(StatementMapping.TEXT),
-                    set.getBoolean(StatementMapping.IS_CORRECT))
-            );
-        }
-        return result;
-    }
+    public static final String SELECT_BY_QUESTION_ID_SQL = "SELECT * FROM " + StatementMapping.TABLE_NAME
+            +" WHERE " + StatementMapping.QUESTION_ID + " = ?;";
+
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + StatementMapping.TABLE_NAME
+            +" WHERE " + StatementMapping.ID + " = ?;";
+
+    public static final String UPDATE_SQL = "UPDATE " + StatementMapping.TABLE_NAME
+            + " SET " + StatementMapping.QUESTION_ID + " = ?, "
+            +  StatementMapping.TEXT + " = ?, "
+            +  StatementMapping.IS_CORRECT + " = ? "
+            + " WHERE " + StatementMapping.ID +" = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + StatementMapping.TABLE_NAME
+            + " WHERE " + StatementMapping.ID +" = ?;";
+
+    public static final String DELETE_ALL_BY_QUESTION_ID_SQL = "DELETE FROM " + StatementMapping.TABLE_NAME
+            + " WHERE " + StatementMapping.QUESTION_ID +" = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + StatementMapping.TABLE_NAME
+            + " (" + StatementMapping.QUESTION_ID + ", "
+            +  StatementMapping.TEXT + ", "
+            +  StatementMapping.IS_CORRECT + " )"
+            + " VALUES(?,?,?)";
 
     @Override
     public List<Statement> selectByQuestionId(int questionId) throws DaoException {
@@ -38,9 +48,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         List<Statement> result;
 
         try {
-            String sql = "SELECT * FROM " + StatementMapping.TABLE_NAME
-                    +" WHERE " + StatementMapping.QUESTION_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_QUESTION_ID_SQL);
             statement.setInt(1,questionId);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -66,9 +74,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         List<Statement> result;
 
         try {
-            String sql = "SELECT * FROM " + StatementMapping.TABLE_NAME
-                    +" WHERE " + StatementMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -92,12 +98,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "UPDATE " + StatementMapping.TABLE_NAME
-                    + " SET " + StatementMapping.QUESTION_ID + " = ?, "
-                    +  StatementMapping.TEXT + " = ?, "
-                    +  StatementMapping.IS_CORRECT + " = ? "
-                    + " WHERE " + StatementMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setInt(1,entity.getQuestionId());
             statement.setString(2,entity.getText());
             statement.setBoolean(3,entity.isCorrect());
@@ -121,9 +122,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "DELETE FROM " + StatementMapping.TABLE_NAME
-                    + " WHERE " + StatementMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -143,9 +142,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "DELETE FROM " + StatementMapping.TABLE_NAME
-                    + " WHERE " + StatementMapping.QUESTION_ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_ALL_BY_QUESTION_ID_SQL);
             statement.setInt(1,questionId);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -167,12 +164,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "INSERT INTO " + StatementMapping.TABLE_NAME
-                    + " (" + StatementMapping.QUESTION_ID + ", "
-                    +  StatementMapping.TEXT + ", "
-                    +  StatementMapping.IS_CORRECT + " )"
-                    + " VALUES(?,?,?)";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getQuestionId());
             statement.setString(2,entity.getText());
             statement.setBoolean(3,entity.isCorrect());
@@ -186,5 +178,19 @@ public class StatementDaoJDBC implements AbstractStatementDao {
             pool.returnConnection(connection);
         }
         return result==1;
+    }
+
+    private List<Statement> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Statement> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Statement(
+                    set.getInt(StatementMapping.ID),
+                    set.getInt(StatementMapping.QUESTION_ID),
+                    set.getString(StatementMapping.TEXT),
+                    set.getBoolean(StatementMapping.IS_CORRECT))
+            );
+        }
+        return result;
     }
 }

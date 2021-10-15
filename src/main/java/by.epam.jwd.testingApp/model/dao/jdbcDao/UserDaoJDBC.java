@@ -3,6 +3,7 @@ import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;
+import by.epam.jwd.testingApp.model.dataBaseMapping.TestMapping;
 import by.epam.jwd.testingApp.model.dataBaseMapping.UserMapping;
 
 import java.sql.Connection;
@@ -14,38 +15,33 @@ import java.util.List;
 
 public class UserDaoJDBC implements AbstractUserDao {
 
-    private List<User> parsFromResultSet(ResultSet set) throws SQLException {
-        List<User> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new User(
-                    set.getInt(UserMapping.ID),
-                    set.getInt(UserMapping.ROLE_ID),
-                    set.getString(UserMapping.NAME),
-                    set.getString(UserMapping.EMAIL),
-                    set.getString(UserMapping.PASSWORD))
-            );
-        }
-        return result;
-    }
+    public static final String SELECT_BY_LOGIN_SQL = "SELECT * FROM " + UserMapping.TABLE_NAME
+            + " WHERE " + UserMapping.EMAIL + " = ?;";
 
-    private boolean isRowExist(User entity, Connection connection) throws SQLException {
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + UserMapping.TABLE_NAME
+            + " WHERE " + UserMapping.ID + " = ?;";
 
-        String selectSql = "SELECT * FROM " + UserMapping.TABLE_NAME
-                + " WHERE " + UserMapping.NAME + " = ?"
-                + " OR " + UserMapping.EMAIL + " = ?;";
+    public static final String UPDATE_SQL = "UPDATE " + UserMapping.TABLE_NAME
+            + " SET " + UserMapping.NAME + " = ?"
+            + ", " + UserMapping.PASSWORD + " = ?"
+            + ", " + UserMapping.EMAIL + " = ?"
+            + ", " + UserMapping.ROLE_ID + " = ?"
+            + "WHERE " + UserMapping.ID +" = ?;";
 
-        PreparedStatement statement = connection.prepareStatement(selectSql);
-        statement.setString(1,entity.getName());
-        statement.setString(2,entity.getEmail());
-        ResultSet resultSet = statement.executeQuery();
+    public static final String DELETE_SQL = "DELETE FROM " + UserMapping.TABLE_NAME
+            + " WHERE " + UserMapping.ID +" = ?;";
 
-        boolean result = resultSet.next();
-        resultSet.close();
-        statement.close();
+    public static final String CREATE_SQL = "INSERT INTO " + UserMapping.TABLE_NAME
+            + " (" + UserMapping.NAME + ", "
+            + UserMapping.EMAIL + ", "
+            + UserMapping.PASSWORD + ", "
+            + UserMapping.ROLE_ID + ")"
+            +  "VALUES(?,?,?,?);";
 
-        return  result;
-    }
+    public static final String IS_ROW_EXIST_SQL = "SELECT * FROM " + UserMapping.TABLE_NAME
+            + " WHERE " + UserMapping.NAME + " = ?"
+            + " OR " + UserMapping.EMAIL + " = ?;";
+
 
     @Override
     public User selectEntityByLogin(String email) throws DaoException {
@@ -59,9 +55,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         List<User> result;
 
         try {
-            String sql = "SELECT * FROM " + UserMapping.TABLE_NAME
-                    + " WHERE " + UserMapping.EMAIL + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_LOGIN_SQL);
             statement.setString(1,email);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -89,9 +83,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         List<User> result;
 
         try {
-            String sql = "SELECT * FROM " + UserMapping.TABLE_NAME
-                    + " WHERE " + UserMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -119,13 +111,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String updateSql = "UPDATE " + UserMapping.TABLE_NAME
-                    + " SET " + UserMapping.NAME + " = ?"
-                    + ", " + UserMapping.PASSWORD + " = ?"
-                    + ", " + UserMapping.EMAIL + " = ?"
-                    + ", " + UserMapping.ROLE_ID + " = ?"
-                    + "WHERE " + UserMapping.ID +" = ?;";
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setString(1,entity.getName());
             statement.setString(2,entity.getPassword());
             statement.setString(3,entity.getEmail());
@@ -153,9 +139,7 @@ public class UserDaoJDBC implements AbstractUserDao {
 
         int result;
         try {
-            String sql = "DELETE FROM " + UserMapping.TABLE_NAME
-                    + " WHERE " + UserMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -181,14 +165,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String insectSql = "INSERT INTO " + UserMapping.TABLE_NAME
-                    + " (" + UserMapping.NAME + ", "
-                    + UserMapping.EMAIL + ", "
-                    + UserMapping.PASSWORD + ", "
-                    + UserMapping.ROLE_ID + ")"
-                    +  "VALUES(?,?,?,?);";
-
-            statement = connection.prepareStatement(insectSql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setString(1,entity.getName());
             statement.setString(2,entity.getEmail());
             statement.setString(3,entity.getPassword());
@@ -203,5 +180,34 @@ public class UserDaoJDBC implements AbstractUserDao {
             pool.returnConnection(connection);
         }
         return result==1;
+    }
+
+    private boolean isRowExist(User entity, Connection connection) throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement(IS_ROW_EXIST_SQL);
+        statement.setString(1,entity.getName());
+        statement.setString(2,entity.getEmail());
+        ResultSet resultSet = statement.executeQuery();
+
+        boolean result = resultSet.next();
+        resultSet.close();
+        statement.close();
+
+        return  result;
+    }
+
+    private List<User> parsFromResultSet(ResultSet set) throws SQLException {
+        List<User> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new User(
+                    set.getInt(UserMapping.ID),
+                    set.getInt(UserMapping.ROLE_ID),
+                    set.getString(UserMapping.NAME),
+                    set.getString(UserMapping.EMAIL),
+                    set.getString(UserMapping.PASSWORD))
+            );
+        }
+        return result;
     }
 }

@@ -11,23 +11,35 @@ import java.util.List;
 
 public class TestDaoJDBC implements AbstractTestDao {
 
-    private List<Test> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Test> result = new ArrayList<>();
-        if(set==null) return result;
+    public static final String LAST_INSERT_ID_SQL = "SELECT LAST_INSERT_ID()";
 
-        while (set.next()){
-            result.add(new Test(
-                    set.getInt(TestMapping.ID),
-                    set.getInt(TestMapping.CREATOR_ID),
-                    set.getInt(TestMapping.CATEGORY_ID),
-                    set.getString(TestMapping.NAME),
-                    set.getDate(TestMapping.CREATION_DATE),
-                    set.getBoolean(TestMapping.IS_REMOVED),
-                    set.getBoolean(TestMapping.IS_AVAILABLE))
-            );
-        }
-        return result;
-    }
+    public static final String REMOVE_SQL = "UPDATE " + TestMapping.TABLE_NAME
+            + " SET " + TestMapping.IS_REMOVED + " = ?"
+            + " WHERE " + TestMapping.ID + " = ? ;";
+
+    public static final String TEST_NUMBER_ACCUMULATOR = "result";
+
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + TestMapping.TABLE_NAME
+            + " WHERE " + TestMapping.ID + " = ?;";
+
+    public static final String UPDATE_SQL = "UPDATE " + TestMapping.TABLE_NAME
+            + " SET " + TestMapping.NAME + " = ?"
+            + ", " + TestMapping.CREATOR_ID + " = ?"
+            + ", " + TestMapping.CATEGORY_ID + " = ?"
+            + ", " + TestMapping.CREATION_DATE + " = ?"
+            + ", " + TestMapping.IS_REMOVED + " = ?"
+            + ", " + TestMapping.IS_AVAILABLE + " = ?"
+            + " WHERE " + TestMapping.ID +" = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + TestMapping.TABLE_NAME
+            + " WHERE " + TestMapping.ID +" = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + TestMapping.TABLE_NAME
+            + " (" + TestMapping.CREATOR_ID + ", "
+            + TestMapping.CATEGORY_ID + ", "
+            + TestMapping.NAME + ", "
+            + TestMapping.CREATION_DATE + ")"
+            +  "VALUES(?,?,?,?);";
 
     @Override
     public List<Test> selectSortedTestsByIntRow
@@ -135,10 +147,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String updateSql = "UPDATE " + TestMapping.TABLE_NAME
-                    + " SET " + TestMapping.IS_REMOVED + " = ?"
-                    + " WHERE " + TestMapping.ID + " = ? ;";
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(REMOVE_SQL);
             statement.setInt(2,testId);
             statement.setBoolean(1,true);
             result = statement.executeUpdate();
@@ -160,13 +169,12 @@ public class TestDaoJDBC implements AbstractTestDao {
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
-        String resultColumnName = "result";
         ResultSet resultSet;
         int result;
 
         try {
             StringBuilder updateSql = new StringBuilder();
-            updateSql.append("SELECT COUNT(*) as " + resultColumnName);
+            updateSql.append("SELECT COUNT(*) as " + TEST_NUMBER_ACCUMULATOR);
             updateSql.append(" FROM " + TestMapping.TABLE_NAME);
             updateSql.append(" WHERE ");
             if(rowName!=null) {
@@ -196,7 +204,7 @@ public class TestDaoJDBC implements AbstractTestDao {
             }
             resultSet = statement.executeQuery();
             resultSet.next();
-            result = resultSet.getInt(resultColumnName);
+            result = resultSet.getInt(TEST_NUMBER_ACCUMULATOR);
 
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -219,9 +227,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         List<Test> result;
 
         try {
-            String sql = "SELECT * FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -245,15 +251,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String updateSql = "UPDATE " + TestMapping.TABLE_NAME
-                    + " SET " + TestMapping.NAME + " = ?"
-                    + ", " + TestMapping.CREATOR_ID + " = ?"
-                    + ", " + TestMapping.CATEGORY_ID + " = ?"
-                    + ", " + TestMapping.CREATION_DATE + " = ?"
-                    + ", " + TestMapping.IS_REMOVED + " = ?"
-                    + ", " + TestMapping.IS_AVAILABLE + " = ?"
-                    + " WHERE " + TestMapping.ID +" = ?;";
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setString(1,entity.getName());
             statement.setInt(2,entity.getCreatorId());
             statement.setInt(3,entity.getCategoryId());
@@ -280,9 +278,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "DELETE FROM " + TestMapping.TABLE_NAME
-                    + " WHERE " + TestMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -304,15 +300,7 @@ public class TestDaoJDBC implements AbstractTestDao {
         PreparedStatement statement = null;
         int result;
         try {
-
-            String insectSql = "INSERT INTO " + TestMapping.TABLE_NAME
-                    + " (" + TestMapping.CREATOR_ID + ", "
-                    + TestMapping.CATEGORY_ID + ", "
-                    + TestMapping.NAME + ", "
-                    + TestMapping.CREATION_DATE + ")"
-                    +  "VALUES(?,?,?,?);";
-
-            statement = connection.prepareStatement(insectSql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getCreatorId());
             statement.setInt(2,entity.getCategoryId());
             statement.setString(3,entity.getName());
@@ -340,14 +328,7 @@ public class TestDaoJDBC implements AbstractTestDao {
 
         try {
 
-            String insectSql = "INSERT INTO " + TestMapping.TABLE_NAME
-                    + " (" + TestMapping.CREATOR_ID + ", "
-                    + TestMapping.CATEGORY_ID + ", "
-                    + TestMapping.NAME + ", "
-                    + TestMapping.CREATION_DATE + ")"
-                    +  "VALUES(?,?,?,?);";
-
-            statement = connection.prepareStatement(insectSql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getCreatorId());
             statement.setInt(2,entity.getCategoryId());
             statement.setString(3,entity.getName());
@@ -355,7 +336,7 @@ public class TestDaoJDBC implements AbstractTestDao {
             result = statement.executeUpdate();
 
             if(result == 1){
-                ResultSet set = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                ResultSet set = statement.executeQuery(LAST_INSERT_ID_SQL);
                 if(set.next()){
                     key = set.getInt(1);
                 }
@@ -369,5 +350,23 @@ public class TestDaoJDBC implements AbstractTestDao {
             pool.returnConnection(connection);
         }
         return key;
+    }
+
+    private List<Test> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Test> result = new ArrayList<>();
+        if(set==null) return result;
+
+        while (set.next()){
+            result.add(new Test(
+                    set.getInt(TestMapping.ID),
+                    set.getInt(TestMapping.CREATOR_ID),
+                    set.getInt(TestMapping.CATEGORY_ID),
+                    set.getString(TestMapping.NAME),
+                    set.getDate(TestMapping.CREATION_DATE),
+                    set.getBoolean(TestMapping.IS_REMOVED),
+                    set.getBoolean(TestMapping.IS_AVAILABLE))
+            );
+        }
+        return result;
     }
 }

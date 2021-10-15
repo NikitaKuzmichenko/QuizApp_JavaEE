@@ -11,18 +11,29 @@ import java.util.List;
 
 public class QuestionDaoJDBC implements AbstractQuestionDao {
 
-    private List<Question> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Question> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Question(
-                    set.getInt(QuestionMapping.ID),
-                    set.getInt(QuestionMapping.TEST_ID),
-                    set.getString(QuestionMapping.TITLE))
-            );
-        }
-        return result;
-    }
+    public static final String COUNT_RESULT = "result";
+
+    public static final String LAST_INSERT_ID_SQL = "SELECT LAST_INSERT_ID()";
+
+    public static final String CALCULATE_QUESTIONS_NUMBER_SQL = "SELECT COUNT(*) as " + COUNT_RESULT +
+            " FROM " + QuestionMapping.TABLE_NAME +
+            " WHERE " + QuestionMapping.TEST_ID + " = ?;";
+
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + QuestionMapping.TABLE_NAME
+            +" WHERE " + QuestionMapping.ID + " = ?;";
+
+    public static final String UPDATE_SQL = "UPDATE " + QuestionMapping.TABLE_NAME
+            + " SET " + QuestionMapping.TEST_ID + " = ?, "
+            +  QuestionMapping.TITLE + " = ? "
+            + " WHERE " + QuestionMapping.ID +" = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + QuestionMapping.TABLE_NAME
+                    + " WHERE " + QuestionMapping.ID +" = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + QuestionMapping.TABLE_NAME
+            + " (" + QuestionMapping.TEST_ID + ", "
+            +  QuestionMapping.TITLE + " )"
+            + "VALUES(?,?)";
 
     @Override
     public List<Question> selectByTestId(int testId, int limit, int offset) throws DaoException {
@@ -60,20 +71,15 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         Connection connection = pool.takeConnection();
 
         PreparedStatement statement = null;
-        String resultColumnName = "result";
         ResultSet resultSet;
         int result;
 
         try {
-            String updateSql = "SELECT COUNT(*) as " + resultColumnName +
-            " FROM " + QuestionMapping.TABLE_NAME +
-            " WHERE " + QuestionMapping.TEST_ID + " = ?;";
-
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(CALCULATE_QUESTIONS_NUMBER_SQL);
             statement.setInt(1, testId);
             resultSet = statement.executeQuery();
             resultSet.next();
-            result = resultSet.getInt(resultColumnName);
+            result = resultSet.getInt(COUNT_RESULT);
 
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -96,9 +102,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         List<Question> result;
 
         try {
-            String sql = "SELECT * FROM " + QuestionMapping.TABLE_NAME
-                    +" WHERE " + QuestionMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -122,11 +126,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "UPDATE " + QuestionMapping.TABLE_NAME
-                    + " SET " + QuestionMapping.TEST_ID + " = ?, "
-                    +  QuestionMapping.TITLE + " = ? "
-                    + " WHERE " + QuestionMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setInt(1,entity.getTestId());
             statement.setString(2,entity.getTitle());
             statement.setInt(3,entity.getId());
@@ -149,9 +149,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "DELETE FROM " + QuestionMapping.TABLE_NAME
-                    + " WHERE " + QuestionMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -173,11 +171,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "INSERT INTO " + QuestionMapping.TABLE_NAME
-                    + " (" + QuestionMapping.TEST_ID + ", "
-                    +  QuestionMapping.TITLE + " )"
-                    + "VALUES(?,?)";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getTestId());
             statement.setString(2,entity.getTitle());
             result = statement.executeUpdate();
@@ -200,17 +194,13 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         Integer key = null;
         int result;
         try {
-            String sql = "INSERT INTO " + QuestionMapping.TABLE_NAME
-                    + " (" + QuestionMapping.TEST_ID + ", "
-                    +  QuestionMapping.TITLE + " )"
-                    + "VALUES(?,?)";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setInt(1,entity.getTestId());
             statement.setString(2,entity.getTitle());
             result = statement.executeUpdate();
 
             if(result == 1){
-                ResultSet set = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                ResultSet set = statement.executeQuery(LAST_INSERT_ID_SQL);
                 if(set.next()){
                     key = set.getInt(1);
                 }
@@ -225,5 +215,18 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         }
 
         return key;
+    }
+
+    private List<Question> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Question> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Question(
+                    set.getInt(QuestionMapping.ID),
+                    set.getInt(QuestionMapping.TEST_ID),
+                    set.getString(QuestionMapping.TITLE))
+            );
+        }
+        return result;
     }
 }

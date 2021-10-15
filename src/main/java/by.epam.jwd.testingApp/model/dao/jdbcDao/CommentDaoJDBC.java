@@ -11,20 +11,28 @@ import java.util.List;
 
 public class CommentDaoJDBC implements AbstractCommentDao  {
 
-    private List<Comment> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Comment> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Comment(
-                    set.getInt(CommentMapping.ID),
-                    set.getInt(CommentMapping.TEST_ID),
-                    set.getInt(CommentMapping.CREATOR_ID),
-                    set.getString(CommentMapping.COMMENT),
-                    set.getDate(CommentMapping.CREATION_DATE))
-            );
-        }
-        return result;
-    }
+    public static final String SELECT_BY_TEST_ID_SQL = "SELECT * FROM " + CommentMapping.TABLE_NAME
+                    +" WHERE " + CommentMapping.TEST_ID + " = ?;";
+
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + CommentMapping.TABLE_NAME
+            +" WHERE " + CommentMapping.ID + " = ?;";
+
+    public static final String UPDATE_SQL = "UPDATE " + CommentMapping.TABLE_NAME
+            + " SET " + CommentMapping.COMMENT + " = ?, "
+            +  CommentMapping.TEST_ID + " = ?, "
+            +  CommentMapping.CREATION_DATE + " = ?, "
+            +  CommentMapping.CREATOR_ID + " = ?, "
+            + "WHERE " + CommentMapping.ID +" = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + CommentMapping.TABLE_NAME
+            + " WHERE " + CommentMapping.ID +" = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + CommentMapping.TABLE_NAME
+            + " (" + CommentMapping.COMMENT + ", "
+            +  CommentMapping.TEST_ID + ", "
+            +  CommentMapping.CREATION_DATE + ", "
+            +  CommentMapping.CREATOR_ID + " )"
+            + "VALUES(?,?,?,?)";
 
     @Override
     public List<Comment> selectByTestId(int testId) throws DaoException {
@@ -36,9 +44,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         List<Comment> result;
 
         try {
-            String sql = "SELECT * FROM " + CommentMapping.TABLE_NAME
-                    +" WHERE " + CommentMapping.TEST_ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_TEST_ID_SQL);
             statement.setInt(1,testId);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -64,9 +70,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         List<Comment> result;
 
         try {
-            String sql = "SELECT * FROM " + CommentMapping.TABLE_NAME
-                    +" WHERE " + CommentMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -88,15 +92,9 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
-        int result = 0;
+        int result;
         try {
-            String sql = "UPDATE " + CommentMapping.TABLE_NAME
-                    + " SET " + CommentMapping.COMMENT + " = ?, "
-                    +  CommentMapping.TEST_ID + " = ?, "
-                    +  CommentMapping.CREATION_DATE + " = ?, "
-                    +  CommentMapping.CREATOR_ID + " = ?, "
-                    + "WHERE " + CommentMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setString(1,entity.getComment());
             statement.setInt(2,entity.getTestId());
             statement.setDate(3, (Date) entity.getCreationDate());
@@ -121,9 +119,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "DELETE FROM " + CommentMapping.TABLE_NAME
-                    + " WHERE " + CommentMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -145,13 +141,7 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
         PreparedStatement statement = null;
         int result;
         try {
-            String sql = "INSERT INTO " + CommentMapping.TABLE_NAME
-                    + " (" + CommentMapping.COMMENT + ", "
-                    +  CommentMapping.TEST_ID + ", "
-                    +  CommentMapping.CREATION_DATE + ", "
-                    +  CommentMapping.CREATOR_ID + " )"
-                    + "VALUES(?,?,?,?)";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setString(1,entity.getComment());
             statement.setInt(2,entity.getTestId());
             statement.setDate(3, new Date(entity.getCreationDate().getTime()));
@@ -166,5 +156,20 @@ public class CommentDaoJDBC implements AbstractCommentDao  {
             pool.returnConnection(connection);
         }
         return result==1;
+    }
+
+    private List<Comment> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Comment> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Comment(
+                    set.getInt(CommentMapping.ID),
+                    set.getInt(CommentMapping.TEST_ID),
+                    set.getInt(CommentMapping.CREATOR_ID),
+                    set.getString(CommentMapping.COMMENT),
+                    set.getDate(CommentMapping.CREATION_DATE))
+            );
+        }
+        return result;
     }
 }

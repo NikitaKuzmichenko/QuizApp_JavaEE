@@ -10,22 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDaoJDBC implements AbstractCategoryDao {
+    public static final String IS_ROW_EXIST_SQL = "SELECT * FROM " + CategoryMapping.TABLE_NAME
+                + " WHERE " + CategoryMapping.NAME + " = ?;";
 
-    private List<Category> parsFromResultSet(ResultSet set) throws SQLException {
-        List<Category> result = new ArrayList<>();
-        if(set==null) return result;
-        while (set.next()){
-            result.add(new Category(set.getInt(CategoryMapping.ID),set.getString(CategoryMapping.NAME)));
-        }
-        return result;
-    }
+    public static final String SELECT_ALL_SQL = "SELECT * FROM " + CategoryMapping.TABLE_NAME + ";";
+
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + CategoryMapping.TABLE_NAME
+            + " WHERE " + CategoryMapping.ID + " = ?;";
+
+    public static final String UPDATE_SQL = "UPDATE " + CategoryMapping.TABLE_NAME
+                    + " SET " + CategoryMapping.NAME + " = ? "
+            + "WHERE " + CategoryMapping.ID +" = ?;";
+
+    public static final String DELETE_SQL = "DELETE FROM " + CategoryMapping.TABLE_NAME
+            + " WHERE " + CategoryMapping.ID +" = ?;";
+
+    public static final String CREATE_SQL = "INSERT INTO " + CategoryMapping.TABLE_NAME
+            + " (" + CategoryMapping.NAME + ")"
+            +  "VALUES(?)";
+
+
 
     private boolean isRowExist(Category entity,Connection connection) throws SQLException {
 
-        String selectSql = "SELECT * FROM " + CategoryMapping.TABLE_NAME
-                + " WHERE " + CategoryMapping.NAME + " = ?;";
-
-        PreparedStatement statement = connection.prepareStatement(selectSql);
+        PreparedStatement statement = connection.prepareStatement(IS_ROW_EXIST_SQL);
         statement.setString(1,entity.getName());
         ResultSet resultSet = statement.executeQuery();
 
@@ -46,8 +54,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         List<Category> result;
 
         try {
-            String sql = "SELECT * FROM " + CategoryMapping.TABLE_NAME + ";";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_ALL_SQL);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -72,9 +79,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         List<Category> result;
 
         try {
-            String sql = "SELECT * FROM " + CategoryMapping.TABLE_NAME
-                    + " WHERE " + CategoryMapping.ID + " = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(SELECT_BY_ID_SQL);
             statement.setInt(1,id);
             resultSet = statement.executeQuery();
             result = parsFromResultSet(resultSet);
@@ -103,10 +108,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String updateSql = "UPDATE " + CategoryMapping.TABLE_NAME
-                    + " SET " + CategoryMapping.NAME + " = ? "
-                    + "WHERE " + CategoryMapping.ID +" = ?;";
-            statement = connection.prepareStatement(updateSql);
+            statement = connection.prepareStatement(UPDATE_SQL);
             statement.setString(1,entity.getName());
             statement.setInt(2,entity.getId());
             result = statement.executeUpdate();
@@ -130,9 +132,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         int result;
 
         try {
-            String sql = "DELETE FROM " + CategoryMapping.TABLE_NAME
-                    + " WHERE " + CategoryMapping.ID +" = ?;";
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(DELETE_SQL);
             statement.setInt(1,id);
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -159,11 +159,7 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
         try {
             if(isRowExist(entity,connection))return false;
 
-            String insectSql = "INSERT INTO " + CategoryMapping.TABLE_NAME
-                    + " (" + CategoryMapping.NAME + ")"
-                    +  "VALUES(?)";
-
-            statement = connection.prepareStatement(insectSql);
+            statement = connection.prepareStatement(CREATE_SQL);
             statement.setString(1,entity.getName());
             result = statement.executeUpdate();
         } catch (SQLException e) {
@@ -175,5 +171,14 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
             pool.returnConnection(connection);
         }
         return result==1;
+    }
+
+    private List<Category> parsFromResultSet(ResultSet set) throws SQLException {
+        List<Category> result = new ArrayList<>();
+        if(set==null) return result;
+        while (set.next()){
+            result.add(new Category(set.getInt(CategoryMapping.ID),set.getString(CategoryMapping.NAME)));
+        }
+        return result;
     }
 }
