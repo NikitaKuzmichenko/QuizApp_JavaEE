@@ -15,13 +15,14 @@ function removeInput() {
 }
 
 function addInput() {
-    var str = '<input required maxlength="50" id="statement' + (x) + '" type="text" name="statement" style="width: 500px;" class="link mx-5 my-1"/>' +
+    var str = '<input required maxlength="50" id="statement' + (x) + '" type="text" name="statement" style="width: 500px;" class=" link mx-5 my-1"/>' +
      '<input type="checkbox" class="largerCheckbox mx-5" id="correct' + (x) + '" name="correct" value="' + (x) + '"/>' +
      '<img class="clickable mx-5" id="remove' + (x) + '" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>'
 
     var div = document.createElement("div");
-    div.setAttribute("id", "input" + x)
+    div.setAttribute("id", "input" + x);
     div.innerHTML = str;
+    div.setAttribute("class","navbar navbar-expand-lg");
     document.getElementById("statements").appendChild(div);
 
     const button =  document.getElementById('remove' + x)

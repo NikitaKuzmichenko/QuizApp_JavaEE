@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class UserIdParser implements Parser<Integer> {
     @Override
-    public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public Integer parsing(HttpServletRequest request){
         HttpSession session = request.getSession();
 
         Object attribute = session.getAttribute(AttributeNames.USER_ID);

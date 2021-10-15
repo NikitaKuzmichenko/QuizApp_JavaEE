@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class GetQuestion implements Command {
 
@@ -50,7 +51,7 @@ public class GetQuestion implements Command {
                         doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
                 return;
             }
-            HashMap<Integer,String[]> questionPassed = (HashMap<Integer,String[]>)questionPassedObject;
+            HashMap<Integer, Set<String>> questionPassed = (HashMap<Integer, Set<String>>)questionPassedObject;
 
             Object QuestionNumberObject = session.getAttribute(AttributeNames.CURRENT_QUESTION_NUMBER);
             int currentQuestionNumber;
@@ -71,15 +72,15 @@ public class GetQuestion implements Command {
             if(request.getMethod().equals("POST")){
 
                 String[] usersChoices = request.getParameterValues(AttributeNames.CORRECT_STATEMENT_LIST);
-                questionPassed.put(currentQuestionNumber,usersChoices);
+                if(usersChoices == null){
+                    questionPassed.put(currentQuestionNumber,null);
+                }else{
+                    questionPassed.put(currentQuestionNumber,Set.of(usersChoices));
+                }
+
 
                 String action = request.getParameter(AttributeNames.ACTION);
                 if(action!=null) {
-                    if (action.equals(ACTION_FINISH)) {
-                        TransitionManager.newInstance().getTransitionByRedirect().
-                                doTransition(request, response,PageMapping.FINISH_TEST_PATH);
-                        return;
-                    }
 
                     if (action.equals(ACTION_NEXT)) {
                         currentQuestionNumber++;
@@ -100,11 +101,10 @@ public class GetQuestion implements Command {
                     selectEntityByTestId(testId,currentQuestionNumber,QUESTION_PER_TIME).get(0);
 
             List<Statement> statements = factory.getStatementService().selectByQuestionId(questions.getId());
-            String[] answers = questionPassed.get(currentQuestionNumber);
+            Set<String> answers = questionPassed.get(currentQuestionNumber);
             if(answers!=null) {
-                List<String> chosenStatements = Arrays.asList(answers);
                 for (Statement statement : statements) {
-                    statement.setCorrect(chosenStatements.contains(Integer.toString(statement.getId())));
+                    statement.setCorrect(answers.contains(Integer.toString(statement.getId())));
                 }
             }
             else{

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class SortTypeParser implements Parser<String> {
 
     @Override
-    public String parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public String parsing(HttpServletRequest request){
 
         String parameter = request.getParameter(AttributeNames.SORT_TYPE);
 

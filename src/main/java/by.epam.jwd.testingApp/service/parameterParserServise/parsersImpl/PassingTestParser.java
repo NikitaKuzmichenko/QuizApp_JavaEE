@@ -11,7 +11,7 @@ import java.io.IOException;
 public class PassingTestParser implements Parser<Integer> {
 
     @Override
-    public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public Integer parsing(HttpServletRequest request) {
         String testId  = request.getParameter(AttributeNames.PASSING_TEST);
         if(testId != null) {
             return Integer.parseInt(testId);

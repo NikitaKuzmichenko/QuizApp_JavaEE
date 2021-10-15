@@ -24,26 +24,61 @@ public class ToPage implements Command {
     public final static int STARTING_PAGE = 1;
     public static final int LIMIT_ON_PAGE = 5;
     public static final int PAGINATION_MAX_SIZE = 7;
+
+    public final static String ALL_CATEGORIES = "all";
+
+    private int calculateTestsNumber(HttpServletRequest request) throws ServiceException {
+        HttpSession session = request.getSession();
+        String parameter = request.getParameter(AttributeNames.CATEGORY);
+
+        if(parameter!=null){
+            if(parameter.equals(ALL_CATEGORIES)){
+                return EntitiesServiceFactory.getInstance().getTestService().
+                        calculateTotalTestsNumber(null);
+            }else {
+                return EntitiesServiceFactory.getInstance().getTestService().
+                        calculateTotalTestsNumber(Integer.parseInt(parameter));
+            }
+        }
+
+        Object attribute =  session.getAttribute(AttributeNames.CATEGORY);
+        if(attribute!=null) {
+            if(attribute.equals(ALL_CATEGORIES)){
+                return EntitiesServiceFactory.getInstance().getTestService().
+                        calculateTotalTestsNumber(null);
+            }else {
+                return EntitiesServiceFactory.getInstance().getTestService().
+                        calculateTotalTestsNumber(Integer.parseInt(attribute.toString()));
+            }
+        }
+
+        return EntitiesServiceFactory.getInstance().getTestService(). // all Tests
+                calculateTotalTestsNumber(null);
+    }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+        HttpSession session = request.getSession();
+
+        ParserProvider parserProvider = ParserProvider.newInstance();
+
+        Integer categoryId = parserProvider.getCategoryParser().parsing(request);
+        session.setAttribute(AttributeNames.CATEGORY,categoryId);
+
+        boolean direction = parserProvider.getSortDirectionParser().parsing(request);
+        session.setAttribute(AttributeNames.SORT_DIRECTION,direction);
+
+        String sortType = parserProvider.getSortTypeParser().parsing(request);
+        session.setAttribute(AttributeNames.SORT_TYPE, sortType);
+
+        int pageNumber = parserProvider.getPageNumberParser().parsing(request);
+        session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
+
         try {
-            HttpSession session = request.getSession();
 
-            ParserProvider parserProvider = ParserProvider.newInstance();
+            int testsNumber = calculateTestsNumber(request);
 
-            Integer categoryId = parserProvider.getCategoryParser().parsing(request);
-            session.setAttribute(AttributeNames.CATEGORY,categoryId);
-
-            boolean direction = parserProvider.getSortDirectionParser().parsing(request);
-            session.setAttribute(AttributeNames.SORT_DIRECTION,direction);
-
-            String sortType = parserProvider.getSortTypeParser().parsing(request);
-            session.setAttribute(AttributeNames.SORT_TYPE, sortType);
-
-            int pageNumber = parserProvider.getPageNumberParser().parsing(request);
-            session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber + 1);
-
-            int testsNumber = parserProvider.getTestNumberParser().parsing(request);
             if(request.getParameter(AttributeNames.CATEGORY)!=null){
                 session.setAttribute(AttributeNames.PAGE_NUMBER, STARTING_PAGE);
             }
@@ -70,12 +105,11 @@ public class ToPage implements Command {
                             calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
             request.setAttribute(AttributeNames.CATEGORIES, factory.getCategoryService().selectAll());
 
-            TransitionManager.newInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.WELCOME_PAGE);
-
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
 
+        TransitionManager.newInstance().getTransitionByForward().
+                doTransition(request, response, PageMapping.WELCOME_PAGE);
     }
 }

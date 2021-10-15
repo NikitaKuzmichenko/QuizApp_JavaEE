@@ -31,7 +31,7 @@
 
                     <c:when test="${userRole == 1}">
                         <form class="d-flex mx-3">
-                             <a class="btn btn-outline-success" href="takeTests?type=passed" type="submit"><fmt:message key="button.viewPasses"/></a>
+                             <a class="btn btn-outline-success" href="view_results" type="submit"><fmt:message key="button.viewPasses"/></a>
                         </form>
                     </c:when>
                 </c:choose>

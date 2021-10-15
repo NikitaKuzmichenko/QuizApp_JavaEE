@@ -30,7 +30,7 @@ public class LocalizationFilter implements Filter{
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         if(isActive){
-            try {
+
                 HttpServletRequest request = (HttpServletRequest)servletRequest;
                 Parser<String> languageParser = new LanguageParser();
                 String language = languageParser.parsing(request);
@@ -39,9 +39,7 @@ public class LocalizationFilter implements Filter{
                 }else {
                     request.getSession().setAttribute(AttributeNames.LANGUAGE, language);
                 }
-            } catch (ServiceException e) {
-                throw new ServletException(e);
-            }
+
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

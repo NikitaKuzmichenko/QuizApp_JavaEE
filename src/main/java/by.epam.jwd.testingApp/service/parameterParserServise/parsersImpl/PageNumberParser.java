@@ -13,7 +13,7 @@ public class PageNumberParser implements Parser<Integer> {
 
     public final static int STARTING_PAGE = 1;
     @Override
-    public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public Integer parsing(HttpServletRequest request) {
 
         String parameter = request.getParameter(AttributeNames.PAGE_NUMBER);
 

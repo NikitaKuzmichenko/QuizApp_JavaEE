@@ -57,7 +57,6 @@ public class AccessLvlCheckFilter implements Filter {
                 return;
             }
 
-            try {
                 Parser<String> languageParser = new LanguageParser();
                 String language = languageParser.parsing(request);
                 ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
@@ -65,9 +64,7 @@ public class AccessLvlCheckFilter implements Filter {
 
                 TransitionManager.newInstance().getTransitionByForward().
                         doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
-            } catch (ServiceException e) {
-                throw new ServletException(e);
-            }
+
 
         }
     }

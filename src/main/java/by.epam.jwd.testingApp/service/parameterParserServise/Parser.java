@@ -7,5 +7,5 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public interface Parser<T> {
-    public T parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException;
+    public T parsing(HttpServletRequest request);
 }

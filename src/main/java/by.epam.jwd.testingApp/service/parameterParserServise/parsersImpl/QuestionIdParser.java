@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class QuestionIdParser implements Parser<Integer> {
     @Override
-    public Integer parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public Integer parsing(HttpServletRequest request){
 
         String id = request.getParameter(AttributeNames.QUESTION_ID);
         if(id!=null){

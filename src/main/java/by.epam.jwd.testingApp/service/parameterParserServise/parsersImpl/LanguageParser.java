@@ -13,7 +13,7 @@ public class LanguageParser implements Parser<String> {
 
     public static final String DEFAULT_LANGUAGE = "ru";
     @Override
-    public String parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public String parsing(HttpServletRequest request) {
 
         String parameter = request.getParameter(AttributeNames.LANGUAGE);
 

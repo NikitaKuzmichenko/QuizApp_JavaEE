@@ -5,6 +5,14 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="content" />
 
+@@ -0,0 +1,44 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="content" />
+
     <form action="edit_question" method="post">
         <nav class="navbar navbar-expand-lg navbar-light justify-content-left" style="background-color: #e3f2fd;">
 
@@ -36,7 +44,7 @@
                     <input type="checkbox" class="largerCheckbox mx-5" id="correct" name="correct" value="${statement.getId()}"/>
                 </c:if>
                 <a href="delete_statement?statementId=${statement.getId()}">
-                    <img class="mx-5" class ="clickable" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>
+                <img class="mx-5" class ="clickable" src="<c:url value="/img/trash_can.png"/>" width="30" height="30"/>
                 </a>
             </nav>
         </c:forEach>

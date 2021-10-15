@@ -11,7 +11,7 @@ import java.io.IOException;
 public class CategoryParser implements Parser<Integer> {
     public final static String ALL_CATEGORIES = "all";
     @Override
-    public Integer parsing(HttpServletRequest request) throws ServletException, IOException {
+    public Integer parsing(HttpServletRequest request)  {
 
         HttpSession session = request.getSession();
         String parameter = request.getParameter(AttributeNames.CATEGORY);

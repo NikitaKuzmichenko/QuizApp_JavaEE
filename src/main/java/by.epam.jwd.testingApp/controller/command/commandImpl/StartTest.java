@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 public class StartTest implements Command {
 
@@ -32,10 +33,10 @@ public class StartTest implements Command {
 
             Object resultMap = session.getAttribute(AttributeNames.QUESTIONS_PASSED);
             if(resultMap == null) {
-                session.setAttribute(AttributeNames.QUESTIONS_PASSED, new HashMap<Integer, String[]>());
+                session.setAttribute(AttributeNames.QUESTIONS_PASSED, new HashMap<Integer, Set<String>>());
             }
             else{
-                ((HashMap<Integer, String[]>)resultMap).clear();
+                ((HashMap<Integer, Set<String>>)resultMap).clear();
             }
 
             request.setAttribute(AttributeNames.QUESTIONS_NUMBER_IN_TEST,

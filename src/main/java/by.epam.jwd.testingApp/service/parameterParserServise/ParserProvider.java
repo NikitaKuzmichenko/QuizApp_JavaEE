@@ -1,6 +1,5 @@
 package by.epam.jwd.testingApp.service.parameterParserServise;
 
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.CategorizedTestsNumberParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.CategoryParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.DirectionParser;
 import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
@@ -16,7 +15,6 @@ public class ParserProvider {
     private static ParserProvider instance;
 
     private Parser<Integer> userIdParser;
-    private Parser<Integer> testNumberParser;
     private Parser<Integer> pageNumberParser;
     private Parser<Integer> categoryParser;
     private Parser<Integer> testIdParser;
@@ -28,7 +26,6 @@ public class ParserProvider {
 
     private ParserProvider(){
         userIdParser = new UserIdParser();
-        testNumberParser = new CategorizedTestsNumberParser();
         pageNumberParser = new PageNumberParser();
         sortDirectionParser = new DirectionParser();
         categoryParser = new CategoryParser();
@@ -66,10 +63,6 @@ public class ParserProvider {
 
     public Parser<Integer> getUserIdParser() {
         return userIdParser;
-    }
-
-    public Parser<Integer> getTestNumberParser() {
-        return testNumberParser;
     }
 
     public Parser<Integer> getPageNumberParser() {

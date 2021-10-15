@@ -15,7 +15,7 @@ public class DirectionParser implements Parser<Boolean> {
     public static final boolean DOWN = false;
 
     @Override
-    public Boolean parsing(HttpServletRequest request) throws ServletException, IOException, ServiceException {
+    public Boolean parsing(HttpServletRequest request){
 
         String parameter = request.getParameter(AttributeNames.SORT_DIRECTION);
 

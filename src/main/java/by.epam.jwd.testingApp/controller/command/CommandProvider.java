@@ -1,6 +1,5 @@
 package by.epam.jwd.testingApp.controller.command;
 
-import by.epam.jwd.testingApp.controller.command.commandImpl.AddComment;
 import by.epam.jwd.testingApp.controller.command.commandImpl.AddQuestion;
 import by.epam.jwd.testingApp.controller.command.commandImpl.Authorization;
 import by.epam.jwd.testingApp.controller.command.commandImpl.CreateTest;
@@ -43,7 +42,6 @@ public class CommandProvider {
         commands.put(CommandName.DELETE_QUESTION,new DeleteQuestion());
         commands.put(CommandName.VIEW_RESULTS,new ViewResults());
         commands.put(CommandName.VIEW_MY_TESTS,new ViewMyTests());
-        commands.put(CommandName.ADD_COMMENT,new AddComment());
         commands.put(CommandName.DELETE_STATEMENT,new DeleteStatement());
     }
 

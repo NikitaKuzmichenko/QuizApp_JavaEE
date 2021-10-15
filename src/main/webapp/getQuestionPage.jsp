@@ -12,7 +12,7 @@
                 <span style="font-size:14.0pt">previous<span>
             </button>
 
-            <button class="btn btn-outline-success mx-5" formaction="get_question?action=finish" type="submit" >
+            <button class="btn btn-outline-success mx-5" formaction="finish_test" type="submit" >
                 <span style="font-size:14.0pt">finish test<span>
             </button>
 
