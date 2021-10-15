@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class CommandProvider {
     private static Map<CommandName,Command> commands;
-    private static CommandProvider instance;
 
     private CommandProvider(){
         commands = new HashMap<>();
@@ -47,21 +46,16 @@ public class CommandProvider {
         commands.put(CommandName.CHANGE_STATUS,new ChangeStatus());
     }
 
+    private static class SingletonHolder {
+        public static final CommandProvider HOLDER_INSTANCE = new CommandProvider();
+    }
+
     public static CommandProvider getInstance() {
-        CommandProvider localInstance = instance;
-        if (localInstance == null) {
-            synchronized (CommandProvider.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new CommandProvider();
-                }
-            }
-        }
-        return localInstance;
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public Command selectCommand(String commandName){
-        if(commandName.equals("")) return commands.get(CommandName.PAGE) ;
+        if(commandName.equals("")) return commands.get(CommandName.PAGE);
         return commands.get(CommandName.valueOf(commandName.toUpperCase()));
     }
 }

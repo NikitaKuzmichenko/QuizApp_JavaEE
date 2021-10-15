@@ -9,12 +9,12 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
-import by.epam.jwd.testingApp.service.timeService.TimeProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 public class CreateTest implements Command {
 
@@ -35,18 +35,18 @@ public class CreateTest implements Command {
         }
 
         if(request.getMethod().equals(GET_METHOD)) {
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.CREATE_TESTS);
             return;
         }
 
-        String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
+        String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
 
         String testName = request.getParameter(AttributeNames.TEST_NAME);
         if(testName == null){
             request.setAttribute(AttributeNames.ERROR_MSG,
-                    ErrorMsgProvider.newInstance().getManagerByLocale(language).getValueByName(EMPTY_NAME));
-            TransitionManager.newInstance().getTransitionByForward().
+                    ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(EMPTY_NAME));
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,  PageMapping.CREATE_TESTS);
             return;
         }
@@ -54,17 +54,17 @@ public class CreateTest implements Command {
         String categoryId = request.getParameter(AttributeNames.CATEGORY);
         if(categoryId == null){
             request.setAttribute(AttributeNames.ERROR_MSG,
-                    ErrorMsgProvider.newInstance().getManagerByLocale(language).getValueByName(EMPTY_CATEGORY));
-            TransitionManager.newInstance().getTransitionByForward().
+                    ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(EMPTY_CATEGORY));
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,  PageMapping.CREATE_TESTS);
             return;
         }
 
-        Integer userId = ParserProvider.newInstance().getUserIdParser().parsing(request);
+        Integer userId = ParserProvider.getInstance().getUserIdParser().parsing(request);
         if(userId == null){
             request.setAttribute(AttributeNames.ERROR_MSG,
-                    ErrorMsgProvider.newInstance().getManagerByLocale(language).getValueByName(UNDEFINED_USER));
-            TransitionManager.newInstance().getTransitionByForward().
+                    ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(UNDEFINED_USER));
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,  PageMapping.CREATE_TESTS);
             return;
         }
@@ -72,7 +72,7 @@ public class CreateTest implements Command {
         Test newTest = new Test();
         newTest.setName(testName);
         newTest.setCategoryId(Integer.parseInt(categoryId));
-        newTest.setCreationDate(TimeProvider.newInstance().getSQLDate());
+        newTest.setCreationDate(new Date(System.currentTimeMillis()));
         newTest.setCreatorId(userId);
 
         Integer id;
@@ -84,15 +84,15 @@ public class CreateTest implements Command {
 
         if(id==null){
             request.setAttribute(AttributeNames.ERROR_MSG,
-                    ErrorMsgProvider.newInstance().getManagerByLocale(language).getValueByName(UNDEFINED_ERROR));
-            TransitionManager.newInstance().getTransitionByForward().
+                    ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(UNDEFINED_ERROR));
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,  PageMapping.CREATE_TESTS);
             return;
         }
 
         request.getSession().setAttribute(AttributeNames.TEST_ID , id);
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
     }
 }

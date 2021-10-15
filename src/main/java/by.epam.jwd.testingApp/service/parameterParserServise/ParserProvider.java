@@ -12,17 +12,15 @@ import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.UserIdP
 
 public class ParserProvider {
 
-    private static ParserProvider instance;
-
-    private Parser<Integer> userIdParser;
-    private Parser<Integer> pageNumberParser;
-    private Parser<Integer> categoryParser;
-    private Parser<Integer> testIdParser;
-    private Parser<Integer> questionIdParser;
-    private Parser<Integer> passingTestParser;
-    private Parser<Boolean> sortDirectionParser;
-    private Parser<String> languageParser;
-    private Parser<String> sortTypeParser;
+    private static Parser<Integer> userIdParser;
+    private static Parser<Integer> pageNumberParser;
+    private static Parser<Integer> categoryParser;
+    private static Parser<Integer> testIdParser;
+    private static Parser<Integer> questionIdParser;
+    private static Parser<Integer> passingTestParser;
+    private static Parser<Boolean> sortDirectionParser;
+    private static Parser<String> languageParser;
+    private static Parser<String> sortTypeParser;
 
     private ParserProvider(){
         userIdParser = new UserIdParser();
@@ -36,17 +34,12 @@ public class ParserProvider {
         passingTestParser = new PassingTestParser();
     }
 
-    public static ParserProvider newInstance() {
-        ParserProvider localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ParserProvider.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ParserProvider();
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final ParserProvider HOLDER_INSTANCE = new ParserProvider();
+    }
+
+    public static ParserProvider getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public Parser<Integer> getPassingTestParser() {

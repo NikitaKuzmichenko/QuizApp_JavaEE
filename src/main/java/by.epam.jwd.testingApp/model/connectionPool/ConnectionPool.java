@@ -8,17 +8,15 @@ import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
 
-    private static volatile ConnectionPool instance;
-
-    private String driver;
-    private String password;
-    private String url;
-    private String user;
+    private static String driver;
+    private static String password;
+    private static String url;
+    private static String user;
 
     public static final int DEFAULT_POOL_SIZE = 12;
 
-    private BlockingQueue<Connection> freePool;
-    private BlockingQueue<Connection> occupiedPool;
+    private static BlockingQueue<Connection> freePool;
+    private static BlockingQueue<Connection> occupiedPool;
 
     private ConnectionPool() {
         DBResourceManager resourceManager = DBResourceManager.newInstance();
@@ -28,18 +26,12 @@ public class ConnectionPool {
         user = resourceManager.getValueByName(DataBaseParams.DB_USER);
     }
 
-    public static ConnectionPool getInstance(){
-        ConnectionPool localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ConnectionPool.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    localInstance = new ConnectionPool();
-                    instance = localInstance;
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final ConnectionPool HOLDER_INSTANCE = new ConnectionPool();
+    }
+
+    public static ConnectionPool getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public void InitPool() throws ConnectionPoolException {
@@ -67,7 +59,7 @@ public class ConnectionPool {
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
-        Connection connection = null;
+        Connection connection;
         try {
             connection = freePool.take();
             occupiedPool.offer(connection);
@@ -82,14 +74,5 @@ public class ConnectionPool {
         occupiedPool.remove(connection);
         freePool.offer(connection);
     }
-
-    public void returnConnection(Connection connection,Statement statement) throws SQLException{
-        returnConnection(connection);
-    }
-
-    public void returnConnection(Connection connection,Statement statement,ResultSet set)throws SQLException{
-        returnConnection(connection,statement);
-    }
-
 
 }

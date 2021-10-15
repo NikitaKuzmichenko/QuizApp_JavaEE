@@ -34,7 +34,7 @@ public class GetQuestion implements Command {
 
         Object passingTestObject = session.getAttribute(AttributeNames.PASSING_TEST);
         if (passingTestObject == null) {
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
             return;
         }
@@ -49,7 +49,7 @@ public class GetQuestion implements Command {
 
         Object questionPassedObject = session.getAttribute(AttributeNames.QUESTIONS_PASSED);
         if(questionPassedObject == null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
             return;
         }
@@ -90,7 +90,7 @@ public class GetQuestion implements Command {
 
             session.setAttribute(AttributeNames.CURRENT_QUESTION_NUMBER,currentQuestionNumber);
 
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response,PageMapping.GET_QUESTION_PATH);
             return;
         }
@@ -121,7 +121,7 @@ public class GetQuestion implements Command {
         request.setAttribute(AttributeNames.STATEMENT_LIST,statements);
         request.setAttribute(AttributeNames.QUESTION_NAME,questions.getTitle());
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.GET_QUESTION);
     }
 }

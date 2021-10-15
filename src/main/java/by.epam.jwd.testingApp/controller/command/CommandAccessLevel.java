@@ -5,8 +5,7 @@ import java.util.Map;
 
 public class CommandAccessLevel {
 
-    private Map<CommandName,Integer> commands;
-    private static CommandAccessLevel instance;
+    private static Map<CommandName,Integer> commands;
 
     public static final Integer NO_ROLE_REQUIRED = null;
     public static final Integer USER_ROLE_REQUIRED = 1;
@@ -34,17 +33,12 @@ public class CommandAccessLevel {
         commands.put(CommandName.CHANGE_STATUS,TUTOR_ROLE_REQUIRED);
     }
 
+    private static class SingletonHolder {
+        public static final CommandAccessLevel HOLDER_INSTANCE = new CommandAccessLevel();
+    }
+
     public static CommandAccessLevel getInstance() {
-        CommandAccessLevel localInstance = instance;
-        if (localInstance == null) {
-            synchronized (CommandAccessLevel.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new CommandAccessLevel();
-                }
-            }
-        }
-        return localInstance;
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public Integer getAccessLvlByCommandName(String commandName){

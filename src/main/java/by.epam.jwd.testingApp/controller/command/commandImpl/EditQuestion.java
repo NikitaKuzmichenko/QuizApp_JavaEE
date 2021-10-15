@@ -23,9 +23,9 @@ public class EditQuestion implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Integer questionId = ParserProvider.newInstance().getQuestionIdParser().parsing(request);
+        Integer questionId = ParserProvider.getInstance().getQuestionIdParser().parsing(request);
         if(questionId==null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
             return;
         }
@@ -34,9 +34,9 @@ public class EditQuestion implements Command {
 
         if(request.getMethod().equals(POST_METHOD)) {
 
-            Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
+            Integer testId = ParserProvider.getInstance().getTestIdParser().parsing(request);
             if (testId == null) {
-                TransitionManager.newInstance().getTransitionByRedirect().
+                TransitionManager.getInstance().getTransitionByRedirect().
                         doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
                 return;
             }
@@ -48,7 +48,7 @@ public class EditQuestion implements Command {
                     AbstractQuestionService questionService = factory.getQuestionService();
                     Question question = questionService.selectEntityById(questionId);
                     if (question == null) {
-                        TransitionManager.newInstance().getTransitionByRedirect().
+                        TransitionManager.getInstance().getTransitionByRedirect().
                                 doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
                         return;
                     }
@@ -99,7 +99,7 @@ public class EditQuestion implements Command {
                 throw new ServletException(e);
             }
 
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
             return;
         }
@@ -108,7 +108,7 @@ public class EditQuestion implements Command {
 
             Question question = factory.getQuestionService().selectEntityById(questionId);
             if (question == null) {
-                TransitionManager.newInstance().getTransitionByRedirect().
+                TransitionManager.getInstance().getTransitionByRedirect().
                         doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
             }
 
@@ -121,7 +121,7 @@ public class EditQuestion implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.EDIT_QUESTION);
     }
 }

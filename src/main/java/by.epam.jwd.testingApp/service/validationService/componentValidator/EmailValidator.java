@@ -1,6 +1,5 @@
 package by.epam.jwd.testingApp.service.validationService.componentValidator;
 
-import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 
 import java.util.regex.Matcher;
@@ -32,12 +31,12 @@ public class EmailValidator implements AbstractStringValidator {
         if(entity == null || locale == null || errorMsgAccumulator == null) return false;
 
         if(!patternMatch(entity.trim(),EMAIL_VALIDATOR)){
-            errorMsgAccumulator.append(ErrorMsgProvider.newInstance().getManagerByLocale(locale)
+            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
                     .getValueByName(INVALID_EMAIL)).append('\n');
             return false;
         }
         if(entity.trim().length() > MAX_LENGTH){
-            errorMsgAccumulator.append(ErrorMsgProvider.newInstance().getManagerByLocale(locale)
+            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
                     .getValueByName(LONG_EMAIL)).append('\n');
             return false;
         }

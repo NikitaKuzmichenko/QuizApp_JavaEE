@@ -14,12 +14,12 @@ public class PasswordValidator implements AbstractStringValidator {
         if(entity == null || locale == null || errorMsgAccumulator == null) return false;
 
         if(entity.trim().length() < MIN_LENGTH) {
-            errorMsgAccumulator.append(ErrorMsgProvider.newInstance().getManagerByLocale(locale)
+            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
                     .getValueByName(SHORT_PASSWORD)).append('\n');
             return false;
         }
         if(entity.trim().length() > MAX_LENGTH){
-            errorMsgAccumulator.append(ErrorMsgProvider.newInstance().getManagerByLocale(locale)
+            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
                     .getValueByName(LONG_PASSWORD)).append('\n');
             return false;
         }

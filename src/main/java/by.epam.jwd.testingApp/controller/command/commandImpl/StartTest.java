@@ -21,9 +21,9 @@ public class StartTest implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Integer testId = ParserProvider.newInstance().getPassingTestParser().parsing(request);
+        Integer testId = ParserProvider.getInstance().getPassingTestParser().parsing(request);
         if(testId == null){
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.WELCOME_PAGE);
             return;
         }
@@ -45,7 +45,7 @@ public class StartTest implements Command {
             request.setAttribute(AttributeNames.TEST_NAME,
                     EntitiesServiceFactory.getInstance().getTestService().selectEntityById(testId).getName());
 
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.START_TEST);
         } catch (ServiceException e) {
             throw new ServletException(e);

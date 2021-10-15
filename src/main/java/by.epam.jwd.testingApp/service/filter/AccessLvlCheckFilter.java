@@ -4,7 +4,6 @@ import by.epam.jwd.testingApp.controller.command.CommandAccessLevel;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
@@ -48,10 +47,10 @@ public class AccessLvlCheckFilter implements Filter {
 
         Parser<String> languageParser = new LanguageParser();
         String language = languageParser.parsing(request);
-        ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+        ErrorMsgSupplier errorMsg = ErrorMsgProvider.getInstance().getManagerByLocale(language);
         request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(USER_ACCESS_LACK));
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
 
     }

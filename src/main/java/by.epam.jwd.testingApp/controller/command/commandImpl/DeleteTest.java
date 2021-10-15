@@ -17,7 +17,7 @@ public class DeleteTest implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            Integer testId  = ParserProvider.newInstance().getTestIdParser().parsing(request);
+            Integer testId  = ParserProvider.getInstance().getTestIdParser().parsing(request);
             if(testId!=null) {
                 EntitiesServiceFactory.getInstance().getTestService().remove(testId);
             }
@@ -25,7 +25,7 @@ public class DeleteTest implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
     }
 }

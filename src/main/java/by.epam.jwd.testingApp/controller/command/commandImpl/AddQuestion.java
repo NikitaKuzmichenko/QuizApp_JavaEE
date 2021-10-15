@@ -23,13 +23,13 @@ public class AddQuestion implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if(request.getMethod().equals(GET_METHOD)) {
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.ADD_QUESTION);
         }
 
-        Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
+        Integer testId = ParserProvider.getInstance().getTestIdParser().parsing(request);
         if(testId==null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
             return;
         }
@@ -37,7 +37,7 @@ public class AddQuestion implements Command {
         EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
         String title = request.getParameter(AttributeNames.QUESTION_NAME);
         if(title==null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.ADD_QUESTION_PATH);
             return;
         }
@@ -64,7 +64,7 @@ public class AddQuestion implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
 
     }

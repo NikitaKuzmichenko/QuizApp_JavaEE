@@ -5,9 +5,7 @@ import java.util.Map;
 
 public class TestsSorterProvider {
 
-    private static TestsSorterProvider instance;
-
-    private Map<String, TestsSorter> sorterMap;
+    private static Map<String, TestsSorter> sorterMap;
 
     private TestsSorterProvider(){
         sorterMap = new HashMap<>();
@@ -16,17 +14,12 @@ public class TestsSorterProvider {
         sorterMap.put(TestsSortingConstants.POPULARITY_SORT,new TestsSorterByUsersPassed());
     }
 
-    public static TestsSorterProvider newInstance() {
-        TestsSorterProvider localInstance = instance;
-        if (localInstance == null) {
-            synchronized (TestsSorterProvider.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new TestsSorterProvider();
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final TestsSorterProvider HOLDER_INSTANCE = new TestsSorterProvider();
+    }
+
+    public static TestsSorterProvider getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public TestsSorter getBySortType(String sortType){

@@ -31,16 +31,16 @@ public class ViewMyTests implements Command {
 
         HttpSession session = request.getSession();
 
-        ParserProvider parserProvider = ParserProvider.newInstance();
+        ParserProvider parserProvider = ParserProvider.getInstance();
         EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
 
         Integer userId = parserProvider.getUserIdParser().parsing(request);
         if(userId==null){
-            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
-            ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+            String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
+            ErrorMsgSupplier errorMsg = ErrorMsgProvider.getInstance().getManagerByLocale(language);
             request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(UNDEFINED_USER));
 
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
             return;
         }
@@ -72,7 +72,7 @@ public class ViewMyTests implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.VIEW_MY_TESTS);
     }
 }

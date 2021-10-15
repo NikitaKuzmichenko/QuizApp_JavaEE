@@ -2,26 +2,20 @@ package by.epam.jwd.testingApp.controller.transitionManager;
 
 public class TransitionManager {
 
-    private static TransitionManager instance;
-
     private final Transition transitionByForward;
     private final Transition transitionByRedirect;
 
-    private TransitionManager(){
+    private TransitionManager() {
         transitionByForward = new TransitionByForward();
         transitionByRedirect = new TransitionByRedirect();
     }
-    public static TransitionManager newInstance() {
-        TransitionManager localInstance = instance;
-        if (localInstance == null) {
-            synchronized (TransitionManager.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new TransitionManager();
-                }
-            }
-        }
-        return localInstance;
+
+    private static class SingletonHolder {
+        public static final TransitionManager HOLDER_INSTANCE = new TransitionManager();
+    }
+
+    public static TransitionManager getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public Transition getTransitionByForward() {

@@ -61,7 +61,7 @@ public class ToPage implements Command {
 
         HttpSession session = request.getSession();
 
-        ParserProvider parserProvider = ParserProvider.newInstance();
+        ParserProvider parserProvider = ParserProvider.getInstance();
 
         Integer categoryId = parserProvider.getCategoryParser().parsing(request);
         session.setAttribute(AttributeNames.CATEGORY,categoryId);
@@ -88,7 +88,7 @@ public class ToPage implements Command {
             }
             session.setAttribute(AttributeNames.PAGE_NUMBER, pageNumber);
 
-            TestsSorter sorter = TestsSorterProvider.newInstance().getBySortType(sortType);
+            TestsSorter sorter = TestsSorterProvider.getInstance().getBySortType(sortType);
             List<Test> testList = sorter.doSorting(categoryId,pageNumber*LIMIT_ON_PAGE,direction,LIMIT_ON_PAGE);
 
 
@@ -109,7 +109,7 @@ public class ToPage implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.WELCOME_PAGE);
     }
 }

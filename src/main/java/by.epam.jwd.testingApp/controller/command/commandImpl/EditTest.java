@@ -20,9 +20,9 @@ public class EditTest implements Command {
 
         EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
 
-        Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
+        Integer testId = ParserProvider.getInstance().getTestIdParser().parsing(request);
         if(testId == null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
             return;
         }
@@ -35,7 +35,7 @@ public class EditTest implements Command {
             throw new ServletException(e);
         }
         if(test==null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.VIEW_MY_TESTS_PATH);
             return;
         }
@@ -60,7 +60,7 @@ public class EditTest implements Command {
                 }
             }
 
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
             return;
         }
@@ -80,7 +80,7 @@ public class EditTest implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.EDIT_TESTS);
 
     }

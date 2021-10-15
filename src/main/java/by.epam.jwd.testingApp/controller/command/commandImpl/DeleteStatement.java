@@ -25,7 +25,7 @@ public class DeleteStatement implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.EDIT_QUESTION_PATH);
     }
 }

@@ -17,7 +17,7 @@ public class DeleteQuestion implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            Integer id = ParserProvider.newInstance().getQuestionIdParser().parsing(request);
+            Integer id = ParserProvider.getInstance().getQuestionIdParser().parsing(request);
             if(id!=null){
                 EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
                 factory.getStatementService().deleteAllByQuestionId(id);
@@ -27,7 +27,7 @@ public class DeleteQuestion implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.EDIT_TESTS_PATH);
     }
 }

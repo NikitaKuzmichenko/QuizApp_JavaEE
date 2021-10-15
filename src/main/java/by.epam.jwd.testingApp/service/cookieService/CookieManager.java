@@ -6,21 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CookieManager {
 
-    private static CookieManager instance;
-
     private CookieManager(){}
 
+    private static class SingletonHolder {
+        public static final CookieManager HOLDER_INSTANCE = new CookieManager();
+    }
+
     public static CookieManager getInstance() {
-        CookieManager localInstance = instance;
-        if (localInstance == null) {
-            synchronized (CookieManager.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new CookieManager();
-                }
-            }
-        }
-        return localInstance;
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public Cookie[] removeCookie(HttpServletRequest request, String cookieName){

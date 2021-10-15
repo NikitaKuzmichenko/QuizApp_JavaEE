@@ -16,9 +16,9 @@ public class UserValidator implements AbstractEntitiesValidator<User> {
         if(entity == null || locale == null || errorMsgAccumulator == null) return false;
 
         boolean error = false;
-        ErrorMsgSupplier manager = ErrorMsgProvider.newInstance().getManagerByLocale(locale);
+        ErrorMsgSupplier manager = ErrorMsgProvider.getInstance().getManagerByLocale(locale);
 
-        ComponentValidatorsProvider componentValidator = ComponentValidatorsProvider.newInstance();
+        ComponentValidatorsProvider componentValidator = ComponentValidatorsProvider.getInstance();
 
         String email = entity.getEmail();
         if(email == null){

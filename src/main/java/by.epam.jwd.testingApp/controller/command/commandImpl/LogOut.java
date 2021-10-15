@@ -25,7 +25,7 @@ public class LogOut implements Command {
         HttpSession session = request.getSession();
         session.setAttribute(AttributeNames.USER_ID, NO_USER);
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
     }
 }

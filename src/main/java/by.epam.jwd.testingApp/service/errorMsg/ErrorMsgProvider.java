@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class ErrorMsgProvider {
 
-    private static ErrorMsgProvider instance;
-
     private Map<String, ErrorMsgSupplier> managerMap;
 
     public static final  String DEFAULT_LANGUAGE = "RU";
@@ -17,17 +15,12 @@ public class ErrorMsgProvider {
         managerMap.put("EN",new EnErrorMsgSupplier());
     }
 
-    public static ErrorMsgProvider newInstance() {
-        ErrorMsgProvider localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ErrorMsgProvider.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ErrorMsgProvider();
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final ErrorMsgProvider HOLDER_INSTANCE = new ErrorMsgProvider();
+    }
+
+    public static ErrorMsgProvider getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public ErrorMsgSupplier getManagerByLocale(String locale){

@@ -18,7 +18,7 @@ public class ChangeStatus implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Integer testId = ParserProvider.newInstance().getTestIdParser().parsing(request);
+        Integer testId = ParserProvider.getInstance().getTestIdParser().parsing(request);
         if(testId!=null){
             try {
                 AbstractTestService testService = EntitiesServiceFactory.getInstance().getTestService();
@@ -30,7 +30,7 @@ public class ChangeStatus implements Command {
             }
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request,response, PageMapping.VIEW_MY_TESTS_PATH);
     }
 }

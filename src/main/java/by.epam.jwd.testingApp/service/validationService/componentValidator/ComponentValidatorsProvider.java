@@ -1,5 +1,7 @@
 package by.epam.jwd.testingApp.service.validationService.componentValidator;
 
+import by.epam.jwd.testingApp.service.testSortingService.TestsSorterProvider;
+
 public class ComponentValidatorsProvider {
 
     private static ComponentValidatorsProvider instance;
@@ -13,17 +15,13 @@ public class ComponentValidatorsProvider {
         passwordValidator = new PasswordValidator();
         nameValidator = new NameValidator();
     }
-    public static ComponentValidatorsProvider newInstance() {
-        ComponentValidatorsProvider localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ComponentValidatorsProvider.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ComponentValidatorsProvider();
-                }
-            }
-        }
-        return localInstance;
+
+    private static class SingletonHolder {
+        public static final ComponentValidatorsProvider HOLDER_INSTANCE = new ComponentValidatorsProvider();
+    }
+
+    public static ComponentValidatorsProvider getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public AbstractStringValidator getEmailValidator() {

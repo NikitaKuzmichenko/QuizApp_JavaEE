@@ -11,8 +11,7 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
-import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoderProvider;
+import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -29,7 +28,7 @@ public class Authorization implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
         if(request.getMethod().equals(GET_METHOD)){
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,PageMapping.AUTHORIZATION_PAGE);
             return;
         }
@@ -46,8 +45,7 @@ public class Authorization implements Command {
         if(user!=null) {
             String password = request.getParameter(AttributeNames.PASSWORD);
             if(password !=null) {
-                PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
-                if (encoder.isMatching(password,user.getPassword())) {
+                if (PasswordEncode.getInstance().isMatching(password,user.getPassword())) {
                     HttpSession session = request.getSession();
                     CookieManager cookieManager = CookieManager.getInstance();
                     session.setAttribute(AttributeNames.USER_ID, user.getId());
@@ -58,7 +56,7 @@ public class Authorization implements Command {
                         cookieManager.rewriteCookie(request, response);
                     }
 
-                    TransitionManager.newInstance().getTransitionByRedirect().
+                    TransitionManager.getInstance().getTransitionByRedirect().
                             doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
                 }else {
                     userValid = false;
@@ -72,15 +70,15 @@ public class Authorization implements Command {
         }
 
         if(!userValid){
-            String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
-            ErrorMsgSupplier errorMsg = ErrorMsgProvider.newInstance().getManagerByLocale(language);
+            String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
+            ErrorMsgSupplier errorMsg = ErrorMsgProvider.getInstance().getManagerByLocale(language);
             request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(INVALID_USER));
 
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
     }
 }

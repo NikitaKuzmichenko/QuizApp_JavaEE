@@ -18,16 +18,15 @@ import by.epam.jwd.testingApp.service.entitiesService.serviceImpl.TestService;
 import by.epam.jwd.testingApp.service.entitiesService.serviceImpl.UserService;
 
 public class EntitiesServiceFactory {
-    private static EntitiesServiceFactory instance = null;
 
-    private AbstractCategoryService categoryService;
-    private AbstractCommentService commentService;
-    private AbstractQuestionService questionService;
-    private AbstractResultService resultService;
-    private AbstractRoleService roleService;
-    private AbstractStatementService statementService;
-    private AbstractTestService testService;
-    private AbstractUserService userService;
+    private static AbstractCategoryService categoryService;
+    private static AbstractCommentService commentService;
+    private static AbstractQuestionService questionService;
+    private static AbstractResultService resultService;
+    private static AbstractRoleService roleService;
+    private static AbstractStatementService statementService;
+    private static AbstractTestService testService;
+    private static AbstractUserService userService;
 
     private EntitiesServiceFactory(){
         categoryService = new CategoryService();
@@ -40,17 +39,12 @@ public class EntitiesServiceFactory {
         userService = new UserService();
     }
 
+    private static class SingletonHolder {
+        public static final EntitiesServiceFactory HOLDER_INSTANCE = new EntitiesServiceFactory();
+    }
+
     public static EntitiesServiceFactory getInstance() {
-        EntitiesServiceFactory localInstance = instance;
-        if (localInstance == null) {
-            synchronized (EntitiesServiceFactory.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new EntitiesServiceFactory();
-                }
-            }
-        }
-        return localInstance;
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public AbstractCategoryService getCategoryService() {

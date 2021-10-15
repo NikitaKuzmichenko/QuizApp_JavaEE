@@ -11,7 +11,6 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractStatementService;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
-import by.epam.jwd.testingApp.service.timeService.TimeProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,16 +26,16 @@ public class FinishTest implements Command {
         HttpSession session = request.getSession();
         EntitiesServiceFactory factory = EntitiesServiceFactory.getInstance();
 
-        Integer userId = ParserProvider.newInstance().getUserIdParser().parsing(request);
+        Integer userId = ParserProvider.getInstance().getUserIdParser().parsing(request);
         if(userId == null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
             return;
         }
 
         Object passingTestObject = session.getAttribute(AttributeNames.PASSING_TEST);
         if (passingTestObject == null) {
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
             return;
         }
@@ -44,7 +43,7 @@ public class FinishTest implements Command {
 
         Object questionPassedObject = session.getAttribute(AttributeNames.QUESTIONS_PASSED);
         if(questionPassedObject == null){
-            TransitionManager.newInstance().getTransitionByRedirect().
+            TransitionManager.getInstance().getTransitionByRedirect().
                     doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
             return;
         }
@@ -97,7 +96,7 @@ public class FinishTest implements Command {
                 result = Math.ceil(result);
 
                 Result userResult = new Result();
-                userResult.setPassingDate(TimeProvider.newInstance().getSQLDate());
+                userResult.setPassingDate(new Date(System.currentTimeMillis()));
                 userResult.setResult((int)result);
                 userResult.setTestId(passingTestId);
                 userResult.setUserId(userId);
@@ -106,7 +105,7 @@ public class FinishTest implements Command {
                     factory.getResultService().create(userResult);
                 }
 
-                TransitionManager.newInstance().getTransitionByRedirect().
+                TransitionManager.getInstance().getTransitionByRedirect().
                         doTransition(request, response, PageMapping.FINISH_TEST_PATH);
                 return;
 
@@ -170,7 +169,7 @@ public class FinishTest implements Command {
         request.setAttribute(AttributeNames.CORRECT_ANSWER,isCorrect);
         request.setAttribute(AttributeNames.RESULT, result);
 
-        TransitionManager.newInstance().getTransitionByForward().
+        TransitionManager.getInstance().getTransitionByForward().
                 doTransition(request, response, PageMapping.FINISH_TEST);
     }
 }

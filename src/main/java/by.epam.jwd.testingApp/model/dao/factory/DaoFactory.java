@@ -1,5 +1,6 @@
 package by.epam.jwd.testingApp.model.dao.factory;
 
+import by.epam.jwd.testingApp.controller.command.CommandAccessLevel;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractCategoryDao;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractCommentDao;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractQuestionDao;
@@ -18,7 +19,6 @@ import by.epam.jwd.testingApp.model.dao.jdbcDao.TestDaoJDBC;
 import by.epam.jwd.testingApp.model.dao.jdbcDao.UserDaoJDBC;
 
 public class DaoFactory {
-    private static DaoFactory instance = null;
 
     private final AbstractCategoryDao categoryDao = new CategoryDaoJDBC();
     private final AbstractCommentDao commentDao = new CommentDaoJDBC();
@@ -31,17 +31,12 @@ public class DaoFactory {
 
     private DaoFactory(){}
 
+    private static class SingletonHolder {
+        public static final DaoFactory HOLDER_INSTANCE = new DaoFactory();
+    }
+
     public static DaoFactory getInstance() {
-        DaoFactory localInstance = instance;
-        if (localInstance == null) {
-            synchronized (DaoFactory.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new DaoFactory();
-                }
-            }
-        }
-        return localInstance;
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public AbstractCategoryDao getCategoryDao() {

@@ -2,16 +2,25 @@ package by.epam.jwd.testingApp.service.passwordEncodingService;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class BCryptPasswordEncoder implements PasswordEncoder{
+public class PasswordEncode {
 
     public static final int SALT_ROUND = 12;
-    @Override
+
+    private PasswordEncode(){}
+
+    private static class SingletonHolder {
+        public static final PasswordEncode HOLDER_INSTANCE = new PasswordEncode();
+    }
+
+    public static PasswordEncode getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
+    }
+
     public String encrypt(String password) {
         if(password==null)return null;
         return BCrypt.hashpw(password, BCrypt.gensalt(SALT_ROUND));
     }
 
-    @Override
     public boolean isMatching(String password, String encodedPassword) {
         if(password == null || encodedPassword == null) return false;
         return BCrypt.checkpw(password, encodedPassword);

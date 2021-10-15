@@ -12,7 +12,7 @@ public class NameValidator implements AbstractStringValidator {
         if(entity == null || locale == null || errorMsgAccumulator == null) return false;
 
         if(entity.trim().length() > MAX_LENGTH) {
-            errorMsgAccumulator.append(ErrorMsgProvider.newInstance().getManagerByLocale(locale)
+            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
                     .getValueByName(LONG_NAME)).append('\n');
             return false;
         }

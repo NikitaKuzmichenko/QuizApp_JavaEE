@@ -8,9 +8,8 @@ import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
-import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoder;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncoderProvider;
+import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncode;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
 
 import javax.servlet.ServletException;
@@ -27,12 +26,12 @@ public class Registration implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if(request.getMethod().equals(GET_METHOD)){
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,PageMapping.REGISTRATION_PAGE);
             return;
         }
 
-        String language = ParserProvider.newInstance().getLanguageParser().parsing(request);
+        String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
         StringBuilder errorBuilder = new StringBuilder();
 
         User user = new User();
@@ -41,22 +40,21 @@ public class Registration implements Command {
         user.setName(request.getParameter(AttributeNames.NICK_NAME));
         user.setPassword(request.getParameter(AttributeNames.PASSWORD));
 
-        EntitiesValidatorsProvider entityValidatorProvider = EntitiesValidatorsProvider.newInstance();
+        EntitiesValidatorsProvider entityValidatorProvider = EntitiesValidatorsProvider.getInstance();
         if(!entityValidatorProvider.getUserValidator().validateEntity(user, language,errorBuilder)){
             request.setAttribute(AttributeNames.ERROR_MSG, errorBuilder.toString());
-            TransitionManager.newInstance().getTransitionByForward().
+            TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,PageMapping.REGISTRATION_PAGE);
             return;
         }
 
-        PasswordEncoder encoder = PasswordEncoderProvider.newInstance().getBCryptPasswordEncoder();
-        user.setPassword(encoder.encrypt(user.getPassword()));
+        user.setPassword(PasswordEncode.getInstance().encrypt(user.getPassword()));
 
         try {
             if(!EntitiesServiceFactory.getInstance().getUserService().create(user)){
                 request.setAttribute(AttributeNames.ERROR_MSG,
-                        ErrorMsgProvider.newInstance().getManagerByLocale(language).getValueByName(USER_EXIST));
-                TransitionManager.newInstance().getTransitionByForward().
+                        ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(USER_EXIST));
+                TransitionManager.getInstance().getTransitionByForward().
                         doTransition(request, response, PageMapping.REGISTRATION_PAGE);
                 return;
             }
@@ -64,7 +62,7 @@ public class Registration implements Command {
             throw new ServletException(e);
         }
 
-        TransitionManager.newInstance().getTransitionByRedirect().
+        TransitionManager.getInstance().getTransitionByRedirect().
                 doTransition(request, response,PageMapping.TO_AUTHORIZATION_PAGE_PATH);
 
     }
