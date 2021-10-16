@@ -19,9 +19,12 @@ import java.util.Date;
 public class CreateTest implements Command {
 
     public static final String EMPTY_NAME = "test.emptyName";
+    public static final String NAME_TO_LONG = "test.tooLong";
     public static final String EMPTY_CATEGORY = "test.emptyCategory";
     public static final String UNDEFINED_USER = "test.undefinedUser";
     public static final String UNDEFINED_ERROR = "test.undefinedError";
+
+    public static final int MAX_NAME_SIZE = 40;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,6 +49,14 @@ public class CreateTest implements Command {
         if(testName == null){
             request.setAttribute(AttributeNames.ERROR_MSG,
                     ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(EMPTY_NAME));
+            TransitionManager.getInstance().getTransitionByRedirect().
+                    doTransition(request, response,  PageMapping.CREATE_TESTS_PATH);
+            return;
+        }
+
+        if(testName.length() > MAX_NAME_SIZE){
+            request.setAttribute(AttributeNames.ERROR_MSG,
+                    ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(NAME_TO_LONG));
             TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,  PageMapping.CREATE_TESTS);
             return;

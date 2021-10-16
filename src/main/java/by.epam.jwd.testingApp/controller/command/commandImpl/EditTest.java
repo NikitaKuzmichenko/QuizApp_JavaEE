@@ -7,6 +7,7 @@ import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class EditTest implements Command {
+
+
+    public static final String NAME_TO_LONG = "test.tooLong";
+
+    public static final int MAX_NAME_SIZE = 40;
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -44,7 +51,19 @@ public class EditTest implements Command {
             boolean needUpdate = false;
             String newName = request.getParameter(AttributeNames.TEST_NAME);
             if(newName != null){
-                needUpdate= true;
+                needUpdate = true;
+                if(newName.length() > MAX_NAME_SIZE){
+
+                    String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
+
+                    request.getSession().setAttribute(AttributeNames.CREATE_TEST_ERROR_MSG,
+                            ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(NAME_TO_LONG));
+
+                    TransitionManager.getInstance().getTransitionByRedirect().
+                            doTransition(request, response,  PageMapping.EDIT_TESTS_PATH);
+
+                    return;
+                }
                 test.setName(newName);
             }
             String newCategory = request.getParameter(AttributeNames.CATEGORY);
@@ -78,6 +97,13 @@ public class EditTest implements Command {
 
         } catch (ServiceException e) {
             throw new ServletException(e);
+        }
+
+
+        Object error = request.getSession().getAttribute(AttributeNames.CREATE_TEST_ERROR_MSG);
+        if(error!=null){
+            request.setAttribute(AttributeNames.ERROR_MSG,error.toString());
+            request.getSession().removeAttribute(AttributeNames.CREATE_TEST_ERROR_MSG);
         }
 
         TransitionManager.getInstance().getTransitionByForward().

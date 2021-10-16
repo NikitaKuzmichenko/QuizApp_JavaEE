@@ -9,11 +9,13 @@ public class NameValidator implements AbstractStringValidator {
 
     @Override
     public  boolean validate(String entity, String locale, StringBuilder errorMsgAccumulator) {
-        if(entity == null || locale == null || errorMsgAccumulator == null) return false;
+        if(entity == null) return false;
 
         if(entity.trim().length() > MAX_LENGTH) {
-            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
-                    .getValueByName(LONG_NAME)).append('\n');
+            if(errorMsgAccumulator!=null || locale!=null) {
+                errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
+                        .getValueByName(LONG_NAME));
+            }
             return false;
         }
         return true;

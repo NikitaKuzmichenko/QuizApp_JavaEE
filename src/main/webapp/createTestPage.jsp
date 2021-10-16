@@ -20,7 +20,7 @@
 
                     <span style="font-size:15.0pt"><fmt:message key="text.testName"/></span>
 
-                    <input required id="testName" type="text" name="testName" class="link"/>
+                    <input required id="testName" type="text" maxlength="40" name="testName" class="link"/>
 
                     <span style="font-size:15.0pt"><fmt:message key="text.testCategory"/></span>
 
@@ -37,7 +37,7 @@
                     </select>
 
                     <button class="btn btn-outline-success" type="submit"><fmt:message key="button.createTest"/></button>
-                    <a class="btn btn-outline-success mx-3" href="page"><fmt:message key="button.back"/></a>
+                    <a class="btn btn-outline-success mx-3" href="page?num=0"><fmt:message key="button.back"/></a>
                 </form>
             </div>
         </div>

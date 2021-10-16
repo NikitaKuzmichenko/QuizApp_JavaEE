@@ -9,7 +9,7 @@
         <nav class="navbar navbar-expand-lg navbar-light justify-content-left" style="background-color: #e3f2fd;">
 
             <span class="mx-2"><fmt:message key="text.questionName"/></span>
-            <input required type="text" name="questionName">
+            <input required type="text" maxlength="100" name="questionName">
 
             <a class="btn btn-outline-success mx-3" onclick="addInput()"> <fmt:message key="button.addStatement"/></a>
             <button class="btn btn-outline-success mx-3" type="submit" type="submit"><fmt:message key="button.create"/></button>
@@ -21,5 +21,11 @@
         <span style=" margin-left: 45px; font-size:15.0pt;"><fmt:message key="text.remove"/></span>
 
         <hr>
+
+        <div class="text-center">
+            <p class="text-danger"><c:out value="${errorMsg}"/></p>
+        </div>
+
         <div id="statements"></div>
     </form>
+

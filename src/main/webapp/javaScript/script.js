@@ -58,7 +58,7 @@ function changeQuestionName(){
         input.setAttribute("name","questionName");
         input.setAttribute("type","text");
         input.setAttribute("class","mx-2");
-        input.setAttribute("maxlength","40");
+        input.setAttribute("maxlength","100");
         input.required = true;
         input.setAttribute("id","questionName");
 

@@ -28,19 +28,22 @@ public class EmailValidator implements AbstractStringValidator {
 
     @Override
     public boolean validate(String entity, String locale, StringBuilder errorMsgAccumulator) {
-        if(entity == null || locale == null || errorMsgAccumulator == null) return false;
+        if(entity == null) return false;
 
         if(!patternMatch(entity.trim(),EMAIL_VALIDATOR)){
-            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
-                    .getValueByName(INVALID_EMAIL)).append('\n');
+            if(errorMsgAccumulator!=null || locale!=null) {
+                errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
+                        .getValueByName(INVALID_EMAIL));
+            }
             return false;
         }
         if(entity.trim().length() > MAX_LENGTH){
-            errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
-                    .getValueByName(LONG_EMAIL)).append('\n');
+            if(errorMsgAccumulator!=null || locale!=null) {
+                errorMsgAccumulator.append(ErrorMsgProvider.getInstance().getManagerByLocale(locale)
+                        .getValueByName(LONG_EMAIL));
+            }
             return false;
         }
-
         return true;
     }
 }

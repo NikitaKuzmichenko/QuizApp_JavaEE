@@ -13,37 +13,48 @@ public class UserValidator implements AbstractEntitiesValidator<User> {
 
     @Override
     public boolean validateEntity(User entity,String locale,StringBuilder errorMsgAccumulator) {
-        if(entity == null || locale == null || errorMsgAccumulator == null) return false;
+        if(entity == null) return false;
 
         boolean error = false;
-        ErrorMsgSupplier manager = ErrorMsgProvider.getInstance().getManagerByLocale(locale);
+
+        boolean needErrorMsg = locale!=null && errorMsgAccumulator!=null;
+        ErrorMsgSupplier manager = null;
+        if(needErrorMsg) {
+            manager = ErrorMsgProvider.getInstance().getManagerByLocale(locale);
+        }
 
         ComponentValidatorsProvider componentValidator = ComponentValidatorsProvider.getInstance();
 
         String email = entity.getEmail();
         if(email == null){
             error = true;
-            errorMsgAccumulator.append(manager.getValueByName(EMPTY_EMAIL)).append('\n');
+            if(needErrorMsg) {
+                errorMsgAccumulator.append(manager.getValueByName(EMPTY_EMAIL));
+            }
         } else if(componentValidator.getEmailValidator().validate(email,locale,errorMsgAccumulator)){
             error = true;
         }
 
-        String password = entity.getEmail();
+        String password = entity.getPassword();
         if(password == null){
             error = true;
-            errorMsgAccumulator.append(manager.getValueByName(EMPTY_PASSWORD)).append('\n');
+            if(needErrorMsg) {
+                errorMsgAccumulator.append(manager.getValueByName(EMPTY_PASSWORD));
+            }
         } else if(componentValidator.getPasswordValidator().validate(password,locale,errorMsgAccumulator)){
             error = true;
         }
 
-        String name = entity.getEmail();
+        String name = entity.getName();
         if(name == null){
             error = true;
-            errorMsgAccumulator.append(manager.getValueByName(EMPTY_NAME)).append('\n');
+            if(needErrorMsg) {
+                errorMsgAccumulator.append(manager.getValueByName(EMPTY_NAME));
+            }
         } else if(componentValidator.getNameValidator().validate(name,locale,errorMsgAccumulator)){
             error = true;
         }
 
-        return error;
+        return !error;
     }
 }

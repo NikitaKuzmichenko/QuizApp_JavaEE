@@ -12,10 +12,10 @@
           <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="text.authorization"/></h1>
 
           <label for="inputEmail" class="sr-only mb-2"><fmt:message key="text.email"/></label>
-          <input type="email" name="email" id="inputEmail" class="form-control mb-2" placeholder="Email address" required style="width: 300px;">
+          <input type="email" name="email" id="inputEmail" class="form-control mb-2" required style="width: 300px;">
 
           <label for="inputPassword" class="sr-only mb-2" ><fmt:message key="text.password"/></label>
-          <input type="password" name="password" id="inputPassword" class="form-control mb-2" placeholder="Password" required style="width: 300px;">
+          <input type="password" name="password" id="inputPassword" class="form-control mb-2" required style="width: 300px;">
 
           <div class="checkbox mb-3">
             <label>

@@ -1,0 +1,12 @@
+<taglib>
+   <tlib-version>2.0</tlib-version>
+   <jsp-version>3.0</jsp-version>
+   <short-name>Example TLD</short-name>
+
+   <tag>
+      <name>showName</name>
+      <tag-class>by.epam.jwd.testingApp.service.userTag.UserNameTag</tag-class>
+      <body-content>empty</body-content>
+   </tag>
+
+</taglib>

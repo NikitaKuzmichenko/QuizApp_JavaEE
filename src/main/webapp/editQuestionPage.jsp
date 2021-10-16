@@ -24,6 +24,11 @@
         <span style=" margin-left: 45px; font-size:15.0pt;"><fmt:message key="text.remove"/></span>
 
         <hr>
+
+        <div class="text-center">
+            <p class="text-danger"><c:out value="${errorMsg}"/></p>
+        </div>
+
         <div id="statements"></div>
 
         <c:forEach var="statement" items="${statementsList}" varStatus="status">

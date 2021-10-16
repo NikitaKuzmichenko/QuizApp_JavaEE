@@ -43,8 +43,8 @@
                                     <tbody>
                                         <c:forEach var="test" items="${newTests}">
                                             <tr>
-                                                <td scope="row" ><a href="take_test?passingTest=${test.getId()}"
-                                                                    class="nav-link link-dark enable-action">
+                                                <td scope="row" style="word-break: break-word;">
+                                                    <a href="take_test?passingTest=${test.getId()}" class="nav-link link-dark enable-action">
                                                     <c:out value="${test.getName()}"/>
                                                 </td>
                                            </tr>
@@ -61,13 +61,15 @@
                                     <table class="table table-hover table-light table-bordered">
                                         <thead>
                                             <tr>
-                                              <th class="text-center" scope="col" style="width: 900px;"><fmt:message key="text.popularTests"/></th>
+                                              <th class="text-center" scope="col" style="width: 900px;">
+                                                <fmt:message key="text.popularTests"/>
+                                              </th>
                                             </tr>
                                         </thead>
                                     <tbody>
                                         <c:forEach var="test" items="${popularTests}">
                                             <tr>
-                                                <td scope="row" >
+                                                 <td scope="row" style="word-break: break-word;">
                                                     <a href="take_test?passingTest=${test.getId()}"class="nav-link link-dark enable-action"/>
                                                     <c:out value="${test.getName()}"/>
                                                 </td>

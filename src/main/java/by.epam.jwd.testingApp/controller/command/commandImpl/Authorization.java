@@ -9,7 +9,6 @@ import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
-import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncode;
 
@@ -27,7 +26,15 @@ public class Authorization implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
+        HttpSession session = request.getSession();
         if(request.getMethod().equals(GET_METHOD)){
+
+            Object error = session.getAttribute(AttributeNames.AUTHORIZATION_ERROR_MSG);
+            if(error!=null){
+                request.setAttribute(AttributeNames.ERROR_MSG,error.toString());
+                session.removeAttribute(AttributeNames.AUTHORIZATION_ERROR_MSG);
+            }
+
             TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response,PageMapping.AUTHORIZATION_PAGE);
             return;
@@ -36,17 +43,15 @@ public class Authorization implements Command {
         User user;
         try {
             user = EntitiesServiceFactory.getInstance().getUserService().selectByLogin(
-                    request.getParameter(AttributeNames.EMAIL));
+                    request.getParameter(AttributeNames.EMAIL).trim());
         } catch (ServiceException e) {
             throw new ServletException(e);
         }
 
-        boolean userValid = true;
         if(user!=null) {
             String password = request.getParameter(AttributeNames.PASSWORD);
             if(password !=null) {
                 if (PasswordEncode.getInstance().isMatching(password,user.getPassword())) {
-                    HttpSession session = request.getSession();
                     CookieManager cookieManager = CookieManager.getInstance();
                     session.setAttribute(AttributeNames.USER_ID, user.getId());
                     if (request.getParameter(AttributeNames.REMEMBER_USER) != null) {
@@ -58,27 +63,18 @@ public class Authorization implements Command {
 
                     TransitionManager.getInstance().getTransitionByRedirect().
                             doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
-                }else {
-                    userValid = false;
+                    return;
                 }
-            }else{
-                userValid = false;
             }
         }
-        else{
-            userValid = false;
-        }
 
-        if(!userValid){
-            String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
-            ErrorMsgSupplier errorMsg = ErrorMsgProvider.getInstance().getManagerByLocale(language);
-            request.setAttribute(AttributeNames.ERROR_MSG, errorMsg.getValueByName(INVALID_USER));
+        String language = ParserProvider.getInstance().getLanguageParser().parsing(request);
 
-            TransitionManager.getInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.AUTHORIZATION_PAGE);
-        }
+        session.setAttribute(AttributeNames.AUTHORIZATION_ERROR_MSG,
+                ErrorMsgProvider.getInstance().getManagerByLocale(language).getValueByName(INVALID_USER));
 
         TransitionManager.getInstance().getTransitionByRedirect().
-                doTransition(request, response, PageMapping.TO_WELCOME_PAGE_PATH);
+                doTransition(request, response, PageMapping.TO_AUTHORIZATION_PAGE_PATH);
+
     }
 }

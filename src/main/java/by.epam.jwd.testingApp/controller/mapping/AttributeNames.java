@@ -48,6 +48,11 @@ public final class AttributeNames {
 
     public static final String ERROR_MSG = "errorMsg";
 
+    public static final String AUTHORIZATION_ERROR_MSG = "authorizationError";
+    public static final String REGISTRATION_ERROR_MSG = "registrationError";
+    public static final String CREATE_TEST_ERROR_MSG = "testNameError";
+    public static final String CREATE_QUESTION_ERROR_MSG = "questionNameError";
+
     public static final String DATES = "date";
 
     public static final String ACTION = "action";

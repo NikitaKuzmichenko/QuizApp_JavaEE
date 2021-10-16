@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="WEB-INF/custom.tld"%>
 
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="content" />
@@ -13,6 +14,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse " id="navbarSupportedContent">
+
                 <ul class="navbar-nav me-auto ">
                     <li class="nav-item ">
                          <img src="<c:url value="/img/logo.png"/>" width="40" height="40"/>
@@ -21,11 +23,10 @@
                         <a class="nav-link active " aria-current="page" href="page?num=0"><fmt:message key="text.siteName"/></a>
                     </li>
                 </ul>
-                <c:if test="${not empty userRole}">
-                    <nav class="navbar ">
-                      <span class="navbar-brand mb-0 h1"><c:out value="${nickName}"/></span>
-                    </nav>
-                </c:if>
+
+                <nav class="navbar ">
+                  <span class="navbar-brand mb-0 h1"><ex:showName/></span>
+                </nav>
 
                 <form class="d-flex">
 
