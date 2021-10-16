@@ -8,7 +8,7 @@ public final class PageMapping {
     public static final String REGISTRATION_PAGE_PATH = "controller/registration";
 
     public static final String WELCOME_PAGE = "welcomePage";
-    public static final String TO_WELCOME_PAGE_PATH = "controller/page?num=1";
+    public static final String TO_WELCOME_PAGE_PATH = "controller/page?num=0";
 
     public static final String VIEW_MY_TESTS_PATH = "controller/view_my_tests";
     public static final String VIEW_MY_TESTS = "viewCreatedTestsPage";

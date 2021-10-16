@@ -54,8 +54,10 @@ public class ViewResults  implements Command {
         int pageNumber;
         int testsNumber;
         try {
+
             pageNumber = parserProvider.getPageNumberParser().parsing(request);
-            testsNumber = factory.getTestService().calculateUsersTotalTestsNumber(userId,false);
+
+            testsNumber = factory.getResultService().calculateRowsNumberByUserId(userId);
             if(pageNumber > (testsNumber-1)/LIMIT_ON_PAGE){
                 pageNumber = (testsNumber-1)/LIMIT_ON_PAGE;
             }else if(pageNumber < 0){

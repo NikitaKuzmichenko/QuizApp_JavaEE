@@ -22,7 +22,6 @@ public class CommandAccessLevel {
         commands.put(CommandName.CREATE_TEST,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.DELETE_TEST,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.VIEW_RESULTS,USER_ROLE_REQUIRED);
-        commands.put(CommandName.ADD_COMMENT,USER_ROLE_REQUIRED);
         commands.put(CommandName.ADD_QUESTION,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.EDIT_QUESTION,TUTOR_ROLE_REQUIRED);
         commands.put(CommandName.DELETE_QUESTION,TUTOR_ROLE_REQUIRED);

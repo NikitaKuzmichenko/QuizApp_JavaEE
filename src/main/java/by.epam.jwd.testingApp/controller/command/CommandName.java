@@ -4,7 +4,6 @@ public enum CommandName {
     REGISTRATION,
     AUTHORIZATION,
     LOG_OUT,
-    ADD_COMMENT,
     ADD_QUESTION,
     EDIT_QUESTION,
     DELETE_QUESTION,

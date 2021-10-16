@@ -28,7 +28,6 @@ public class ViewMyTests implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         HttpSession session = request.getSession();
 
         ParserProvider parserProvider = ParserProvider.getInstance();
