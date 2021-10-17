@@ -13,6 +13,8 @@ import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.pagination.DirectPagination;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +27,14 @@ import java.util.List;
 
 public class ViewResults  implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public static final String UNDEFINED_USER = "test.undefinedUser";
 
     public static final int LIMIT_ON_PAGE = 5;
     public static final int PAGINATION_MAX_SIZE = 7;
+
+    private static final double TO_PERCENT_DIVIDER = 100;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -72,13 +78,14 @@ public class ViewResults  implements Command {
             AbstractTestService testService = factory.getTestService();
             for(Result result: userResults){
                 test = testService.selectEntityById(result.getTestId());
-                rating.add(result.getResult()/100d);
+                rating.add(result.getResult()/TO_PERCENT_DIVIDER);
                 dates.add(result.getPassingDate());
                 if(test!=null){
                     testList.add(test);
                 }
             }
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

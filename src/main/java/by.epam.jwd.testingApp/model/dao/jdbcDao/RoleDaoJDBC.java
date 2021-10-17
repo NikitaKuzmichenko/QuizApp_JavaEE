@@ -4,6 +4,8 @@ import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractRoleDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.RoleMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoleDaoJDBC implements AbstractRoleDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String IS_ROW_EXIST_SQL = "SELECT * FROM " + RoleMapping.TABLE_NAME
             + " WHERE " + RoleMapping.NAME + " = ?;";
@@ -53,7 +57,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -81,7 +85,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -105,7 +109,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -132,7 +136,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -157,7 +161,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;

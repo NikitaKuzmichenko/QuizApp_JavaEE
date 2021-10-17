@@ -7,6 +7,8 @@ import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class StartTest implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,10 +50,12 @@ public class StartTest implements Command {
             request.setAttribute(AttributeNames.TEST_NAME,
                     EntitiesServiceFactory.getInstance().getTestService().selectEntityById(testId).getName());
 
-            TransitionManager.getInstance().getTransitionByForward().
-                    doTransition(request, response, PageMapping.START_TEST);
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
+
+        TransitionManager.getInstance().getTransitionByForward().
+                doTransition(request, response, PageMapping.START_TEST);
     }
 }

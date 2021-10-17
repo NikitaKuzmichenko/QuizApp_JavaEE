@@ -5,6 +5,8 @@ import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.TestMapping;
 import by.epam.jwd.testingApp.model.dataBaseMapping.UserMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBC implements AbstractUserDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String SELECT_BY_LOGIN_SQL = "SELECT * FROM " + UserMapping.TABLE_NAME
             + " WHERE " + UserMapping.EMAIL + " = ?;";
@@ -65,7 +69,7 @@ public class UserDaoJDBC implements AbstractUserDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -93,7 +97,7 @@ public class UserDaoJDBC implements AbstractUserDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -122,7 +126,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -147,7 +151,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -176,7 +180,7 @@ public class UserDaoJDBC implements AbstractUserDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;

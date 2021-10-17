@@ -27,6 +27,7 @@ public class Authorization implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
         HttpSession session = request.getSession();
+
         if(request.getMethod().equals(GET_METHOD)){
 
             Object error = session.getAttribute(AttributeNames.AUTHORIZATION_ERROR_MSG);

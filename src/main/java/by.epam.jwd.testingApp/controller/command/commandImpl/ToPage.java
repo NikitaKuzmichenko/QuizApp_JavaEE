@@ -11,6 +11,8 @@ import by.epam.jwd.testingApp.service.testSortingService.TestsSorter;
 import by.epam.jwd.testingApp.service.testSortingService.TestsSorterProvider;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.pagination.DirectPagination;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ToPage implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public final static int STARTING_PAGE = 0;
     public static final int LIMIT_ON_PAGE = 5;
@@ -106,6 +110,7 @@ public class ToPage implements Command {
             request.setAttribute(AttributeNames.CATEGORIES, factory.getCategoryService().selectAll());
 
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

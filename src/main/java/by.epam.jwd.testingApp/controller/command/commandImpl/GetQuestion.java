@@ -8,6 +8,8 @@ import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.entity.Statement;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 public class GetQuestion implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String ACTION_NEXT = "next";
     public static final String ACTION_PREVIOUS = "previous";
@@ -44,6 +48,7 @@ public class GetQuestion implements Command {
         try {
             questionNumber = factory.getQuestionService().calculateQuestionNumber(testId);
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 
@@ -103,6 +108,7 @@ public class GetQuestion implements Command {
 
              statements = factory.getStatementService().selectByQuestionId(questions.getId());
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

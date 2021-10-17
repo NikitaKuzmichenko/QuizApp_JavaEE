@@ -12,6 +12,8 @@ import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFac
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +25,9 @@ import java.util.List;
 
 public class AddQuestion implements Command {
 
-    public static final String LONG_STATEMENT = "statement.long";
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    public static final String LONG_STATEMENT = "statement.long";
     public static final int MAX_STATEMENT_LENGTH = 50;
 
     @Override
@@ -108,6 +111,7 @@ public class AddQuestion implements Command {
 
             }
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

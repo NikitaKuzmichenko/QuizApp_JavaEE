@@ -4,12 +4,16 @@ import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractQuestionDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.QuestionMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDaoJDBC implements AbstractQuestionDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String COUNT_RESULT = "result";
 
@@ -59,7 +63,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -86,7 +90,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -112,7 +116,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -136,7 +140,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -157,7 +161,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -180,7 +184,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -210,7 +214,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
 

@@ -1,12 +1,16 @@
 package by.epam.jwd.testingApp.model.connectionPool;
 
 import by.epam.jwd.testingApp.exceptions.ConnectionPoolException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static String driver;
     private static String password;
@@ -19,7 +23,7 @@ public class ConnectionPool {
     private static BlockingQueue<Connection> occupiedPool;
 
     private ConnectionPool() {
-        DBResourceManager resourceManager = DBResourceManager.newInstance();
+        DBResourceManager resourceManager = DBResourceManager.getInstance();
         driver = resourceManager.getValueByName(DataBaseParams.DB_DRIVER);
         password = resourceManager.getValueByName(DataBaseParams.DB_PASSWORD);
         url = resourceManager.getValueByName(DataBaseParams.DB_URL);
@@ -45,9 +49,11 @@ public class ConnectionPool {
                 freePool.offer(connection);
             }
         } catch (SQLException e) {
+            LOGGER.error(e);
             throw new ConnectionPoolException("Connection pool initialization. " +
                     "Can't create connection",e);
         } catch (ClassNotFoundException e) {
+            LOGGER.error(e);
             throw new ConnectionPoolException("Connection pool initialization. " +
                     "Can't found driver class",e);
         }
@@ -64,6 +70,7 @@ public class ConnectionPool {
             connection = freePool.take();
             occupiedPool.offer(connection);
         } catch (InterruptedException e) {
+            LOGGER.error(e);
             throw new ConnectionPoolException("Connection pool. " +
                     "Can't connect to a pool",e);
         }

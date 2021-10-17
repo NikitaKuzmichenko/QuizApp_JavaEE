@@ -4,6 +4,8 @@ import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractStatementDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.StatementMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatementDaoJDBC implements AbstractStatementDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String SELECT_BY_QUESTION_ID_SQL = "SELECT * FROM " + StatementMapping.TABLE_NAME
             +" WHERE " + StatementMapping.QUESTION_ID + " = ?;";
@@ -58,7 +62,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -84,7 +88,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -109,7 +113,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -130,7 +134,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -150,7 +154,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;
@@ -174,7 +178,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result==1;

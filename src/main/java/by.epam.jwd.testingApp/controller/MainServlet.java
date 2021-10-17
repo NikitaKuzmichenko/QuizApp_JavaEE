@@ -25,8 +25,7 @@ public class MainServlet extends HttpServlet  {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uri = request.getRequestURI();
-        CommandProvider.getInstance().selectCommand(uri.substring(uri.lastIndexOf('/') + 1)).execute(request,response);
+        doGet(request, response);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

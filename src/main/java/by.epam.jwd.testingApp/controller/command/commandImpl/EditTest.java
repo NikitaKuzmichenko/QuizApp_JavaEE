@@ -9,6 +9,8 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 public class EditTest implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String NAME_TO_LONG = "test.tooLong";
 
@@ -39,6 +42,7 @@ public class EditTest implements Command {
         try {
             test = factory.getTestService().selectEntityById(testId);
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
         if(test==null){
@@ -75,6 +79,7 @@ public class EditTest implements Command {
                 try {
                     factory.getTestService().update(test);
                 } catch (ServiceException e) {
+                    LOGGER.error(e);
                     throw new ServletException(e);
                 }
             }
@@ -96,6 +101,7 @@ public class EditTest implements Command {
             request.setAttribute(AttributeNames.CATEGORIES, factory.getCategoryService().selectAll());
 
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

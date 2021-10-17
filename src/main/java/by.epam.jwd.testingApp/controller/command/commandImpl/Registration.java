@@ -11,6 +11,8 @@ import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFac
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncode;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import java.io.IOException;
 
 
 public class Registration implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String USER_EXIST = "user.alreadyExist";
     public static final int DEFAULT_ROLE = 1;
@@ -71,6 +75,7 @@ public class Registration implements Command {
                 return;
             }
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

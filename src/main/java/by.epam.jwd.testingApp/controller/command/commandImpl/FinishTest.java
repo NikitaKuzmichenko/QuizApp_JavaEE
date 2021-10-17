@@ -11,6 +11,8 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractStatementService;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class FinishTest implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final int RESULT_MULTIPLIER = 10000;
+
+    private static final int TO_PERCENT_DIVIDER = 100;
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -92,7 +101,7 @@ public class FinishTest implements Command {
 
                     }
                 }
-                double result = (correctAnswersNumber * 10000/ totalQuestionsSize);
+                double result = (correctAnswersNumber * RESULT_MULTIPLIER/ totalQuestionsSize);
                 result = Math.ceil(result);
 
                 Result userResult = new Result();
@@ -110,6 +119,7 @@ public class FinishTest implements Command {
                 return;
 
             } catch (ServiceException e) {
+                LOGGER.error(e);
                 throw new ServletException(e);
             }
         }
@@ -153,11 +163,12 @@ public class FinishTest implements Command {
 
             }
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 
-        double result = (correctAnswersNumber * 10000/ totalQuestionsSize);
-        result = Math.ceil(result)/100;
+        double result = (correctAnswersNumber * RESULT_MULTIPLIER/ totalQuestionsSize);
+        result = Math.ceil(result)/TO_PERCENT_DIVIDER;
 
         request.setAttribute(AttributeNames.QUESTION_LIST, testsQuestions);
         try {

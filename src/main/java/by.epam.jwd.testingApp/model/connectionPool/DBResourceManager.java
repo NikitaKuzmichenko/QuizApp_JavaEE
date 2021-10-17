@@ -7,23 +7,18 @@ public class DBResourceManager {
 
     private static final String source = "dataBase";
 
-    private static DBResourceManager instance;
     private static ResourceBundle bundle;
 
-    private DBResourceManager(){}
+    private DBResourceManager(){
+        bundle = ResourceBundle.getBundle(source);
+    }
 
-    public static DBResourceManager newInstance() {
-        DBResourceManager localInstance = instance;
-        if (localInstance == null) {
-            synchronized (DBResourceManager.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    bundle = ResourceBundle.getBundle(source);
-                    instance = localInstance = new DBResourceManager();
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final DBResourceManager HOLDER_INSTANCE = new DBResourceManager();
+    }
+
+    public static DBResourceManager getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public String getValueByName(String name){

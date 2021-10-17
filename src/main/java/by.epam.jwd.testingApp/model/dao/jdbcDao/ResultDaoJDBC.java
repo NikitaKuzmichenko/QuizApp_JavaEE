@@ -5,12 +5,16 @@ import by.epam.jwd.testingApp.exceptions.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractResultDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.ResultMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResultDaoJDBC implements AbstractResultDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String SELECT_BY_ID_SQL = "SELECT * FROM " + ResultMapping.TABLE_NAME
             +" WHERE " + ResultMapping.TEST_ID + " = ?"
@@ -64,7 +68,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return (result.size() == 1) ? result.get(0) : null;
@@ -91,7 +95,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result !=0;
@@ -115,7 +119,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result!=0;
@@ -142,7 +146,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
         } finally {
             try {
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result !=0;
@@ -172,7 +176,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -198,7 +202,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -226,7 +230,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;
@@ -263,7 +267,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-            } catch (SQLException e) {/* write in logs*/}
+            } catch (SQLException e) {LOGGER.error(e);}
             pool.returnConnection(connection);
         }
         return result;

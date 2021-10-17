@@ -14,6 +14,8 @@ import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.AbstractEntitiesValidator;
 import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EditQuestion implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String LONG_STATEMENT = "statement.long";
 
@@ -57,6 +61,7 @@ public class EditQuestion implements Command {
                         factory.getStatementService().selectByQuestionId(questionId));
 
             } catch (ServiceException e) {
+                LOGGER.error(e);
                 throw new ServletException(e);
             }
 
@@ -163,6 +168,7 @@ public class EditQuestion implements Command {
             }
 
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 

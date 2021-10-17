@@ -8,6 +8,8 @@ import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractTestService;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ChangeStatus implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,6 +31,7 @@ public class ChangeStatus implements Command {
                 test.setAvailable(!test.isAvailable());
                 testService.update(test);
             } catch (ServiceException e) {
+                LOGGER.error(e);
                 throw new ServletException(e);
             }
         }

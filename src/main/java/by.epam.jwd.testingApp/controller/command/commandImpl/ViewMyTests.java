@@ -11,6 +11,8 @@ import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.pagination.DirectPagination;
 import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ViewMyTests implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final String UNDEFINED_USER = "test.undefinedUser";
     public static final int LIMIT_ON_PAGE = 4;
@@ -68,6 +72,7 @@ public class ViewMyTests implements Command {
                             calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
 
         } catch (ServiceException e) {
+            LOGGER.error(e);
             throw new ServletException(e);
         }
 
