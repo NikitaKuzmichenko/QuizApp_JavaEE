@@ -6,8 +6,8 @@ import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
+import by.epam.jwd.testingApp.service.parameterParser.Parser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.LanguageParser;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

@@ -1,14 +1,14 @@
-package by.epam.jwd.testingApp.service.parameterParserServise;
+package by.epam.jwd.testingApp.service.parameterParser;
 
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.CategoryParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.DirectionParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.PageNumberParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.PassingTestParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.QuestionIdParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.SortTypeParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.TestIdParser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.UserIdParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.CategoryParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.DirectionParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.LanguageParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.PageNumberParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.PassingTestParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.QuestionIdParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.SortTypeParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.TestIdParser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.UserIdParser;
 
 public class ParserProvider {
 

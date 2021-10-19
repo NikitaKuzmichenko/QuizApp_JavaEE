@@ -42,13 +42,17 @@ public class TestDaoJDBC implements AbstractTestDao {
             + " (" + TestMapping.CREATOR_ID + ", "
             + TestMapping.CATEGORY_ID + ", "
             + TestMapping.NAME + ", "
+            + TestMapping.IS_AVAILABLE + ", "
             + TestMapping.CREATION_DATE + ")"
-            +  "VALUES(?,?,?,?);";
+            +  "VALUES(?,?,?,?,?);";
 
     @Override
     public List<Test> selectSortedTestsByIntRow
             (int limit, int offset, boolean desc, String sortByRow, String rowName, int rowValue,boolean onlyAvailable)
             throws DaoException {
+
+        if(sortByRow == null || rowName == null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -98,6 +102,8 @@ public class TestDaoJDBC implements AbstractTestDao {
 
     @Override
     public List<Test> sortTestsByRow(int limit, int offset, boolean desc ,String sortedRow,boolean onlyAvailable) throws DaoException {
+
+        if(sortedRow==null) return null;
 
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
@@ -250,6 +256,7 @@ public class TestDaoJDBC implements AbstractTestDao {
     @Override
     public boolean update(Test entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -259,7 +266,7 @@ public class TestDaoJDBC implements AbstractTestDao {
             statement.setString(1,entity.getName());
             statement.setInt(2,entity.getCreatorId());
             statement.setInt(3,entity.getCategoryId());
-            statement.setDate(4, (Date) entity.getCreationDate());
+            statement.setDate(4, new java.sql.Date(entity.getCreationDate().getTime()));
             statement.setBoolean(5,entity.isRemoved());
             statement.setBoolean(6,entity.isAvailable());
             statement.setInt(7,entity.getId());
@@ -277,6 +284,8 @@ public class TestDaoJDBC implements AbstractTestDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -299,6 +308,7 @@ public class TestDaoJDBC implements AbstractTestDao {
     @Override
     public boolean create(Test entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -308,7 +318,8 @@ public class TestDaoJDBC implements AbstractTestDao {
             statement.setInt(1,entity.getCreatorId());
             statement.setInt(2,entity.getCategoryId());
             statement.setString(3,entity.getName());
-            statement.setDate(4,new java.sql.Date(entity.getCreationDate().getTime()));
+            statement.setBoolean(4,entity.isAvailable());
+            statement.setDate(5,new java.sql.Date(entity.getCreationDate().getTime()));
             result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -324,6 +335,7 @@ public class TestDaoJDBC implements AbstractTestDao {
     @Override
     public Integer createAndGetId(Test entity) throws DaoException {
         if(entity == null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -336,7 +348,8 @@ public class TestDaoJDBC implements AbstractTestDao {
             statement.setInt(1,entity.getCreatorId());
             statement.setInt(2,entity.getCategoryId());
             statement.setString(3,entity.getName());
-            statement.setDate(4,new java.sql.Date(entity.getCreationDate().getTime()));
+            statement.setBoolean(4,entity.isAvailable());
+            statement.setDate(5,new java.sql.Date(entity.getCreationDate().getTime()));
             result = statement.executeUpdate();
 
             if(result == 1){

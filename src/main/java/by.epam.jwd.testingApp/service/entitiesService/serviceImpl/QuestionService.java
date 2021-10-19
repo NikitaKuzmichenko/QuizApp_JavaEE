@@ -12,41 +12,45 @@ public class QuestionService implements AbstractQuestionService {
 
     @Override
     public boolean create(Question entity) throws ServiceException {
+        if(entity==null) return false;
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     create(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean update(Question entity) throws ServiceException {
+        if(entity==null) return false;
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     update(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean delete(Integer entityId) throws ServiceException {
+        if(entityId==null) return false;
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     delete(entityId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Question selectEntityById(Integer statementId) throws ServiceException {
+        if(statementId==null) return null;
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     selectEntityById(statementId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -56,7 +60,7 @@ public class QuestionService implements AbstractQuestionService {
             return DaoFactory.getInstance().getQuestionDao().
                     selectByTestId(testId,limit,offset);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -66,7 +70,7 @@ public class QuestionService implements AbstractQuestionService {
             return DaoFactory.getInstance().getQuestionDao().
                     selectByTestId(testId,Integer.MAX_VALUE,0);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -76,17 +80,18 @@ public class QuestionService implements AbstractQuestionService {
             return DaoFactory.getInstance().getQuestionDao().
                     calculateQuestionNumber(testId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Integer createAndGetId(Question entity) throws ServiceException{
+        if(entity==null) return null;
         try {
             return DaoFactory.getInstance().getQuestionDao().
                     createAndGetId(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 }

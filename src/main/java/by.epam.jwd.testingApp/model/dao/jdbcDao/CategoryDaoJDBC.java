@@ -35,20 +35,6 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
             +  "VALUES(?)";
 
 
-
-    private boolean isRowExist(Category entity,Connection connection) throws SQLException {
-
-        PreparedStatement statement = connection.prepareStatement(IS_ROW_EXIST_SQL);
-        statement.setString(1,entity.getName());
-        ResultSet resultSet = statement.executeQuery();
-
-        boolean result = resultSet.next();
-        resultSet.close();
-        statement.close();
-
-        return  result;
-    }
-
     @Override
     public List<Category> selectAll() throws DaoException {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -76,6 +62,8 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
 
     @Override
     public Category selectEntityById(Integer id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -130,6 +118,8 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -185,5 +175,18 @@ public class CategoryDaoJDBC implements AbstractCategoryDao {
             result.add(new Category(set.getInt(CategoryMapping.ID),set.getString(CategoryMapping.NAME)));
         }
         return result;
+    }
+
+    private boolean isRowExist(Category entity,Connection connection) throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement(IS_ROW_EXIST_SQL);
+        statement.setString(1,entity.getName());
+        ResultSet resultSet = statement.executeQuery();
+
+        boolean result = resultSet.next();
+        resultSet.close();
+        statement.close();
+
+        return  result;
     }
 }

@@ -18,41 +18,45 @@ public class ResultService implements AbstractResultService {
 
     @Override
     public boolean create(Result entity) throws ServiceException {
+        if(entity==null)return false;
         try {
             return DaoFactory.getInstance().getResultDao().
                     create(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean update(Result entity) throws ServiceException {
+        if(entity==null)return false;
         try {
             return DaoFactory.getInstance().getResultDao().
                     update(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean delete(Pair<Integer,Integer> id) throws ServiceException {
+        if(id==null)return false;
         try {
             return DaoFactory.getInstance().getResultDao().
                     delete(id);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Result selectEntityById(Pair<Integer,Integer> id) throws ServiceException {
+        if(id==null)return null;
         try {
             return DaoFactory.getInstance().getResultDao().
                     selectEntityById(id);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -62,7 +66,7 @@ public class ResultService implements AbstractResultService {
             return DaoFactory.getInstance().getResultDao().
                     calculateResultsNumber(ResultMapping.TEST_ID,testId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -72,14 +76,15 @@ public class ResultService implements AbstractResultService {
             return DaoFactory.getInstance().getResultDao().
                     calculateResultsNumber(ResultMapping.USER_ID,userId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    public List<Integer> calculateRowsNumberByTestId(List<Test> testIds) throws ServiceException{
+    public List<Integer> calculateRowsNumberByTestId(List<Test> tests) throws ServiceException{
+        if(tests==null)return null;
         List<Integer> result = new LinkedList<>();
-        for(Test test:testIds) {
+        for(Test test:tests) {
             result.add(calculateRowsNumberByTestId(test.getId()));
         }
         return result;
@@ -91,7 +96,7 @@ public class ResultService implements AbstractResultService {
             return DaoFactory.getInstance().getResultDao().
                     calculateAvgResultByTestId(testId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -101,7 +106,7 @@ public class ResultService implements AbstractResultService {
             return DaoFactory.getInstance().getResultDao().
                     selectByTestId(testId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -111,12 +116,13 @@ public class ResultService implements AbstractResultService {
             return DaoFactory.getInstance().getResultDao().
                     selectByUserId(userId,limit,offset);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public List<Double> calculateAvgResultsByTestId(List<Test> tests) throws ServiceException {
+        if(tests==null)return null;
         List<Double> results = new ArrayList<>();
         try {
             AbstractResultDao dao= DaoFactory.getInstance().getResultDao();
@@ -128,7 +134,7 @@ public class ResultService implements AbstractResultService {
                 }
             }
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
         return results;
     }

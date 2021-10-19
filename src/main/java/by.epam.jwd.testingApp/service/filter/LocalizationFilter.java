@@ -1,9 +1,8 @@
 package by.epam.jwd.testingApp.service.filter;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.LanguageParser;
+import by.epam.jwd.testingApp.service.parameterParser.Parser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.LanguageParser;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

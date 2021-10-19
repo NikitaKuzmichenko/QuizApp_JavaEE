@@ -70,6 +70,8 @@ public class StatementDaoJDBC implements AbstractStatementDao {
 
     @Override
     public Statement selectEntityById(Integer id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -97,6 +99,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
     @Override
     public boolean update(Statement entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -121,6 +124,8 @@ public class StatementDaoJDBC implements AbstractStatementDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -163,6 +168,7 @@ public class StatementDaoJDBC implements AbstractStatementDao {
     @Override
     public boolean create(Statement entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;

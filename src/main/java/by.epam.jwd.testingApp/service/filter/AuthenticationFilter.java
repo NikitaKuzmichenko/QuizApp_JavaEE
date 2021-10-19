@@ -6,8 +6,8 @@ import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractUserService;
 import by.epam.jwd.testingApp.service.entitiesService.serviceImpl.UserService;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
-import by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl.UserIdParser;
+import by.epam.jwd.testingApp.service.parameterParser.Parser;
+import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.UserIdParser;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

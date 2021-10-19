@@ -8,6 +8,6 @@ import by.epam.jwd.testingApp.service.entitiesService.abstractService.genericAbs
 import java.util.List;
 
 public interface AbstractUserService extends AbstractEntitiesService<User,Integer> {
-    User selectByLogin(String email) throws ServiceException;
+    User selectByEmail(String email) throws ServiceException;
     List<User> selectTestCreators(List<Test> tests) throws ServiceException;
 }

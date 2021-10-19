@@ -1,12 +1,10 @@
-package by.epam.jwd.testingApp.service.parameterParserServise.parsersImpl;
+package by.epam.jwd.testingApp.service.parameterParser.parsersImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.service.parameterParserServise.Parser;
+import by.epam.jwd.testingApp.service.parameterParser.Parser;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 public class CategoryParser implements Parser<Integer> {
     public final static String ALL_CATEGORIES = "all";

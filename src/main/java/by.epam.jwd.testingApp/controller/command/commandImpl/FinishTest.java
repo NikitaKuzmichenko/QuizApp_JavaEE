@@ -10,7 +10,7 @@ import by.epam.jwd.testingApp.entity.Statement;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractStatementService;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

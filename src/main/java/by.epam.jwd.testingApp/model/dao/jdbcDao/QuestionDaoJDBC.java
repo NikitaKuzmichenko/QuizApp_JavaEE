@@ -98,6 +98,8 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
 
     @Override
     public Question selectEntityById(Integer id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -125,6 +127,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
     @Override
     public boolean update(Question entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -148,6 +151,8 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -170,6 +175,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
     @Override
     public boolean create(Question entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;
@@ -192,6 +198,7 @@ public class QuestionDaoJDBC implements AbstractQuestionDao {
 
     public Integer createAndGetId(Question entity) throws DaoException{
         if(entity == null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
         PreparedStatement statement = null;

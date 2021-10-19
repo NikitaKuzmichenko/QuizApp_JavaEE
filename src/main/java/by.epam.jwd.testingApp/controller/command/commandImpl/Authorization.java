@@ -4,13 +4,13 @@ import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.service.cookieService.CookieManager;
 import by.epam.jwd.testingApp.controller.command.Command;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.User;
 import by.epam.jwd.testingApp.exceptions.ServiceException;
 import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.passwordEncodingService.PasswordEncode;
+import by.epam.jwd.testingApp.service.passwordEncoding.PasswordEncode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -43,7 +43,7 @@ public class Authorization implements Command {
 
         User user;
         try {
-            user = EntitiesServiceFactory.getInstance().getUserService().selectByLogin(
+            user = EntitiesServiceFactory.getInstance().getUserService().selectByEmail(
                     request.getParameter(AttributeNames.EMAIL).trim());
         } catch (ServiceException e) {
             throw new ServletException(e);

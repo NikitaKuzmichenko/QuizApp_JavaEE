@@ -1,4 +1,4 @@
-package by.epam.jwd.testingApp.service.passwordEncodingService;
+package by.epam.jwd.testingApp.service.passwordEncoding;
 
 import org.mindrot.jbcrypt.BCrypt;
 

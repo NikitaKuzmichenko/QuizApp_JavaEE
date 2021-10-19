@@ -18,41 +18,47 @@ public class TestService implements AbstractTestService {
 
     @Override
     public boolean create(Test entity) throws ServiceException {
+        if(entity==null) return false;
+
         try {
             return DaoFactory.getInstance().getTestDao().
                     create(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean update(Test entity) throws ServiceException {
+        if(entity==null) return false;
+
         try {
             return DaoFactory.getInstance().getTestDao().
                     update(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean delete(Integer entityId) throws ServiceException {
+        if(entityId==null) return false;
         try {
             return DaoFactory.getInstance().getTestDao().
                     delete(entityId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Test selectEntityById(Integer entityId) throws ServiceException {
+        if(entityId==null) return null;
         try {
             return DaoFactory.getInstance().getTestDao().
                     selectEntityById(entityId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -62,7 +68,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao()
                     .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CREATOR_ID,TestMapping.CREATOR_ID,creatorId,false);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -72,7 +78,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao()
                     .selectSortedTestsByIntRow(limit,offset,desc,TestMapping.CATEGORY_ID,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -82,7 +88,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     sortTestsByRow(limit,offset,desc, SORT_BY_USERS_NUMBER,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -92,7 +98,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     selectSortedTestsByIntRow(limit,offset,desc, SORT_BY_USERS_NUMBER,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -102,7 +108,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     sortTestsByRow(limit,offset,desc,TestMapping.NAME,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -112,7 +118,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     selectSortedTestsByIntRow(limit,offset,desc, TestMapping.NAME,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -122,7 +128,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     sortTestsByRow(limit,offset,desc,TestMapping.CREATION_DATE,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -132,16 +138,17 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     selectSortedTestsByIntRow(limit,offset,desc, TestMapping.CREATION_DATE,TestMapping.CATEGORY_ID,categoryId,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean remove(Integer entityId) throws ServiceException {
+        if(entityId==null) return false;
         try {
             return DaoFactory.getInstance().getTestDao().removeTest(entityId);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -155,7 +162,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     calculateTestsNumber(categoryId,TestMapping.CATEGORY_ID,true,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -169,7 +176,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     calculateTestsNumber(userId,TestMapping.CREATOR_ID,onlyAvailable,true);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 
@@ -180,7 +187,7 @@ public class TestService implements AbstractTestService {
             return DaoFactory.getInstance().getTestDao().
                     createAndGetId(entity);
         } catch (DaoException e) {
-            throw new ServiceException("msg",e);
+            throw new ServiceException(e);
         }
     }
 }

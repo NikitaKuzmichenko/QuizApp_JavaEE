@@ -3,7 +3,7 @@ package by.epam.jwd.testingApp.controller.command.commandImpl;
 import by.epam.jwd.testingApp.controller.command.Command;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
-import by.epam.jwd.testingApp.service.parameterParserServise.ParserProvider;
+import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Test;
 import by.epam.jwd.testingApp.exceptions.ServiceException;

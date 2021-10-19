@@ -1,3 +1,0 @@
-17.10.2021 19:24:50,695 ERROR GeneralTest:13 - Error Message Logged !!!
-java.lang.NullPointerException: NullError
-	at GeneralTest.main(GeneralTest.java:13) [test-classes/:?]

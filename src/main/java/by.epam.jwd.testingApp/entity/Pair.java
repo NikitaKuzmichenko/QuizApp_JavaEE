@@ -1,8 +1,12 @@
 package by.epam.jwd.testingApp.entity;
 
-public class Pair<T, U> {
-    private final T t;
-    private final U u;
+import java.io.Serializable;
+
+public class Pair<T, U> implements Serializable {
+    private T t;
+    private U u;
+
+    public Pair(){}
 
     public Pair(T t, U u) {
         this.t= t;
@@ -20,7 +24,7 @@ public class Pair<T, U> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (this.getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 

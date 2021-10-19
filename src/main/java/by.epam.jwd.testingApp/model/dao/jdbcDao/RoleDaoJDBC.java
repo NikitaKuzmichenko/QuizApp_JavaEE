@@ -39,6 +39,8 @@ public class RoleDaoJDBC implements AbstractRoleDao {
 
     @Override
     public Role selectEntityById(Integer id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -93,6 +95,7 @@ public class RoleDaoJDBC implements AbstractRoleDao {
 
     @Override
     public boolean delete(Integer id) throws DaoException {
+        if(id==null) return false;
 
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();

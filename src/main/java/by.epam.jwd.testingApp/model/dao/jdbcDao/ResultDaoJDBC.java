@@ -47,8 +47,11 @@ public class ResultDaoJDBC implements AbstractResultDao {
             +" WHERE " + ResultMapping.TEST_ID + " = ?;";
 
     public static final String COUNT_RESULTS = "COUNT(" + ResultMapping.RESULT + ")";
+
     @Override
     public Result selectEntityById(Pair<Integer, Integer> id) throws DaoException {
+        if(id==null) return null;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -103,6 +106,8 @@ public class ResultDaoJDBC implements AbstractResultDao {
 
     @Override
     public boolean delete(Pair<Integer,Integer> id) throws DaoException {
+        if(id==null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 
@@ -128,6 +133,7 @@ public class ResultDaoJDBC implements AbstractResultDao {
     @Override
     public boolean create(Result entity) throws DaoException {
         if(entity == null) return false;
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.takeConnection();
 

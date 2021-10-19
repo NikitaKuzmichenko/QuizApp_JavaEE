@@ -5,12 +5,14 @@ import java.util.ResourceBundle;
 
 public class DBResourceManager {
 
-    private static final String source = "dataBase";
+    private static final String DEFAULT_BUNDLE_NAME = "dataBase";
+
+    private static String bundleName = DEFAULT_BUNDLE_NAME;
 
     private static ResourceBundle bundle;
 
     private DBResourceManager(){
-        bundle = ResourceBundle.getBundle(source);
+        bundle = ResourceBundle.getBundle(bundleName);
     }
 
     private static class SingletonHolder {
@@ -19,6 +21,12 @@ public class DBResourceManager {
 
     public static DBResourceManager getInstance() {
         return SingletonHolder.HOLDER_INSTANCE;
+    }
+
+    public static void setBundleName(String bundleName){
+        if(bundleName!=null) {
+            DBResourceManager.bundleName = bundleName;
+        }
     }
 
     public String getValueByName(String name){
