@@ -1,4 +1,4 @@
-package entytiesServiceTests;
+package entitiesServiceTests;
 
 import by.epam.jwd.testingApp.entity.Pair;
 import by.epam.jwd.testingApp.entity.Result;
