@@ -29,6 +29,41 @@ public class FinishTest implements Command {
 
     private static final int TO_PERCENT_DIVIDER = 100;
 
+    private int calculateCorrectAnswers(HashMap<Integer, Set<String>> questionPassed,List<Question> testsQuestions,List<Boolean> isCorrect)
+            throws ServiceException {
+
+        int correctAnswersNumber = 0;
+        List<Statement> statements;
+        boolean isStatementCorrect;
+
+        for(int i=0;i<testsQuestions.size();i++){
+            isStatementCorrect = true;
+            statements = EntitiesServiceFactory.getInstance().getStatementService()
+                    .selectByQuestionId(testsQuestions.get(i).getId());
+            Set<String> answers = questionPassed.get(i);
+
+            if(answers!=null) {
+                for (Statement statement : statements) {
+                    if (!statement.isCorrect() && answers.contains(Integer.toString(statement.getId()))) {
+                        isStatementCorrect = false;
+                        break;
+                    }
+                }
+            }else{
+                isStatementCorrect = false;
+            }
+
+            if(isCorrect!=null){
+                isCorrect.add(isStatementCorrect);
+            }
+
+            if(isStatementCorrect){
+                correctAnswersNumber++;
+            }
+        }
+        return correctAnswersNumber;
+    }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -79,29 +114,9 @@ public class FinishTest implements Command {
                 List<Question> testsQuestions = EntitiesServiceFactory.getInstance().getQuestionService().
                         selectEntityByTestId(Integer.parseInt(passingTestObject.toString()));
 
-                List<Statement> statements;
-                AbstractStatementService statementService = factory.getStatementService();
+                int correctAnswersNumber = calculateCorrectAnswers(questionPassed,testsQuestions,null);
 
-                int correctAnswersNumber = 0;
-                int totalQuestionsSize = testsQuestions.size();
-                for(int i=0;i<totalQuestionsSize;i++){
-
-                    statements = statementService.selectByQuestionId(testsQuestions.get(i).getId());
-                    Set<String> answers = questionPassed.get(i);
-
-                    if(answers!=null) {
-
-                        for (Statement statement : statements) {
-                            if (!statement.isCorrect() && answers.contains(Integer.toString(statement.getId()))) {
-                                break;
-                            }else{
-                                correctAnswersNumber++;
-                            }
-                        }
-
-                    }
-                }
-                double result = (correctAnswersNumber * RESULT_MULTIPLIER/ totalQuestionsSize);
+                double result = (correctAnswersNumber * RESULT_MULTIPLIER/ testsQuestions.size());
                 result = Math.ceil(result);
 
                 Result userResult = new Result();
@@ -125,49 +140,20 @@ public class FinishTest implements Command {
         }
 
         List<Question> testsQuestions;
-        int totalQuestionsSize;
         int correctAnswersNumber = 0;
         List<Boolean> isCorrect = new ArrayList<>();
         try {
              testsQuestions = EntitiesServiceFactory.getInstance().getQuestionService().
                     selectEntityByTestId(Integer.parseInt(passingTestObject.toString()));
 
-            List<Statement> statements;
-            AbstractStatementService statementService = factory.getStatementService();
-            boolean isAnswerCorrect;
+             correctAnswersNumber = calculateCorrectAnswers(questionPassed,testsQuestions,isCorrect);
 
-
-            totalQuestionsSize= testsQuestions.size();
-            for(int i=0;i<totalQuestionsSize;i++){
-
-                isAnswerCorrect = true;
-                statements = statementService.selectByQuestionId(testsQuestions.get(i).getId());
-                Set<String> answers = questionPassed.get(i);
-
-                if(answers!=null) {
-                    for (Statement statement : statements) {
-                        if (!statement.isCorrect() && answers.contains(Integer.toString(statement.getId()))) {
-                            isAnswerCorrect = false;
-                            break;
-                        }
-                        else{
-                            correctAnswersNumber++;
-                        }
-                    }
-
-                    isCorrect.add(isAnswerCorrect);
-                }
-                else{
-                    isCorrect.add(false);
-                }
-
-            }
         } catch (ServiceException e) {
             LOGGER.error(e);
             throw new ServletException(e);
         }
 
-        double result = (correctAnswersNumber * RESULT_MULTIPLIER/ totalQuestionsSize);
+        double result = (correctAnswersNumber * RESULT_MULTIPLIER/ testsQuestions.size());
         result = Math.ceil(result)/TO_PERCENT_DIVIDER;
 
         request.setAttribute(AttributeNames.QUESTION_LIST, testsQuestions);

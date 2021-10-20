@@ -45,6 +45,8 @@ public class AddQuestion implements Command {
 
             TransitionManager.getInstance().getTransitionByForward().
                     doTransition(request, response, PageMapping.ADD_QUESTION);
+
+            return;
         }
 
         Integer testId = ParserProvider.getInstance().getTestIdParser().parsing(request);

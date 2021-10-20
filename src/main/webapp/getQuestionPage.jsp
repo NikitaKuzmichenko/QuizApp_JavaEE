@@ -9,15 +9,15 @@
     <div style="background-color: #e3f2fd;">
         <div class="d-flex justify-content-center">
             <button class="btn btn-outline-success mx-5" formaction="get_question?action=previous" type="submit">
-                <span style="font-size:14.0pt">previous<span>
+                <span style="font-size:14.0pt"><fmt:message key="button.previous"/><span>
             </button>
 
             <button class="btn btn-outline-success mx-5" formaction="finish_test" type="submit" >
-                <span style="font-size:14.0pt">finish test<span>
+                <span style="font-size:14.0pt"><fmt:message key="button.finish"/><span>
             </button>
 
             <button class="btn btn-outline-success mx-5" formaction="get_question?action=next"type="submit">
-                <span style="font-size:14.0pt">next<span>
+                <span style="font-size:14.0pt"><fmt:message key="button.next"/><span>
             </button>
         </div>
     </div>
