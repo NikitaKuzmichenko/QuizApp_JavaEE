@@ -41,7 +41,8 @@ public class CommandAccessLevel {
     }
 
     public Integer getAccessLvlByCommandName(String commandName){
-        if(commandName.equals("")) return commands.get(CommandName.PAGE) ;
+        if(!isCommandNameExist(commandName.toUpperCase()))return commands.get(CommandName.PAGE);
+        if(!commands.containsKey(CommandName.valueOf(commandName.toUpperCase()))) return commands.get(CommandName.PAGE);
         return commands.get(CommandName.valueOf(commandName.toUpperCase()));
     }
 
@@ -54,4 +55,12 @@ public class CommandAccessLevel {
 
     }
 
+    private boolean isCommandNameExist(String commandName){
+        for (CommandName command : CommandName.values()) {
+            if (command.name().equals(commandName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

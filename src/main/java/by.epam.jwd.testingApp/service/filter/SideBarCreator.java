@@ -1,9 +1,9 @@
 package by.epam.jwd.testingApp.service.filter;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractTestService;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractTestService;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 
 import javax.servlet.*;
 import java.io.IOException;

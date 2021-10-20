@@ -1,16 +1,16 @@
 package by.epam.jwd.testingApp.controller.command.commandImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
-import by.epam.jwd.testingApp.service.cookieService.CookieManager;
+import by.epam.jwd.testingApp.service.cookie.CookieManager;
 import by.epam.jwd.testingApp.controller.command.Command;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.User;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
-import by.epam.jwd.testingApp.service.passwordEncoding.PasswordEncode;
+import by.epam.jwd.testingApp.service.passwordEncoding.PasswordEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -52,7 +52,7 @@ public class Authorization implements Command {
         if(user!=null) {
             String password = request.getParameter(AttributeNames.PASSWORD);
             if(password !=null) {
-                if (PasswordEncode.getInstance().isMatching(password,user.getPassword())) {
+                if (PasswordEncoder.getInstance().isMatching(password,user.getPassword())) {
                     CookieManager cookieManager = CookieManager.getInstance();
                     session.setAttribute(AttributeNames.USER_ID, user.getId());
                     if (request.getParameter(AttributeNames.REMEMBER_USER) != null) {

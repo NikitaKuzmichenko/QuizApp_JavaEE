@@ -6,9 +6,9 @@ import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Result;
 import by.epam.jwd.testingApp.entity.Test;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractTestService;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractTestService;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgSupplier;
 import by.epam.jwd.testingApp.service.pagination.DirectPagination;
@@ -93,7 +93,7 @@ public class ViewResults  implements Command {
         request.setAttribute(AttributeNames.TEST_RESULTS, rating);
         request.setAttribute(AttributeNames.TEST_LIST, testList);
         request.setAttribute(AttributeNames.PAGINATION,
-                DirectPagination.newInstance().
+                DirectPagination.getInstance().
                         calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
 
         TransitionManager.getInstance().getTransitionByForward().

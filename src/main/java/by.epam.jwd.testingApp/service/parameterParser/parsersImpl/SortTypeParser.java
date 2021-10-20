@@ -2,7 +2,7 @@ package by.epam.jwd.testingApp.service.parameterParser.parsersImpl;
 
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.service.parameterParser.Parser;
-import by.epam.jwd.testingApp.service.testSortingService.TestsSortingConstants;
+import by.epam.jwd.testingApp.service.testSorting.TestsSortingConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

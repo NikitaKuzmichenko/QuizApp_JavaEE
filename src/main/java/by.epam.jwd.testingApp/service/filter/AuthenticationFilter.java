@@ -1,11 +1,11 @@
 package by.epam.jwd.testingApp.service.filter;
 
-import by.epam.jwd.testingApp.service.cookieService.CookieManager;
+import by.epam.jwd.testingApp.service.cookie.CookieManager;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.entity.User;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractUserService;
-import by.epam.jwd.testingApp.service.entitiesService.serviceImpl.UserService;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractUserService;
+import by.epam.jwd.testingApp.service.entity.serviceImpl.UserService;
 import by.epam.jwd.testingApp.service.parameterParser.Parser;
 import by.epam.jwd.testingApp.service.parameterParser.parsersImpl.UserIdParser;
 

@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.model.dao.abstractDao.genericDao;
 
-import by.epam.jwd.testingApp.exceptions.DaoException;
+import by.epam.jwd.testingApp.exception.DaoException;
 
 public interface AbstractGenericDao<E,K>{
     public  E selectEntityById(K id) throws DaoException;

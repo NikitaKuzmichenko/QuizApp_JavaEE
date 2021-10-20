@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.model.connectionPool;
 
-import by.epam.jwd.testingApp.exceptions.ConnectionPoolException;
+import by.epam.jwd.testingApp.exception.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

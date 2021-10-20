@@ -1,31 +1,28 @@
 package by.epam.jwd.testingApp.service.pagination;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DirectPagination{
 
-    private static DirectPagination instance;
-
     public static final int ELLIPSIS_CODE = -1;
+    public static final int FIRST_ELEMENT = 1;
 
-    public static DirectPagination newInstance() {
-        DirectPagination localInstance = instance;
-        if (localInstance == null) {
-            synchronized (DirectPagination.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new DirectPagination();
-                }
-            }
-        }
-        return localInstance;
+    private static class SingletonHolder {
+        public static final DirectPagination HOLDER_INSTANCE = new DirectPagination();
+    }
+
+    public static DirectPagination getInstance() {
+        return SingletonHolder.HOLDER_INSTANCE;
     }
 
     public List<Integer> calculatePagination(int currentPage, int unitNumber,int limitOnPage,int paginationMaxSize) {
 
-        List<Integer> result = new ArrayList<>();
+        List<Integer> result = new LinkedList<>();
+        if(currentPage < 0 || unitNumber < 0 || limitOnPage <= 0 || paginationMaxSize <=0) return result;
+
         int pagesNumber = (int)Math.ceil((double)unitNumber/limitOnPage);
+        if(pagesNumber <= 1 )return result;
 
         if(pagesNumber < paginationMaxSize){
             for(int i = 0; i < pagesNumber; i++){
@@ -56,7 +53,7 @@ public class DirectPagination{
         }
 
         // no more options left. its {1 ... x x x currentPage x x x ... pagesNumber} format
-        result.add(1);
+        result.add(FIRST_ELEMENT);
         result.add(ELLIPSIS_CODE);
 
         for(int i = paginationMaxSize/2; i > 0; i--){

@@ -6,12 +6,12 @@ import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.entity.Statement;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractStatementService;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractStatementService;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.errorMsg.ErrorMsgProvider;
 import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
-import by.epam.jwd.testingApp.service.validationService.entitiesValidator.EntitiesValidatorsProvider;
+import by.epam.jwd.testingApp.service.validation.entitiesValidator.EntitiesValidatorsProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

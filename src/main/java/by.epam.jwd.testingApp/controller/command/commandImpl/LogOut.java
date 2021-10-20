@@ -4,7 +4,7 @@ import by.epam.jwd.testingApp.controller.command.Command;
 import by.epam.jwd.testingApp.controller.mapping.AttributeNames;
 import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
-import by.epam.jwd.testingApp.service.cookieService.CookieManager;
+import by.epam.jwd.testingApp.service.cookie.CookieManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

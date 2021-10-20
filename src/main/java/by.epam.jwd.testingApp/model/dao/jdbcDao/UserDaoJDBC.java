@@ -1,9 +1,8 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
 import by.epam.jwd.testingApp.entity.User;
-import by.epam.jwd.testingApp.exceptions.DaoException;
+import by.epam.jwd.testingApp.exception.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractUserDao;
-import by.epam.jwd.testingApp.model.dataBaseMapping.TestMapping;
 import by.epam.jwd.testingApp.model.dataBaseMapping.UserMapping;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

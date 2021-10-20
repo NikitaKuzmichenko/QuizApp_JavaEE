@@ -1,12 +1,12 @@
 package entitiesServiceTests;
 
 import by.epam.jwd.testingApp.entity.Role;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
+import by.epam.jwd.testingApp.exception.ServiceException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.connectionPool.DBResourceManager;
 import by.epam.jwd.testingApp.model.dataBaseMapping.RoleMapping;
-import by.epam.jwd.testingApp.service.entitiesService.abstractService.AbstractRoleService;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractRoleService;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import org.junit.*;
 
 import java.sql.Connection;

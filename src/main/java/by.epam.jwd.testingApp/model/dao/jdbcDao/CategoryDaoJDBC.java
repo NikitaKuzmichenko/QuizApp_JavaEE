@@ -1,6 +1,6 @@
 package by.epam.jwd.testingApp.model.dao.jdbcDao;
 import by.epam.jwd.testingApp.entity.Category;
-import by.epam.jwd.testingApp.exceptions.DaoException;
+import by.epam.jwd.testingApp.exception.DaoException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.dao.abstractDao.entitiesDao.AbstractCategoryDao;
 import by.epam.jwd.testingApp.model.dataBaseMapping.CategoryMapping;

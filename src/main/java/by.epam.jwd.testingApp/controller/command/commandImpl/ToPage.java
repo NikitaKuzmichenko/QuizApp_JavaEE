@@ -6,10 +6,10 @@ import by.epam.jwd.testingApp.controller.mapping.PageMapping;
 import by.epam.jwd.testingApp.service.parameterParser.ParserProvider;
 import by.epam.jwd.testingApp.controller.transitionManager.TransitionManager;
 import by.epam.jwd.testingApp.entity.Test;
-import by.epam.jwd.testingApp.exceptions.ServiceException;
-import by.epam.jwd.testingApp.service.testSortingService.TestsSorter;
-import by.epam.jwd.testingApp.service.testSortingService.TestsSorterProvider;
-import by.epam.jwd.testingApp.service.entitiesService.factory.EntitiesServiceFactory;
+import by.epam.jwd.testingApp.exception.ServiceException;
+import by.epam.jwd.testingApp.service.testSorting.TestsSorter;
+import by.epam.jwd.testingApp.service.testSorting.TestsSorterProvider;
+import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import by.epam.jwd.testingApp.service.pagination.DirectPagination;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,7 +105,7 @@ public class ToPage implements Command {
             request.setAttribute(AttributeNames.TEST_RESULTS,
                     factory.getResultService().calculateAvgResultsByTestId(testList));
             request.setAttribute(AttributeNames.PAGINATION,
-                    DirectPagination.newInstance().
+                    DirectPagination.getInstance().
                             calculatePagination(pageNumber,testsNumber,LIMIT_ON_PAGE,PAGINATION_MAX_SIZE));
             request.setAttribute(AttributeNames.CATEGORIES, factory.getCategoryService().selectAll());
 
