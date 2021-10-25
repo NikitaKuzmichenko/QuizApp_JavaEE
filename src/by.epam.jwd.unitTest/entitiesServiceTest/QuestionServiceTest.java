@@ -1,4 +1,4 @@
-package entitiesServiceTests;
+package entitiesServiceTest;
 
 import by.epam.jwd.testingApp.entity.Question;
 import by.epam.jwd.testingApp.exception.ServiceException;

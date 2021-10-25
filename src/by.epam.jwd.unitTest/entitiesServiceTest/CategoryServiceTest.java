@@ -1,28 +1,28 @@
-package entitiesServiceTests;
+package entitiesServiceTest;
 
-import by.epam.jwd.testingApp.entity.Role;
+import by.epam.jwd.testingApp.entity.Category;
 import by.epam.jwd.testingApp.exception.ServiceException;
 import by.epam.jwd.testingApp.model.connectionPool.ConnectionPool;
 import by.epam.jwd.testingApp.model.connectionPool.DBResourceManager;
-import by.epam.jwd.testingApp.model.dataBaseMapping.RoleMapping;
-import by.epam.jwd.testingApp.service.entity.abstractService.AbstractRoleService;
+import by.epam.jwd.testingApp.model.dataBaseMapping.CategoryMapping;
+import by.epam.jwd.testingApp.service.entity.abstractService.AbstractCategoryService;
 import by.epam.jwd.testingApp.service.entity.factory.EntitiesServiceFactory;
 import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class RoleServiceTest extends Assert {
-    private static Role role;
-    private static AbstractRoleService service;
+public class CategoryServiceTest extends Assert {
+    private static Category category;
+    private static AbstractCategoryService service;
 
     @BeforeClass
     public static void init(){
-        service = EntitiesServiceFactory.getInstance().getRoleService();
+        service = EntitiesServiceFactory.getInstance().getCategoryService();
 
-        role = new Role();
-        role.setId(1);
-        role.setName("role");
+        category = new Category();
+        category.setId(1);
+        category.setName("role");
 
         DBResourceManager.setBundleName("testDataBase");
         ConnectionPool.getInstance().InitPool();
@@ -36,13 +36,13 @@ public class RoleServiceTest extends Assert {
     @After
     public void cleanUpTable() throws SQLException {
         Connection connection = ConnectionPool.getInstance().takeConnection();
-        connection.createStatement().executeUpdate("TRUNCATE TABLE " + RoleMapping.TABLE_NAME);
+        connection.createStatement().executeUpdate("TRUNCATE TABLE " + CategoryMapping.TABLE_NAME);
         ConnectionPool.getInstance().returnConnection(connection);
     }
 
     @Test
     public void createRole() throws ServiceException {
-        assertTrue(service.create(role));
+        assertTrue(service.create(category));
     }
 
     @Test
@@ -50,10 +50,11 @@ public class RoleServiceTest extends Assert {
         assertFalse(service.create(null));
     }
 
+
     @Test
     public void selectRole() throws ServiceException {
-        service.create(role);
-        assertEquals(role.getId(), service.selectEntityById(role.getId()).getId());
+        service.create(category);
+        assertEquals(category.getId(), service.selectEntityById(category.getId()).getId());
     }
 
     @Test
@@ -63,27 +64,27 @@ public class RoleServiceTest extends Assert {
 
     @Test
     public void updateRole() throws ServiceException {
-        service.create(role);
-        role.setName("new name");
-        service.update(role);
-        assertEquals(role.getId(),service.selectEntityById(role.getId()).getId());
+        service.create(category);
+        category.setName("new name");
+        service.update(category);
+        assertEquals(category.getId(),service.selectEntityById(category.getId()).getId());
     }
     @Test
     public void updateNotExistingRole() throws ServiceException {
-        service.update(role);
-        assertFalse(service.update(role));
+        service.update(category);
+        assertFalse(service.update(category));
     }
 
     @Test
     public void deleteRole() throws ServiceException {
-        service.create(role);
-        assertTrue(service.delete(role.getId()));
+        service.create(category);
+        assertTrue(service.delete(category.getId()));
     }
 
     @Test
     public void deleteNotExistingRole() throws ServiceException {
-        service.create(role);
-        assertFalse(service.delete(role.getId() + 1));
+        service.create(category);
+        assertFalse(service.delete(category.getId() + 1));
     }
 
     @Test
@@ -93,7 +94,7 @@ public class RoleServiceTest extends Assert {
 
     @Test
     public void selectAllRoles() throws ServiceException {
-        service.create(role);
+        service.create(category);
         assertEquals(1,service.selectAll().size());
     }
 }
