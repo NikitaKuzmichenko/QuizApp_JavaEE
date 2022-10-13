@@ -33,4 +33,4 @@ Change test status|   |   | * |
 Delete test|   |   | * |
 	
 # Database tables
-![](https://github.com/NikitaKuzmichenko/QuizApp/blob/master/dataBaseInfo/schema.png)
+![](https://github.com/NikitaKuzmichenko/QuizApp_JavaEE/blob/master/dataBaseInfo/schema.png)
